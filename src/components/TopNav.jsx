@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppStore } from '../store/appStore';
-import { Box, Layers, Activity, Calculator, Settings } from 'lucide-react';
+import { Box, Layers, Activity, Calculator, Settings, Table } from 'lucide-react';
 
 export const TopNav = () => {
   const { activeTab, setActiveTab } = useAppStore();
@@ -46,6 +46,7 @@ export const TopNav = () => {
       <div style={{ width: '1px', height: '24px', background: '#334155', margin: '0 16px' }} />
       <div style={{ display: 'flex' }}>
         <TabItem id="viewer" name="3D Viewer" icon={Box} />
+        <TabItem id="datatable" name="Data Table" icon={Table} />
         <TabItem id="transform" name="3D to 2D Transformation" icon={Layers} />
         <TabItem id="simpAnalysis" name="Simp. Analysis" icon={Activity} />
         <TabItem id="spl2bundle" name="Simpl. Analysis 2D bundle" icon={Calculator} />

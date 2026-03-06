@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useAppStore } from './store/appStore';
 import { TopNav } from './components/TopNav';
 import { Viewer3DTab } from './components/Viewer3DTab';
+import { DataTableTab } from './components/DataTableTab';
 import { TransformTab } from './components/TransformTab';
 import { SimpAnalysisTab } from './components/SimpAnalysisTab';
 import { Spl2BundleTab } from './spl2-bundle';
@@ -21,6 +22,7 @@ function App() {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'sans-serif', background: '#0f172a' }}>
       <TopNav />
       {activeTab === 'viewer' && <Viewer3DTab />}
+      {activeTab === 'datatable' && <DataTableTab />}
       {activeTab === 'transform' && <TransformTab />}
       {activeTab === 'simpAnalysis' && <SimpAnalysisTab geometryData={useAppStore.getState().components} />}
       {activeTab === 'spl2bundle' && <Spl2BundleTab />}
