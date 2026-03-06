@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useAppStore } from './store/appStore';
 import { TopNav } from './components/TopNav';
 import { Viewer3DTab } from './components/Viewer3DTab';
@@ -11,8 +11,6 @@ import './App.css';
 
 function App() {
   const activeTab = useAppStore(state => state.activeTab);
-  const setComponents = useAppStore(state => state.setComponents);
-  const components = useAppStore(state => state.components);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'sans-serif', background: '#0f172a' }}>
@@ -20,7 +18,7 @@ function App() {
       {activeTab === 'viewer' && <Viewer3DTab />}
       {activeTab === 'datatable' && <DataTableTab />}
       {activeTab === 'transform' && <TransformTab />}
-      {activeTab === 'simpAnalysis' && <SimpAnalysisTab geometryData={components} />}
+      {activeTab === 'simpAnalysis' && <SimpAnalysisTab />}
       {activeTab === 'spl2bundle' && <Spl2BundleTab />}
       {activeTab === 'config' && <ConfigTab />}
     </div>

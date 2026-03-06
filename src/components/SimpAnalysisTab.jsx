@@ -3,12 +3,14 @@ import { SimpAnalysisCanvas } from '../simp-analysis/SimpAnalysisCanvas';
 import { CalculationsPanel } from '../simp-analysis/CalculationsPanel';
 import { useSimpStore } from '../simp-analysis/store';
 import { extractSubGraph } from '../simp-analysis/smart2Dconverter';
+import { useAppStore } from '../store/appStore';
 
-export const SimpAnalysisTab = ({ geometryData }) => {
+export const SimpAnalysisTab = () => {
   const setNodes = useSimpStore(state => state.setNodes);
   const setSegments = useSimpStore(state => state.setSegments);
   const setPlane = useSimpStore(state => state.setPlane);
   const plane = useSimpStore(state => state.plane);
+  const geometryData = useAppStore(state => state.components);
 
   // Load real geometry data
   useEffect(() => {
