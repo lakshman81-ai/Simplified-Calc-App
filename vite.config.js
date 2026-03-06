@@ -7,6 +7,7 @@ const buildTime = new Date().toISOString();
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: process.env.VITE_BASE_URL || '/',
   plugins: [react(), tailwindcss()],
   base: process.env.VITE_BASE_URL || '/',
   define: {
