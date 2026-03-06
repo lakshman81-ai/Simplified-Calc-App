@@ -63,10 +63,10 @@ export const parsePCF = (pcfText) => {
   }
 
   // Map to the format expected by the 3D Viewer (start, end, radius)
-  const viewerData = components.filter(c => c.points.length >= 2 || (c.points.length > 0 && c.centrePoint)).map(c => {
+  const viewerData = components.map(c => {
     
     // For pipes
-    if (c.type === 'PIPE' && c.points.length >= 2) {
+    if (c.type === 'PIPE' && c.points && c.points.length >= 2) {
       return {
         id: c.id.toString(),
         type: c.type,
@@ -79,8 +79,8 @@ export const parsePCF = (pcfText) => {
       };
     } else {
         // Fallback for fittings to connect their points to center
-        const p1 = c.points[0] || c.centrePoint;
-        const p2 = c.points[1] || c.centrePoint || c.branch1Point || p1;
+        const p1 = (c.points && c.points[0]) || c.centrePoint || { x: 0, y: 0, z: 0 };
+        const p2 = (c.points && c.points[1]) || c.centrePoint || c.branch1Point || p1;
         return {
           id: c.id.toString(),
           type: c.type,
@@ -89,7 +89,8 @@ export const parsePCF = (pcfText) => {
           radius: 150, // Slightly larger for fittings
           points: c.points,
           centrePoint: c.centrePoint,
-          branch1Point: c.branch1Point
+          branch1Point: c.branch1Point,
+          coOrds: c.points && c.points.length > 0 ? c.points[0] : null
         };
     }
   });
