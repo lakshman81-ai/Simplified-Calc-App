@@ -61,8 +61,8 @@ export const TransformTab = () => {
                       <span style={{ fontWeight: '600', color: '#e2e8f0', minWidth: '80px' }}>ID: {c.id}</span>
                     </div>
                     <div style={{ display: 'flex', gap: '24px', fontFamily: 'monospace', color: '#94a3b8', fontSize: '13px' }}>
-                      <span><span style={{color: '#64748b'}}>Start:</span> [{c.start.join(', ')}]</span>
-                      <span><span style={{color: '#64748b'}}>End:</span> [{c.end.join(', ')}]</span>
+                      <span><span style={{color: '#64748b'}}>Start:</span> [{c.start?.join(', ') || 'N/A'}]</span>
+                      <span><span style={{color: '#64748b'}}>End:</span> [{c.end?.join(', ') || 'N/A'}]</span>
                     </div>
                   </div>
                 ))}
