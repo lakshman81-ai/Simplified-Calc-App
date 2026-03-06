@@ -1,0 +1,11 @@
+node_modules/
+backup/
+.gemini/
+Public/Output/
+.vscode/
+.idea/
+*.log
+dist/
+nul
+
+3d2d-app.zip
