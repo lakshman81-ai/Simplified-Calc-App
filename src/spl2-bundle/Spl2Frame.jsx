@@ -7,7 +7,7 @@
 import React, { useRef, useCallback, useState } from 'react';
 import { log } from '../utils/logger';
 
-const SPL2_BUNDLE_PATH = '/spl2-bundle/spl2_master.html';
+const SPL2_BUNDLE_PATH = `${import.meta.env.BASE_URL}spl2-bundle/spl2_master.html`;
 
 const styles = {
     wrapper: { flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#0d1117' },
