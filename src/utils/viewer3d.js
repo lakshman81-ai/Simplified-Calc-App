@@ -94,6 +94,13 @@ export class PcfViewer3D {
         this.controls = null;
         this._animId = null;
         this._componentGroup = null;
+
+        // Selection Raycaster
+        this.raycaster = new THREE.Raycaster();
+        this.pointer = new THREE.Vector2();
+        this.selectedIds = new Set();
+        this.onSelectToggle = null; // Callback assigned from React
+
         this._init();
     }
 
@@ -175,7 +182,8 @@ export class PcfViewer3D {
         };
         window.addEventListener('resize', this._onResize);
 
-        window.addEventListener('resize', this._onResize);
+        // Click handler for raycasting
+        this.renderer.domElement.addEventListener('pointerdown', this._onPointerDown.bind(this));
 
         // Axis Gizmo (bottom-right)
         this._buildAxisGizmo();
@@ -190,6 +198,32 @@ export class PcfViewer3D {
         if (this.controls) this.controls.update();
         this.renderer.render(this.scene, this.camera);
         this._syncAxisGizmo();
+    }
+
+    /** @private */
+    _onPointerDown(event) {
+        if (!this.onSelectToggle || !this._componentGroup) return;
+
+        // Calculate pointer position in normalized device coordinates
+        const rect = this.renderer.domElement.getBoundingClientRect();
+        this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        this.raycaster.setFromCamera(this.pointer, this.camera);
+
+        const intersects = this.raycaster.intersectObjects(this._componentGroup.children, true);
+        if (intersects.length > 0) {
+            for (const intersect of intersects) {
+                let obj = intersect.object;
+                while (obj && obj !== this._componentGroup) {
+                    if (obj.userData && obj.userData.id) {
+                        this.onSelectToggle(obj.userData.id);
+                        return; // register only the closest valid parent
+                    }
+                    obj = obj.parent;
+                }
+            }
+        }
     }
 
     /** @private — Build axis gizmo in bottom-right */
@@ -263,6 +297,11 @@ export class PcfViewer3D {
 
         this.scene.add(this._componentGroup);
 
+        // Restore active selections on re-render
+        if (this.selectedIds) {
+            this.updateSelection(this.selectedIds);
+        }
+
         // Auto-fit camera if components exist
         if (components.length > 0) this._fitCamera();
     }
@@ -323,7 +362,7 @@ export class PcfViewer3D {
 
         // Attach Component Data to all generated meshes for picking
         meshes.forEach(m => {
-            if (m) m.userData = { ...comp };
+            if (m) m.userData = { ...comp, originalColor: color };
         });
 
         return meshes;
@@ -546,10 +585,32 @@ export class PcfViewer3D {
         }
     }
 
+    /** Update visual selection state */
+    updateSelection(selectedIdsSet) {
+        this.selectedIds = selectedIdsSet || new Set();
+        if (!this._componentGroup) return;
+
+        const SELECT_COLOR = 0xffa500; // Bright orange for selection
+
+        this._componentGroup.traverse(child => {
+            if (child.isMesh && child.userData && child.userData.id) {
+                const isSelected = this.selectedIds.has(child.userData.id);
+                const baseColor = child.userData.originalColor;
+
+                if (baseColor !== undefined) {
+                    child.material.color.setHex(isSelected ? SELECT_COLOR : baseColor);
+                }
+            }
+        });
+    }
+
     /** Tear down — clean up all resources */
     dispose() {
         if (this._animId) cancelAnimationFrame(this._animId);
         window.removeEventListener('resize', this._onResize);
+        if (this.renderer && this.renderer.domElement) {
+            this.renderer.domElement.removeEventListener('pointerdown', this._onPointerDown);
+        }
         if (this.controls) this.controls.dispose();
 
         // Remove axis gizmo to prevent ghosting/trailing on remount

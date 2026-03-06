@@ -7,16 +7,12 @@ import { TransformTab } from './components/TransformTab';
 import { SimpAnalysisTab } from './components/SimpAnalysisTab';
 import { Spl2BundleTab } from './spl2-bundle';
 import { ConfigTab } from './config/ConfigTab';
-import { mockPipingSystem } from './utils/mockData';
 import './App.css';
 
 function App() {
   const activeTab = useAppStore(state => state.activeTab);
   const setComponents = useAppStore(state => state.setComponents);
-
-  useEffect(() => {
-    setComponents(mockPipingSystem);
-  }, []);
+  const components = useAppStore(state => state.components);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'sans-serif', background: '#0f172a' }}>
@@ -24,7 +20,7 @@ function App() {
       {activeTab === 'viewer' && <Viewer3DTab />}
       {activeTab === 'datatable' && <DataTableTab />}
       {activeTab === 'transform' && <TransformTab />}
-      {activeTab === 'simpAnalysis' && <SimpAnalysisTab geometryData={useAppStore.getState().components} />}
+      {activeTab === 'simpAnalysis' && <SimpAnalysisTab geometryData={components} />}
       {activeTab === 'spl2bundle' && <Spl2BundleTab />}
       {activeTab === 'config' && <ConfigTab />}
     </div>

@@ -9,6 +9,9 @@ export const Viewer3DTab = () => {
   const setComponents = useAppStore(state => state.setComponents);
   const pcfText = useAppStore(state => state.pcfText);
   const setPcfText = useAppStore(state => state.setPcfText);
+  const toggleSelection = useAppStore(state => state.toggleSelection);
+  const selectedIds = useAppStore(state => state.selectedIds);
+
   const containerRef = useRef(null);
   const viewerRef = useRef(null);
 
@@ -47,11 +50,15 @@ export const Viewer3DTab = () => {
     // Initialize viewer if not exists
     if (!viewerRef.current) {
       viewerRef.current = new PcfViewer3D(containerRef.current);
+      viewerRef.current.onSelectToggle = (id) => {
+        toggleSelection(id);
+      };
     }
 
     // Pass data to viewer whenever components change
     if (viewerRef.current) {
       viewerRef.current.render(components);
+      viewerRef.current.updateSelection(selectedIds);
     }
 
     return () => {
@@ -61,6 +68,13 @@ export const Viewer3DTab = () => {
       }
     };
   }, [components]);
+
+  // Sync colorizer to state updates
+  useEffect(() => {
+    if (viewerRef.current) {
+      viewerRef.current.updateSelection(selectedIds);
+    }
+  }, [selectedIds]);
 
   return (
     <div className="flex-1 flex flex-col bg-[#f0f2f5] overflow-hidden p-3 gap-3 h-full">
