@@ -1,8 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Custom Fonts implemented in index.html */
+@import "tailwindcss";
 
 body,
 html,
@@ -11,7 +8,7 @@ html,
   padding: 0;
   width: 100%;
   height: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   background-color: #0f172a;
   /* Slate 900 */
   color: #f8fafc;
