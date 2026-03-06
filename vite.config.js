@@ -8,6 +8,7 @@ const buildTime = new Date().toISOString();
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  base: process.env.VITE_BASE_URL || '/',
   define: {
     __BUILD_TIME__: JSON.stringify(buildTime),
   },
