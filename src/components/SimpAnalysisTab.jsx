@@ -10,16 +10,54 @@ export const SimpAnalysisTab = () => {
   const setSegments = useSimpStore(state => state.setSegments);
   const setPlane = useSimpStore(state => state.setPlane);
   const plane = useSimpStore(state => state.plane);
-  const geometryData = useAppStore(state => state.components);
+  const payload = useAppStore(state => state.analysisPayload);
 
-  // Load real geometry data
+  // Load transformed geometry payload from the Transformation Engine
   useEffect(() => {
-    if (geometryData && geometryData.length > 0) {
-      const graph = extractSubGraph(geometryData);
-      setNodes(graph.nodes);
-      setSegments(graph.segments);
+    if (payload && payload.segments && payload.segments.length > 0) {
+      const pSegments = payload.segments;
+      const nodes = {};
+      const segments = [];
+      let nid = 0;
+
+      // Ensure plane aligns with what was transformed
+      if (payload.plane && payload.plane !== 'Auto (Logical)') {
+         setPlane(payload.plane);
+      }
+
+      // Convert the mapped 2D segments into the nodes/segments expected by SimpStore
+      const getOrAddNode = (pt) => {
+         const hash = `${pt[0].toFixed(2)},${pt[1].toFixed(2)}`;
+         if (!nodes[hash]) {
+             nodes[hash] = { id: `N${nid++}`, pos: [pt[0], pt[1], 0], type: 'node' };
+         }
+         return nodes[hash].id;
+      };
+
+      pSegments.forEach(seg => {
+         const id1 = getOrAddNode(seg.start2D);
+         const id2 = getOrAddNode(seg.end2D);
+         segments.push({
+             start: id1,
+             end: id2,
+             type: 'PIPE',
+             length: seg.trueLength,
+             material: payload.materials[seg.material] || 'Unknown'
+         });
+      });
+
+      // Format final nodes object
+      const finalNodes = {};
+      Object.values(nodes).forEach(n => finalNodes[n.id] = n);
+
+      setNodes(finalNodes);
+      setSegments(segments);
+    } else {
+        // Fallback or empty state
+        setNodes({});
+        setSegments([]);
     }
-  }, [geometryData, setNodes, setSegments]);
+  }, [payload, setNodes, setSegments, setPlane]);
 
   return (
     <div className="flex-1 flex flex-col h-full bg-slate-900 overflow-hidden relative">
