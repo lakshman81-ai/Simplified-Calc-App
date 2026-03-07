@@ -44,13 +44,16 @@ export const TopNav = () => {
         Calc Suite
       </div>
       <div style={{ width: '1px', height: '24px', background: '#334155', margin: '0 16px' }} />
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', flex: 1 }}>
         <TabItem id="viewer" name="3D Viewer" icon={Box} />
         <TabItem id="datatable" name="Data Table" icon={Table} />
         <TabItem id="transform" name="3D to 2D Transformation" icon={Layers} />
         <TabItem id="simpAnalysis" name="Simp. Analysis" icon={Activity} />
         <TabItem id="spl2bundle" name="Simpl. Analysis 2D bundle" icon={Calculator} />
         <TabItem id="config" name="Config" icon={Settings} />
+      </div>
+      <div style={{ padding: '0 24px', fontSize: '11px', color: '#64748b', fontFamily: 'monospace' }}>
+        Ver 07-03-2026 (1)
       </div>
     </div>
   );

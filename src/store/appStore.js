@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 export const useAppStore = create((set, get) => ({
-  activeTab: 'viewer', // 'viewer' or 'transform'
+  activeTab: 'viewer', // 'viewer', 'datatable', 'transform', 'simpAnalysis', 'spl2bundle', 'config'
   setActiveTab: (tab) => set({ activeTab: tab }),
 
   components: [],
@@ -41,4 +41,26 @@ export const useAppStore = create((set, get) => ({
 
   transformMode: 'Auto', // 'Auto', 'L', 'Z', 'Loop'
   setTransformMode: (mode) => set({ transformMode: mode }),
+
+  // 3D to 2D Transformation states
+  smart2DConversionEnabled: true,
+  setSmart2DConversionEnabled: (enabled) => set({ smart2DConversionEnabled: enabled }),
+
+  materialMapping: {}, // Map 3D CA material attributes to 2D Bundle Material names
+  updateMaterialMapping: (caMaterial, bundleMaterial) => set((state) => ({
+    materialMapping: { ...state.materialMapping, [caMaterial]: bundleMaterial }
+  })),
+
+  // Debug/Datatable stages
+  processingStages: {
+      stage1: [], // Selected 3D Data
+      stage2: [], // 3D-to-2D Conversion Intermediate Data
+  },
+  setProcessingStage: (stageName, data) => set((state) => ({
+      processingStages: { ...state.processingStages, [stageName]: data }
+  })),
+
+  // Store the actual 2D payload to send to the analysis canvas
+  analysisPayload: null,
+  setAnalysisPayload: (payload) => set({ analysisPayload: payload })
 }));
