@@ -9,7 +9,6 @@ const buildTime = new Date().toISOString();
 export default defineConfig({
   base: process.env.VITE_BASE_URL || '/',
   plugins: [react(), tailwindcss()],
-  base: process.env.VITE_BASE_URL || '/',
   define: {
     __BUILD_TIME__: JSON.stringify(buildTime),
   },

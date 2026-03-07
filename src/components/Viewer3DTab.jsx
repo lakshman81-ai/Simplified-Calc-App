@@ -163,25 +163,30 @@ export const Viewer3DTab = () => {
                 <span className="text-[12px]">📊</span> 3DV Data Table
               </button>
               <button
-                onClick={() => viewerRef.current?.fitCamera()}
+                onClick={() => viewerRef.current?._fitCamera()}
                 className="px-3 py-1 text-slate-500 hover:text-slate-700 text-[11px] font-medium flex items-center gap-1 border-l border-slate-200 ml-1 pl-2"
               >
-                <span>⊙</span> Centre
+                <span>⊙</span> Auto center
               </button>
             </div>
 
             <div className="ml-auto flex items-center gap-2">
-              <button className="px-3 py-1 bg-white border border-slate-300 text-slate-600 text-[11px] rounded font-medium shadow-sm hover:bg-slate-50 flex items-center gap-1">
+              <button
+                onClick={() => {
+                  if (containerRef.current) {
+                    if (document.fullscreenElement) {
+                      document.exitFullscreen();
+                    } else {
+                      containerRef.current.requestFullscreen();
+                    }
+                  }
+                }}
+                className="px-3 py-1 bg-white border border-slate-300 text-slate-600 text-[11px] rounded font-medium shadow-sm hover:bg-slate-50 flex items-center gap-1"
+              >
                 <span>⛶</span> Full Screen
               </button>
               <button className="px-3 py-1 bg-[#10b981] text-white text-[11px] rounded font-semibold shadow-sm hover:bg-[#059669]">
                 ↓ Export as PCF
-              </button>
-              <button className="px-3 py-1 bg-[#8b5cf6] text-white text-[11px] rounded font-semibold shadow-sm hover:bg-[#7c3aed]">
-                ⚙️ Apply Fixing Action
-              </button>
-              <button className="px-2 py-1 bg-white border border-slate-300 text-slate-600 text-[11px] rounded font-medium shadow-sm hover:bg-slate-50">
-                ⎘ Copy
               </button>
             </div>
 
