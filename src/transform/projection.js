@@ -84,9 +84,10 @@ export const transformTo2D = (segments, plane = 'Auto') => {
              start2D = projectPoint(origStart, matrix);
         }
 
-        // 2. Determine raw direction in 2D
+        // 2. Determine raw direction in 2D using local segment points
+        const rawStart2D = projectPoint(origStart, matrix);
         const rawEnd2D = projectPoint(origEnd, matrix);
-        const projVec = new THREE.Vector3(rawEnd2D[0] - start2D[0], rawEnd2D[1] - start2D[1], 0);
+        const projVec = new THREE.Vector3(rawEnd2D[0] - rawStart2D[0], rawEnd2D[1] - rawStart2D[1], 0);
         const projLength = projVec.length();
 
         // 3. Unfold (Scale to true length)

@@ -77,12 +77,6 @@ const GhostProjectionCanvas = ({ segments2D, plane }) => {
 
 export const TransformTab = () => {
   const selectedIds = useAppStore(state => state.selectedIds);
-   useEffect(() => {
-      // FORCE SELECTION OF MOCK DATA FOR TESTING
-      if(components.length > 0 && selectedIds.size === 0) {
-          components.forEach(c => useAppStore.getState().toggleSelection(c.id));
-      }
-   }, [components]);
   const components = useAppStore(state => state.components);
   const mode = useAppStore(state => state.transformMode);
   const setActiveTab = useAppStore(state => state.setActiveTab);
