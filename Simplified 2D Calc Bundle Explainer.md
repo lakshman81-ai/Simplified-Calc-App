@@ -1,49 +1,78 @@
 # Simplified 2D Calc Bundle Explainer
 
-## 1. Architecture & Overview
-The SPL2 bundle is designed to analyze and calculate structural safety (stress, frequency) and reaction forces for three major pipe routing scenarios:
-- **Loop Calculations**: Standard 2D thermal expansion loops.
-- **Pipe Rack Calculation**: Multi-line straight span racks.
-- **Simplified Analysis**: 3D guided cantilever segment analysis.
+## 1. System Architecture & Component Interactions
+The SPL2 bundle integrates three primary calculation suites (Loop, Pipe Rack, Simplified 3D) interconnected through a centralized `spl2_master.js` DOM controller. This allows a continuous flow of parameters like temperature (T) and Modulus (E) across all independent visualizations.
 
-The architecture separates concerns into:
-- `spl2_master.js`: The central DOM controller, managing layout state, form validation, event bridging, unit conversions (Imperial/SI substitution routing), and orchestrating calculation runs.
-- `spl2_database.js`: A JSON-style dictionary containing material Modulus of Elasticity, Thermal Expansion coefficients, and dimensional parameters for standard pipe schedules (NPS/Sch combinations).
-- `spl2_*_algo.js`: The math execution engines.
-- `spl2_*_canvas.js`: HTML5 Vector drawing engines for rendering schematics in real-time.
+### Core Modules:
+- **`spl2_master.js`**: DOM manipulation, tabular mapping, event binding, and Imperial ↔ SI metric wrappers.
+- **`spl2_database.js`**: Hosts nested B31.3 standardized expansion metrics and ASME pipe dimensions.
+- **`spl2_*_algo.js`**: Separate stateless pure math algorithms for processing standard mechanics.
+- **`spl2_*_canvas.js`**: Vector-based rendering engines powered by `spl2_canvas.js` prototypes.
 
-## 2. Unit System Abstraction
-To preserve the mathematical accuracy and integrity of existing Imperial-based algorithms (such as B31.3 specific constants), the system relies on an Interceptor pattern.
-- The `global_inp_units` toggle determines if the interface is presented in `SI` or `Imperial`.
-- If `SI` is selected, `spl2_master.js` captures user inputs in Metric (e.g., °C, mm, MPa), casts them backwards using `convertInp(val, type, true)` into Imperial equivalents (°F, in, psi) right before invoking internal calculation engines.
-- Output variables obtained in Imperial are piped through `convertOut(val, type, true)` into SI formats right before rendering onto HTML elements bearing contextual `.unit-*` label classes.
+## 2. Global Metric Injection Wrapper (Imperial vs SI)
+To preserve the legacy verification constraints mapping exactly to existing B31.3 tables structured around `100ft` limits and `°F`, all computational math must inherently stay in Imperial bases internally.
 
-## 3. Calculation Methodologies
+**Intercept Methodology Pattern:**
+```javascript
+// Pre-Process SI values backwards to Imperial for computation:
+const T_F = isSI ? (T_user * 9/5) + 32 : T_user; 
+const Sa_psi = isSI ? Sa_MPa * 145.038 : Sa_psi;
 
-### 3.1 Loop Calculations
-- **Purpose**: Evaluates symmetric U-loops for thermal expansion relief.
-- **Methodology**: Utilizes Kellog's analytical method (or standard Guided Cantilever variations) to parse expansion loops characterized by `W` (Width), `H` (Depth), `S` (Total Span), and `G` (Guide Distance).
-- **Core Math**:
-    - **Thermal Growth ($\Delta L$)**: Computed using `interpolateValue()` across empirical B31.3 table constants against operating temperatures.
-    - **Moment of Inertia ($I$)**: Computed explicitly $I = \frac{\pi}{64}(D_o^4 - D_i^4)$.
-    - **Forces ($F_x$, $F_z$)**: Determines anchor structural loads (horizontal thrust) and guide lateral thrust based on structural stiffness matrix solutions.
-    - **Elbow Stress ($S_A$, $S_B$)**: Estimates worst-case bending stress using section modulus $Z$ against moment reactions at bend locations.
+// ... Execution Pipeline computes in Native Imperial ...
 
-### 3.2 Pipe Rack Loads
-- **Purpose**: Establishes structural loads on rack bents for parallel multi-pipe runs.
-- **Methodology**: Generates composite gravity loads, static/dynamic wind forces, and horizontal friction forces.
-- **Core Math**:
-    - **Dead weight ($W_{dead}$)**: $\sum (W_{pipe} + W_{insulation})$.
-    - **Operating weight ($W_{op}$)**: $W_{dead} + W_{contents}$.
-    - **Hydro-test weight ($W_{test}$)**: $W_{dead} + W_{water}$.
-    - **Friction**: Assessed dynamically at bents ($W_{op} \times \mu$) and accumulated at anchors based on `No of Bents`.
-    - **Wind Vector**: Pipe diameter profile multiplied by span and dynamic wind pressure.
-    - **Natural Frequency ($f_n$)**: Determined classically as a uniformly loaded simply supported or fixed beam $f_n = \frac{C \pi}{2} \sqrt{\frac{E \cdot I \cdot g}{w \cdot L^4}}$.
+// Post-Process output force explicitly back to SI:
+const F_render = isSI ? F_out * 4.44822 : F_out; // lbs to N
+```
 
-### 3.3 Simplified Analysis
-- **Purpose**: Evaluates complex 3D routing for displacement absorption using the simplified $\Sigma L^3$ guided cantilever methodology.
-- **Methodology**: Computes the net thermal expansion vector generated by routing along discrete XYZ axes. Assesses segment lengths to determine if the route possesses adequate flexibility.
-- **Core Math**:
-    - **Expansion Vector**: $Dx, Dy, Dz$ corresponding to length sums along orthogonal planes multiplied by the thermal expansion coefficient.
-    - **Flexibility Threshold**: Analyzes moments alongside the standard condition $\frac{D \cdot \Delta Y}{(L - U)^2} \le K_1$.
-    - **Maximum Stress**: Calculated by estimating highest bending moment transferred to boundary anchors.
+## 3. Mathematical Methodologies & Core Equations
+
+### 3.1 Loop Calculations 
+Uses Kellogg's semi-analytic symmetric Guided Cantilever derivation. 
+
+- **Equation 1**: Thermal Expansion Delta 
+  ΔL = (L_total / 100) × α_rate
+  Where `α_rate` is specific thermal expansion coefficient interpolated per material at temperature T.
+
+- **Equation 2**: Area Moment of Inertia
+  I = (π / 64) × (D_o⁴ - D_i⁴)
+
+- **Equation 3**: Displacement Stress (Simplified Guided)
+  S_e = (3 × E × D_o × ΔL) / (2 × L_leg²)
+  Used to solve required flexible length mapping against max allowable yield bounds.
+
+**Example Calculation**: 
+NPS 10" Sch STD, W=15 ft, H=25 ft. α_rate = 1.15 in/100ft. 
+ΔL for 100ft span = `1.15 inches`. 
+I = `160.7 in⁴`. E = `27.9 × 10⁶ psi`.
+
+### 3.2 Pipe Rack Calculations
+Solves parallel physical gravitational static bounds alongside environmental metrics.
+
+- **Equation 4**: Span Operational Dead Weight 
+  W_op = W_pipe + W_contents + W_insulation
+  Where Insulation Weight: 
+  W_ins = (π × ρ_ins / 144) × [(R_out + t_ins)² - R_out²]
+
+- **Equation 5**: Sliding Transverse Friction Force
+  F_fric = W_op × μ × N_bents
+  Where `μ` is the configuration Friction Factor and `N_bents` solves spatial node distributions.
+
+- **Equation 6**: Classical Span Natural Frequency
+  f_n = (C × π / 2) × √[ (E × I × g) / (W_op_per_inch × L_span⁴) ]
+  Where `g = 386.4 in/s²`.
+
+**Example Calculation**: 
+NPS 10" Sch STD, 20 ft span, water filled (SG 1.0).
+W_pipe = `40.5 lb/ft`. W_cont = `34.1 lb/ft`. 
+W_op = `74.6 lb/ft`. Total operating load per 20ft bent = `1,492 lbs`.
+
+### 3.3 Simplified Analysis (3D Expansion)
+Analyzes complex orthogonal equipment paths mapped to continuous boundary dimensions.
+
+- **Equation 7**: Component Displacement Check
+  [ D × Δy / (L - U)² ] ≤ K_1
+  Evaluates 3-axis bounding expansions mapped logically to physical routing limits.
+
+- **Equation 8**: Segment Summation
+  Σ L³ = L_x³ + L_y³ + L_z³
+  Ensures spatial inertia profiles are physically sufficient to buffer thermal node thrust prior to boundary anchoring.
