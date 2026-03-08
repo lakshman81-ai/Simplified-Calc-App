@@ -155,13 +155,16 @@ export const TransformTab = () => {
   const setProcessingStage = useAppStore(state => state.setProcessingStage);
   const setAnalysisPayload = useAppStore(state => state.setAnalysisPayload);
 
+  const activeGeoTab = useAppStore(state => state.activeGeoTab);
+  const setActiveGeoTab = useAppStore(state => state.setActiveGeoTab);
+  const tabTransformModes = useAppStore(state => state.tabTransformModes);
+
   const availableMaterials = useMemo(() => getAvailableMaterials(), []);
 
   const selectedComps = useMemo(() => components.filter(c => selectedIds.has(c.id)), [components, selectedIds]);
 
   // Anchor splitting states
   const [anchors, setAnchors] = useState([]);
-  const [activeGeoTab, setActiveGeoTab] = useState('UNIFIED'); // 'UNIFIED', 'GEO1', 'GEO2', etc.
   
   // Basic classification
   let resultType = 'None';
@@ -213,106 +216,31 @@ export const TransformTab = () => {
      }
   }, [processParams.deltaT, processParams.od]);
 
-  // Compute the 2D transformation data
-  const { transformedData, logs } = useMemo(() => {
-    if (selectedComps.length === 0) return { transformedData: null, logs: [] };
+  // Base raw segments mapping from 3D components
+  const baseSegments3D = useMemo(() => {
+    return selectedComps.filter(c => c.type === 'PIPE').map(c => {
+        return {
+            id: c.id,
+            start: [c.points[0].x, c.points[0].y, c.points[0].z],
+            end: [c.points[1].x, c.points[1].y, c.points[1].z],
+            material: c.attributes?.MATERIAL || c.attributes?.['ITEM-CODE'],
+            rawComp: c
+        };
+    });
+  }, [selectedComps]);
 
-    let result;
-    if (smart2DConversionEnabled) {
-       // Old legacy logical approach
-       // First, extract generic segments to run the logic on
-       const graph = extractSubGraph(selectedComps);
+  // Pre-calculate sequential splits on the 3D data so we can apply modes per-tab
+  const splits3D = useMemo(() => {
+      if (!baseSegments3D || baseSegments3D.length === 0) return { UNIFIED: [] };
 
-       // map start and end back to coordinates for analyzePipingSystem
-       const rawLegs = graph.segments.map(seg => {
-           const n1 = graph.nodes[seg.start];
-           const n2 = graph.nodes[seg.end];
-           if(!n1 || !n2) return null;
-
-           const dx = n2.pos[0] - n1.pos[0];
-           const dy = n2.pos[1] - n1.pos[1];
-           const dz = n2.pos[2] - n1.pos[2];
-
-           let axis = 'X'; let sign = '+';
-           if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > Math.abs(dz)) { axis = 'X'; sign = dx > 0 ? '+' : '-'; }
-           else if (Math.abs(dy) > Math.abs(dz)) { axis = 'Y'; sign = dy > 0 ? '+' : '-'; }
-           else { axis = 'Z'; sign = dz > 0 ? '+' : '-'; }
-
-           return {
-               start: n1.pos,
-               end: n2.pos,
-               axis,
-               sign,
-               length: Math.sqrt(dx*dx + dy*dy + dz*dz),
-               hasGuide: false
-           };
-       }).filter(Boolean);
-
-       result = analyzePipingSystem(rawLegs);
-       // Construct a fake transformed payload for compatibility
-
-       // Build sequential 2D coordinates for visual preview
-       let curX = 0; let curY = 0;
-       const projectedSegs = result.processedGeometry.map((leg, i) => {
-            const l = leg.length;
-            const start2D = [curX, curY, 0];
-            if (leg.axis === 'X') curX += (leg.sign === '+' ? l : -l);
-            else if (leg.axis === 'Y' || leg.axis === 'Z') curY += (leg.sign === '+' ? l : -l);
-            const end2D = [curX, curY, 0];
-
-            return {
-                id: `Leg-${i}`,
-                start2D,
-                end2D,
-                trueLength: l,
-                axis: leg.axis
-            };
-       });
-
-       return {
-           transformedData: {
-               plane: 'Auto (Logical)',
-               segments2D: projectedSegs
-           },
-           logs: result.logs
-       };
-
-    } else {
-       // Matrix Projection approach
-       const segments = selectedComps.filter(c => c.type === 'PIPE').map(c => {
-           return {
-               id: c.id,
-               start: [c.points[0].x, c.points[0].y, c.points[0].z],
-               end: [c.points[1].x, c.points[1].y, c.points[1].z],
-               material: c.attributes?.MATERIAL || c.attributes?.['ITEM-CODE']
-           };
-       });
-       const targetPlane = mode === 'Auto' ? 'Auto' : (mode === 'L' || mode === 'Z') ? 'XZ' : 'XY'; // simplify mode translation
-       const proj = transformTo2D(segments, targetPlane);
-
-       return { transformedData: proj, logs: ['Matrix projection successful.'] };
-    }
-  }, [selectedComps, smart2DConversionEnabled, mode]);
-
-  useEffect(() => {
-     if(transformedData) {
-         setProcessingStage('stage2', transformedData);
-     }
-  }, [transformedData, setProcessingStage]);
-
-  // Derived segmented geometry based on anchors
-  const geometrySplits = useMemo(() => {
-      if (!transformedData || !transformedData.segments2D) return { UNIFIED: [] };
-
-      const splits = { UNIFIED: transformedData.segments2D };
+      const splits = { UNIFIED: baseSegments3D };
 
       if (anchors.length > 0) {
-          // Sort anchors so we split sequentially
           const sortedAnchors = [...anchors].sort((a, b) => a - b);
           let currentSplitIdx = 1;
           let currentSegs = [];
 
-          transformedData.segments2D.forEach((seg, i) => {
+          baseSegments3D.forEach((seg, i) => {
               if (sortedAnchors.includes(i) && currentSegs.length > 0) {
                   splits[`GEO${currentSplitIdx}`] = currentSegs;
                   currentSplitIdx++;
@@ -327,7 +255,93 @@ export const TransformTab = () => {
       }
 
       return splits;
-  }, [transformedData, anchors]);
+  }, [baseSegments3D, anchors]);
+
+  // Compute the 2D transformation data for all splits based on their respective transform modes
+  const { transformedData, logs, geometrySplits } = useMemo(() => {
+    if (selectedComps.length === 0) return { transformedData: null, logs: [], geometrySplits: { UNIFIED: [] } };
+
+    const splits2D = {};
+    const processLogs = [];
+    let unifiedTransformedData = null; // We'll keep the UNIFIED data to represent the overall view
+
+    Object.keys(splits3D).forEach(tabName => {
+        const segments3D = splits3D[tabName];
+        const tabMode = tabTransformModes[tabName] || tabTransformModes['UNIFIED'] || 'Auto';
+
+        if (smart2DConversionEnabled) {
+            // Logical approach
+            const rawLegs = segments3D.map(seg => {
+                const n1 = seg.start;
+                const n2 = seg.end;
+                const dx = n2[0] - n1[0];
+                const dy = n2[1] - n1[1];
+                const dz = n2[2] - n1[2];
+
+                let axis = 'X'; let sign = '+';
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > Math.abs(dz)) { axis = 'X'; sign = dx > 0 ? '+' : '-'; }
+                else if (Math.abs(dy) > Math.abs(dz)) { axis = 'Y'; sign = dy > 0 ? '+' : '-'; }
+                else { axis = 'Z'; sign = dz > 0 ? '+' : '-'; }
+
+                return {
+                    start: n1,
+                    end: n2,
+                    axis,
+                    sign,
+                    length: Math.sqrt(dx*dx + dy*dy + dz*dz),
+                    hasGuide: false
+                };
+            });
+
+            const result = analyzePipingSystem(rawLegs);
+            let curX = 0; let curY = 0;
+            const projectedSegs = result.processedGeometry.map((leg, i) => {
+                 const l = leg.length;
+                 const start2D = [curX, curY, 0];
+                 if (leg.axis === 'X') curX += (leg.sign === '+' ? l : -l);
+                 else if (leg.axis === 'Y' || leg.axis === 'Z') curY += (leg.sign === '+' ? l : -l);
+                 const end2D = [curX, curY, 0];
+                 return {
+                     id: segments3D[i]?.id || `Leg-${i}`,
+                     start2D,
+                     end2D,
+                     trueLength: l,
+                     axis: leg.axis,
+                     material: segments3D[i]?.material
+                 };
+            });
+
+            const projData = { plane: 'Auto (Logical)', segments2D: projectedSegs };
+            splits2D[tabName] = projectedSegs;
+            if (tabName === 'UNIFIED') unifiedTransformedData = projData;
+            if (result.logs) processLogs.push(...result.logs.map(l => `[${tabName}] ${l}`));
+
+        } else {
+            // Matrix approach
+            const targetPlane = tabMode === 'Auto' ? 'Auto' : (tabMode === 'L' || tabMode === 'Z') ? 'XZ' : 'XY';
+            const proj = transformTo2D(segments3D, targetPlane);
+
+            // map material over to proj segments since projection function drops it
+            proj.segments2D.forEach((s, i) => s.material = segments3D[i]?.material);
+
+            splits2D[tabName] = proj.segments2D;
+            if (tabName === 'UNIFIED') unifiedTransformedData = proj;
+            processLogs.push(`[${tabName}] Matrix projection successful. Plane: ${proj.plane}`);
+        }
+    });
+
+    return {
+        transformedData: unifiedTransformedData,
+        logs: processLogs,
+        geometrySplits: splits2D
+    };
+  }, [selectedComps, splits3D, smart2DConversionEnabled, tabTransformModes]);
+
+  useEffect(() => {
+     if(transformedData) {
+         setProcessingStage('stage2', transformedData);
+     }
+  }, [transformedData, setProcessingStage]);
 
   const toggleAnchor = (nodeIndex) => {
       setAnchors(prev => {

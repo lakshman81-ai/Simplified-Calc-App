@@ -53,14 +53,25 @@ const AutoIcon = () => (
 );
 
 export const TransformControls = () => {
-  const mode = useAppStore(state => state.transformMode);
   const setMode = useAppStore(state => state.setTransformMode);
+
+  const activeGeoTab = useAppStore(state => state.activeGeoTab) || 'UNIFIED';
+  const tabTransformModes = useAppStore(state => state.tabTransformModes);
+  const setTabTransformMode = useAppStore(state => state.setTabTransformMode);
+
+  // Get the mode for the currently active tab
+  const mode = tabTransformModes[activeGeoTab] || 'Auto';
+
+  const handleModeChange = (newMode) => {
+    setTabTransformMode(activeGeoTab, newMode);
+    setMode(newMode); // Optional: keep fallback updated
+  };
 
   const ControlButton = ({ btnMode, icon: Icon, label }) => {
     const isActive = mode === btnMode;
     return (
       <button 
-        onClick={() => setMode(btnMode)}
+        onClick={() => handleModeChange(btnMode)}
         style={{
           padding: '16px 24px',
           background: isActive ? '#2563eb' : '#1e293b', /* Blue 600 or Slate 800 */

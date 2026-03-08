@@ -39,10 +39,20 @@ export const useAppStore = create((set, get) => ({
   },
   clearSelection: () => set({ selectedIds: new Set() }),
 
-  transformMode: 'Auto', // 'Auto', 'L', 'Z', 'Loop'
+  // 3D to 2D Transformation states
+  transformMode: 'Auto', // default fallback
   setTransformMode: (mode) => set({ transformMode: mode }),
 
-  // 3D to 2D Transformation states
+  // Mapping of geometry tab names (e.g. 'UNIFIED', 'GEO1') to their specific transform modes
+  tabTransformModes: { 'UNIFIED': 'Auto' },
+  setTabTransformMode: (tabName, mode) => set((state) => ({
+    tabTransformModes: { ...state.tabTransformModes, [tabName]: mode }
+  })),
+
+  // Store the active geometry tab in the TransformTab so controls can access it
+  activeGeoTab: 'UNIFIED',
+  setActiveGeoTab: (tabName) => set({ activeGeoTab: tabName }),
+
   smart2DConversionEnabled: true,
   setSmart2DConversionEnabled: (enabled) => set({ smart2DConversionEnabled: enabled }),
 
