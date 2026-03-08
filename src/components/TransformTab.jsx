@@ -204,7 +204,7 @@ export const TransformTab = () => {
   const selectedComps = useMemo(() => components.filter(c => selectedIds.has(c.id)), [components, selectedIds]);
 
   // Anchor splitting states
-  // Array of { index: segmentIndex, dist: distanceFromStart }
+  // Array of { absoluteDist: distanceFromStartOfPipeline }
   const [anchors, setAnchors] = useState([]);
 
   // Find unique materials to map
@@ -268,19 +268,23 @@ export const TransformTab = () => {
       const splits = { UNIFIED: baseSegments3D };
 
       if (anchors.length > 0) {
-          const sortedAnchors = [...anchors].sort((a, b) => a.index - b.index);
+          const sortedAnchors = [...anchors].sort((a, b) => a.absoluteDist - b.absoluteDist);
           let currentSplitIdx = 1;
           let currentSegs = [];
+          let accumL = 0;
 
           baseSegments3D.forEach((seg, i) => {
-              const anchor = sortedAnchors.find(a => a.index === i);
-              if (anchor && anchor.dist > 0) {
-                  // Split this segment
-                  const dx = seg.end[0] - seg.start[0];
-                  const dy = seg.end[1] - seg.start[1];
-                  const dz = seg.end[2] - seg.start[2];
-                  const trueL = Math.sqrt(dx*dx + dy*dy + dz*dz);
-                  const ratio = Math.max(0, Math.min(1, anchor.dist / trueL));
+              const dx = seg.end[0] - seg.start[0];
+              const dy = seg.end[1] - seg.start[1];
+              const dz = seg.end[2] - seg.start[2];
+              const trueL = Math.sqrt(dx*dx + dy*dy + dz*dz);
+
+              // Find first anchor that falls within this raw segment
+              const anchor = sortedAnchors.find(a => a.absoluteDist > accumL && a.absoluteDist <= accumL + trueL + 0.1);
+
+              if (anchor) {
+                  const localDist = anchor.absoluteDist - accumL;
+                  const ratio = Math.max(0, Math.min(1, localDist / trueL));
 
                   const midPt = [
                       seg.start[0] + dx * ratio,
@@ -299,6 +303,7 @@ export const TransformTab = () => {
               } else {
                   currentSegs.push(seg);
               }
+              accumL += trueL;
           });
 
           if (currentSegs.length > 0) {
@@ -354,7 +359,7 @@ export const TransformTab = () => {
                  else if (leg.axis === 'Y' || leg.axis === 'Z') curY += (leg.sign === '+' ? l : -l);
                  const end2D = [curX, curY, 0];
                  return {
-                     id: segments3D[i]?.id || `Leg-${i}`,
+                     id: `${tabName}-${i+1}`,
                      start2D,
                      end2D,
                      trueLength: l,
@@ -407,18 +412,40 @@ export const TransformTab = () => {
   }
 
   const toggleAnchor = (segmentIndex, trueLength) => {
+      // Calculate absolute distance to start of this segment
+      let distToStart = 0;
+      for (let i = 0; i < segmentIndex; i++) {
+          distToStart += activeSegments[i].trueLength || 0;
+      }
+      const targetAbsoluteDist = distToStart + (trueLength / 2);
+
       setAnchors(prev => {
-          const exists = prev.find(a => a.index === segmentIndex);
-          if (exists) return prev.filter(a => a.index !== segmentIndex);
-          // Split at the middle by default
-          return [...prev, { index: segmentIndex, dist: trueLength / 2 }];
+          const existsIdx = prev.findIndex(a => a.absoluteDist > distToStart - 0.1 && a.absoluteDist < distToStart + trueLength + 0.1);
+          if (existsIdx >= 0) {
+              const copy = [...prev];
+              copy.splice(existsIdx, 1);
+              return copy;
+          }
+          return [...prev, { absoluteDist: targetAbsoluteDist }];
       });
-      // Switch to UNIFIED view when changing anchors to see the whole picture
       setActiveGeoTab('UNIFIED');
   };
 
-  const updateAnchorDist = (segmentIndex, newDist) => {
-      setAnchors(prev => prev.map(a => a.index === segmentIndex ? { ...a, dist: Number(newDist) } : a));
+  const updateAnchorDist = (segmentIndex, newLocalDist) => {
+      let distToStart = 0;
+      for (let i = 0; i < segmentIndex; i++) {
+          distToStart += activeSegments[i].trueLength || 0;
+      }
+      const newAbsoluteDist = distToStart + Number(newLocalDist);
+      setAnchors(prev => {
+          const existsIdx = prev.findIndex(a => a.absoluteDist > distToStart - 0.1 && a.absoluteDist < distToStart + activeSegments[segmentIndex].trueLength + 0.1);
+          if (existsIdx >= 0) {
+              const copy = [...prev];
+              copy[existsIdx] = { absoluteDist: newAbsoluteDist };
+              return copy;
+          }
+          return prev;
+      });
   };
 
   const handleProceed = () => {
@@ -674,7 +701,15 @@ export const TransformTab = () => {
                             {(geometrySplits[activeGeoTab] || transformedData?.segments2D)?.map((seg, i, arr) => {
                                 const matRaw = seg.material || 'Unknown';
                                 const mapped = materialMapping[matRaw] || 'Not Mapped';
-                                const isAnchored = activeGeoTab === 'UNIFIED' && anchors.find(a => a.index === i);
+                                let distToStart = 0;
+   if (activeGeoTab === 'UNIFIED') {
+       for (let j = 0; j < i; j++) {
+           distToStart += activeSegments[j].trueLength || 0;
+       }
+   }
+   const segLength = seg.trueLength || 0;
+   const isAnchored = activeGeoTab === 'UNIFIED' && anchors.find(a => a.absoluteDist > distToStart - 0.1 && a.absoluteDist < distToStart + segLength + 0.1);
+   const localDistVal = isAnchored ? (isAnchored.absoluteDist - distToStart).toFixed(1) : '-';
 
                                 return (
                                     <tr key={i} style={{ borderBottom: '1px solid #334155' }}>
@@ -702,7 +737,7 @@ export const TransformTab = () => {
                                                         <input
                                                             type="number"
                                                             step="0.1"
-                                                            value={isAnchored.dist}
+                                                            value={localDistVal}
                                                             onChange={e => updateAnchorDist(i, e.target.value)}
                                                             style={{
                                                                 width: '80px',

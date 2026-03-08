@@ -7,6 +7,7 @@ import { TransformTab } from './components/TransformTab';
 import { SimpAnalysisTab } from './components/SimpAnalysisTab';
 import { Spl2BundleTab } from './spl2-bundle';
 import { ConfigTab } from './config/ConfigTab';
+import { GC3DTab } from './gc3d';
 import './App.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
       {activeTab === 'simpAnalysis' && <SimpAnalysisTab />}
       {activeTab === 'spl2bundle' && <Spl2BundleTab />}
       {activeTab === 'config' && <ConfigTab />}
+      {activeTab === 'gc3d' && <GC3DTab />}
     </div>
   );
 }
