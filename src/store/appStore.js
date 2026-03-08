@@ -46,6 +46,18 @@ export const useAppStore = create((set, get) => ({
   smart2DConversionEnabled: true,
   setSmart2DConversionEnabled: (enabled) => set({ smart2DConversionEnabled: enabled }),
 
+  processParams: {
+    deltaT: 148.9,
+    od: 273.05,
+    E: 199948,
+    alpha: 0.00001116,
+    Sa: 137.9,
+    I: 66896169
+  },
+  setProcessParams: (newParams) => set((state) => ({
+    processParams: { ...state.processParams, ...newParams }
+  })),
+
   materialMapping: {}, // Map 3D CA material attributes to 2D Bundle Material names
   updateMaterialMapping: (caMaterial, bundleMaterial) => set((state) => ({
     materialMapping: { ...state.materialMapping, [caMaterial]: bundleMaterial }
