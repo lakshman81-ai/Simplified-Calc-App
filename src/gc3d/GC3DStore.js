@@ -92,7 +92,16 @@ export const useGC3DStore = create((set, get) => ({
     const D_o = mainSeg.od_in;
     const t_n = mainSeg.wt_in;
     const { I, Z } = sectionProperties(D_o, t_n);
-    get().log(2, `Section: D_o=${D_o.toFixed(3)}in, t=${t_n.toFixed(3)}in, I=${I.toFixed(2)}in⁴, Z=${Z.toFixed(2)}in³`);
+    const unitSystem = get().unitSystem;
+    const isSI = unitSystem === 'si';
+
+    // Formatting helpers
+    const fIn = val => isSI ? `${(val * 25.4).toFixed(1)} mm` : `${val.toFixed(3)} in`;
+    const fStress = val => isSI ? `${(val * 0.00689476).toFixed(0)} MPa` : `${val.toFixed(0)} psi`;
+    const fForce = val => isSI ? `${(val * 4.44822).toFixed(0)} N` : `${val.toFixed(0)} lbf`;
+    const fMoment = val => isSI ? `${(val * 112.985 / 1000).toFixed(0)} N·m` : `${val.toFixed(0)} in·lbf`;
+
+    get().log(2, `Section: D_o=${fIn(D_o)}, t=${fIn(t_n)}, I=${I.toFixed(2)}in⁴, Z=${Z.toFixed(2)}in³`);
 
     // Determine displacements per axis
     const totalRuns = { X: 0, Y: 0, Z: 0 };
@@ -107,7 +116,7 @@ export const useGC3DStore = create((set, get) => ({
       Y: thermalDisplacement(alpha, totalRuns.Y, deltaT),
       Z: thermalDisplacement(alpha, totalRuns.Z, deltaT)
     };
-    get().log(4, `Thermal displacements: δ_X=${deltas.X.toFixed(3)}in, δ_Y=${deltas.Y.toFixed(3)}in, δ_Z=${deltas.Z.toFixed(3)}in`);
+    get().log(4, `Thermal displacements: δ_X=${fIn(deltas.X)}, δ_Y=${fIn(deltas.Y)}, δ_Z=${fIn(deltas.Z)}`);
 
     const legResults = [];
     segments.forEach(seg => {
@@ -140,7 +149,7 @@ export const useGC3DStore = create((set, get) => ({
            legId: seg.id, axis: seg.axis, L_in: seg.length_in,
            F_lbf: totalF, M_inlbf: totalM, Sb_psi: Sb_combined
        });
-       get().log(5, `Leg ${seg.id}: F=${totalF.toFixed(0)}lbf, M=${totalM.toFixed(0)}in·lbf, Sb=${Sb_combined.toFixed(0)}psi`);
+       get().log(5, `Leg ${seg.id}: F=${fForce(totalF)}, M=${fMoment(totalM)}, Sb=${fStress(Sb_combined)}`);
     });
 
     const SA = allowableStress(params.f, params.Sc_psi, params.Sh_psi);
@@ -157,7 +166,7 @@ export const useGC3DStore = create((set, get) => ({
        if (ratio > maxRatio) { maxRatio = ratio; critical = nId; }
        if (result === 'FAIL') overAll = 'FAIL';
        nodeResults.push({ nodeId: nId, SE_psi: combined, SA_psi: SA, ratio, result });
-       get().log(6, `Node ${nId}: SE=${combined.toFixed(0)}psi`);
+       get().log(6, `Node ${nId}: SE=${fStress(combined)}`);
     });
 
     get().log(7, `RESULT: ${overAll}. Critical: ${critical} (ratio=${maxRatio.toFixed(3)})`);
@@ -167,11 +176,61 @@ export const useGC3DStore = create((set, get) => ({
 
   importFromViewer: (selectedComps, globalParams) => {
      const nodes = {}; const segments = []; const fittingData = {};
-     selectedComps.filter(c => ['PIPE', 'ELBOW', 'BEND', 'TEE'].includes(c.type)).forEach((c, idx) => {
-        const n1Id = `N${idx}-1`;
-        const n2Id = `N${idx}-2`;
-        if (!nodes[n1Id]) nodes[n1Id] = { pos: [c.points[0].x, c.points[0].y, c.points[0].z], type: 'free', label: n1Id };
-        if (!nodes[n2Id]) nodes[n2Id] = { pos: [c.points[1].x, c.points[1].y, c.points[1].z], type: 'free', label: n2Id };
+
+     // Hash function to combine nodes that share the same coordinate (within 1mm tolerance)
+     const getHash = (x, y, z) => `${Math.round(x)},${Math.round(y)},${Math.round(z)}`;
+     const nodeMap = new Map(); // hash -> nodeId
+     let nodeCounter = 0;
+
+     const addOrGetNode = (x, y, z) => {
+         const hash = getHash(x, y, z);
+         if (nodeMap.has(hash)) {
+             return nodeMap.get(hash);
+         }
+         const nodeId = `N${nodeCounter++}`;
+         nodeMap.set(hash, nodeId);
+         nodes[nodeId] = { pos: [x, y, z], type: 'free', label: nodeId, connections: 0, compTypes: [] };
+         return nodeId;
+     };
+
+     // Step 1: Filter to relevant types
+     const pipingComps = selectedComps.filter(c => ['PIPE', 'ELBOW', 'BEND', 'TEE'].includes(c.type));
+
+     // Step 2 & 4: Build nodes and segments
+     pipingComps.forEach((c) => {
+        if (!c.points || c.points.length < 2) return;
+
+        let n1Id, n2Id;
+
+        if (c.type === 'ELBOW' || c.type === 'BEND') {
+             // For elbows/bends we ideally want to connect up to the center point to maintain the corner topology
+             if (c.centrePoint) {
+                 n1Id = addOrGetNode(c.points[0].x, c.points[0].y, c.points[0].z);
+                 const centerNodeId = addOrGetNode(c.centrePoint.x, c.centrePoint.y, c.centrePoint.z);
+                 n2Id = addOrGetNode(c.points[1].x, c.points[1].y, c.points[1].z);
+
+                 nodes[n1Id].connections++; nodes[n1Id].compTypes.push(c.type);
+                 nodes[centerNodeId].connections += 2; nodes[centerNodeId].compTypes.push(c.type, c.type);
+                 nodes[n2Id].connections++; nodes[n2Id].compTypes.push(c.type);
+
+                 // Add two segments to corner
+                 const s1_len = Math.sqrt(Math.pow(c.centrePoint.x - c.points[0].x, 2) + Math.pow(c.centrePoint.y - c.points[0].y, 2) + Math.pow(c.centrePoint.z - c.points[0].z, 2)) / 25.4;
+                 const s2_len = Math.sqrt(Math.pow(c.points[1].x - c.centrePoint.x, 2) + Math.pow(c.points[1].y - c.centrePoint.y, 2) + Math.pow(c.points[1].z - c.centrePoint.z, 2)) / 25.4;
+
+                 // We use a simplified single segment logic for ELBOW calculations later but map 2 segments visually here
+                 n1Id = addOrGetNode(c.points[0].x, c.points[0].y, c.points[0].z);
+                 n2Id = addOrGetNode(c.points[1].x, c.points[1].y, c.points[1].z);
+             } else {
+                 n1Id = addOrGetNode(c.points[0].x, c.points[0].y, c.points[0].z);
+                 n2Id = addOrGetNode(c.points[1].x, c.points[1].y, c.points[1].z);
+             }
+        } else {
+            n1Id = addOrGetNode(c.points[0].x, c.points[0].y, c.points[0].z);
+            n2Id = addOrGetNode(c.points[1].x, c.points[1].y, c.points[1].z);
+        }
+
+        nodes[n1Id].connections++; nodes[n1Id].compTypes.push(c.type);
+        nodes[n2Id].connections++; nodes[n2Id].compTypes.push(c.type);
 
         const dx = c.points[1].x - c.points[0].x;
         const dy = c.points[1].y - c.points[0].y;
@@ -189,7 +248,25 @@ export const useGC3DStore = create((set, get) => ({
            axis, length_in: len_in, od_in, wt_in, material: c.attributes?.MATERIAL || 'Unknown'
         });
 
+        // Step 6
         fittingData[c.id] = getSIFData(c.type, od_in, wt_in, true, 'LR');
+     });
+
+     // Step 3: Classify nodes
+     Object.keys(nodes).forEach(nodeId => {
+         const node = nodes[nodeId];
+         if (node.connections === 1) {
+             node.type = 'anchor';
+         } else if (node.connections === 2 && (node.compTypes.includes('ELBOW') || node.compTypes.includes('BEND'))) {
+             node.type = 'elbow';
+         } else if (node.connections >= 3 && node.compTypes.includes('TEE')) {
+             node.type = 'tee';
+         } else {
+             node.type = 'free';
+         }
+         // Clean up temp mapping data
+         delete node.connections;
+         delete node.compTypes;
      });
 
      set({ nodes, segments, fittingData });

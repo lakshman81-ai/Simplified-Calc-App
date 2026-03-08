@@ -35,7 +35,7 @@ export const GC3DTab = () => {
           GC 3D Analyzer
           <div style={{ display: 'flex', gap: '8px', marginLeft: '32px' }}>
             <SubTabBtn id="3dview" label="3D View" />
-            <SubTabBtn id="debugtable" label="Debug Table" />
+            <SubTabBtn id="debugtable" label="Calc Table" />
             <SubTabBtn id="config" label="Config" />
           </div>
         </div>

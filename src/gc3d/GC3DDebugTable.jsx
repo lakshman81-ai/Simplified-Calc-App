@@ -9,7 +9,7 @@ export const GC3DDebugTable = () => {
 
   return (
     <div style={{ flex: 1, overflowY: 'auto', background: '#0f172a', color: '#f8fafc', padding: '24px' }}>
-      <h2 style={{ fontSize: '20px', fontWeight: 'bold', margin: '0 0 16px 0' }}>Debug Table: Geometry & Results</h2>
+      <h2 style={{ fontSize: '20px', fontWeight: 'bold', margin: '0 0 16px 0' }}>Calc Table: Geometry & Results</h2>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
         <thead style={{ borderBottom: '2px solid #334155', color: '#94a3b8', textAlign: 'left' }}>
           <tr>
