@@ -46,8 +46,8 @@ export const TopNav = () => {
       <div style={{ width: '1px', height: '24px', background: '#334155', margin: '0 16px' }} />
       <div style={{ display: 'flex', flex: 1 }}>
         <TabItem id="viewer" name="3D Viewer" icon={Box} />
-        <TabItem id="datatable" name="Data Table" icon={Table} />
         <TabItem id="transform" name="3D to 2D Transformation" icon={Layers} />
+        <TabItem id="datatable" name="Data Table" icon={Table} />
         <TabItem id="simpAnalysis" name="Simp. Analysis" icon={Activity} />
         <TabItem id="gc3d" name="GC 3D Analyzer" icon={Activity} />
         <TabItem id="spl2bundle" name="Simpl. Analysis 2D bundle" icon={Calculator} />
