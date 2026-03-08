@@ -71,12 +71,26 @@ const GhostProjectionCanvas = ({ segments2D, plane, anchors, onToggleAnchor }) =
         nodes.forEach(node => {
              const isAnchor = anchors.includes(node.originalNodeIndex);
              const isHover = hoveredNode === node.originalNodeIndex;
+             const isValidToAnchor = onToggleAnchor !== null;
 
              if (isAnchor) {
                  // Draw Red Triangle for Anchor
                  ctx.fillStyle = '#0f172a';
                  ctx.strokeStyle = '#ef4444'; // Red
                  ctx.lineWidth = 3;
+                 const size = 10;
+                 ctx.beginPath();
+                 ctx.moveTo(node.x, node.y - size);
+                 ctx.lineTo(node.x + size, node.y + size);
+                 ctx.lineTo(node.x - size, node.y + size);
+                 ctx.closePath();
+                 ctx.fill();
+                 ctx.stroke();
+             } else if (isHover && isValidToAnchor && node.originalNodeIndex > 0 && node.originalNodeIndex < segments2D.length) {
+                 // Draw ghost anchor on valid split nodes
+                 ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
+                 ctx.strokeStyle = '#fca5a5';
+                 ctx.lineWidth = 2;
                  const size = 10;
                  ctx.beginPath();
                  ctx.moveTo(node.x, node.y - size);
@@ -165,15 +179,6 @@ export const TransformTab = () => {
 
   // Anchor splitting states
   const [anchors, setAnchors] = useState([]);
-  
-  // Basic classification
-  let resultType = 'None';
-  if (selectedComps.length > 0) {
-     if (mode === 'L') resultType = 'L-Bend';
-     else if (mode === 'Z') resultType = 'Z-Bend';
-     else if (mode === 'Loop') resultType = 'Loop';
-     else resultType = selectedComps.length === 2 ? 'L-Bend' : selectedComps.length === 3 ? 'Z-Bend' : 'Complex';
-  }
 
   // Find unique materials to map
   const uniqueMaterials = useMemo(() => {
@@ -343,6 +348,17 @@ export const TransformTab = () => {
      }
   }, [transformedData, setProcessingStage]);
 
+  // Dynamic Basic Classification
+  const activeSegments = geometrySplits[activeGeoTab] || transformedData?.segments2D || [];
+  let resultType = 'None';
+  if (activeSegments.length > 0) {
+      const modeToUse = tabTransformModes[activeGeoTab] || 'Auto';
+      if (modeToUse === 'L') resultType = 'L-Bend';
+      else if (modeToUse === 'Z') resultType = 'Z-Bend';
+      else if (modeToUse === 'Loop') resultType = 'Loop';
+      else resultType = activeSegments.length === 2 ? 'L-Bend' : activeSegments.length === 3 ? 'Z-Bend' : 'Complex';
+  }
+
   const toggleAnchor = (nodeIndex) => {
       setAnchors(prev => {
           if (prev.includes(nodeIndex)) return prev.filter(a => a !== nodeIndex);
@@ -424,7 +440,7 @@ export const TransformTab = () => {
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <label style={{ fontSize: '12px', color: '#64748b' }}>deltaT</label>
+                        <label style={{ fontSize: '12px', color: '#64748b' }}>Change in Temperature, deltaT (Deg C)</label>
                         <input
                             type="number" step="0.1"
                             value={processParams.deltaT}
@@ -433,7 +449,7 @@ export const TransformTab = () => {
                         />
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <label style={{ fontSize: '12px', color: '#64748b' }}>od</label>
+                        <label style={{ fontSize: '12px', color: '#64748b' }}>Outer Diameter, OD (mm)</label>
                         <input
                             type="number" step="0.01"
                             value={processParams.od}
@@ -442,7 +458,7 @@ export const TransformTab = () => {
                         />
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <label style={{ fontSize: '12px', color: '#64748b' }}>E</label>
+                        <label style={{ fontSize: '12px', color: '#64748b' }}>Elastic Modulus, E (MPa)</label>
                         <input
                             type="number"
                             value={processParams.E}
@@ -451,7 +467,7 @@ export const TransformTab = () => {
                         />
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <label style={{ fontSize: '12px', color: '#64748b' }}>alpha</label>
+                        <label style={{ fontSize: '12px', color: '#64748b' }}>Thermal Expansion, Alpha (mm/mm/C)</label>
                         <input
                             type="number" step="0.00000001"
                             value={processParams.alpha}
@@ -460,7 +476,7 @@ export const TransformTab = () => {
                         />
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <label style={{ fontSize: '12px', color: '#64748b' }}>Sa</label>
+                        <label style={{ fontSize: '12px', color: '#64748b' }}>Allowable Stress, Sa (MPa)</label>
                         <input
                             type="number" step="0.1"
                             value={processParams.Sa}
@@ -593,12 +609,16 @@ export const TransformTab = () => {
                                 <th style={{ padding: '12px 8px' }}>End 2D [X, Y, Z]</th>
                                 <th style={{ padding: '12px 8px' }}>True L.</th>
                                 <th style={{ padding: '12px 8px' }}>Mapped Material</th>
+                                {activeGeoTab === 'UNIFIED' && <th style={{ padding: '12px 8px', textAlign: 'center' }}>Split Geometry</th>}
                             </tr>
                         </thead>
                         <tbody>
-                            {(geometrySplits[activeGeoTab] || transformedData?.segments2D)?.map((seg, i) => {
+                            {(geometrySplits[activeGeoTab] || transformedData?.segments2D)?.map((seg, i, arr) => {
                                 const matRaw = seg.material || 'Unknown';
                                 const mapped = materialMapping[matRaw] || 'Not Mapped';
+                                const isLastSegment = i === arr.length - 1;
+                                const isAnchored = anchors.includes(i + 1);
+
                                 return (
                                     <tr key={i} style={{ borderBottom: '1px solid #334155' }}>
                                         <td style={{ padding: '12px 8px', color: '#38bdf8', fontWeight: '500' }}>{seg.id || `Leg-${i+1}`}</td>
@@ -618,6 +638,27 @@ export const TransformTab = () => {
                                                 {mapped}
                                             </span>
                                         </td>
+                                        {activeGeoTab === 'UNIFIED' && (
+                                            <td style={{ padding: '12px 8px', textAlign: 'center' }}>
+                                                {!isLastSegment && (
+                                                    <button
+                                                        onClick={() => toggleAnchor(i + 1)}
+                                                        style={{
+                                                            background: isAnchored ? 'transparent' : '#334155',
+                                                            border: isAnchored ? '1px solid #ef4444' : 'none',
+                                                            color: isAnchored ? '#ef4444' : '#cbd5e1',
+                                                            padding: '4px 8px',
+                                                            borderRadius: '4px',
+                                                            fontSize: '11px',
+                                                            fontWeight: 'bold',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                    >
+                                                        {isAnchored ? 'Remove Anchor' : 'Place Anchor Here'}
+                                                    </button>
+                                                )}
+                                            </td>
+                                        )}
                                     </tr>
                                 )
                             })}
