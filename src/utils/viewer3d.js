@@ -335,17 +335,37 @@ export class PcfViewer3D {
                     // This causes radius=25, which hides the support *inside* a large pipe (e.g., bore=400).
                     // We must inherit a realistic radius so the support geometry wraps outside the pipe.
                     let supportRadius = radius;
-                    if (bore === 0 || !bore) {
-                        let maxR = 25;
-                        if (this._lastComponentsCache) {
-                            for (const c of this._lastComponentsCache) {
-                                if (c.bore && c.bore > maxR * 2) maxR = c.bore / 2;
+                    let direction = null;
+                    let maxR = bore ? bore / 2 : 25;
+
+                    if (this._lastComponentsCache) {
+                        for (const c of this._lastComponentsCache) {
+                            if (c.bore && c.bore > maxR * 2) maxR = c.bore / 2;
+                            // Attempt to find pipe direction for the support
+                            if (c.type === 'PIPE' && c.points && c.points.length >= 2) {
+                                // simple heuristic: if support is close to this pipe, use its direction
+                                const p1 = mapCoord(c.points[0]);
+                                const p2 = mapCoord(c.points[1]);
+                                // checking distance from pos to line segment p1-p2
+                                const l2 = p1.distanceToSquared(p2);
+                                let t = 0;
+                                if (l2 > 0) {
+                                    t = ((pos.x - p1.x) * (p2.x - p1.x) + (pos.y - p1.y) * (p2.y - p1.y) + (pos.z - p1.z) * (p2.z - p1.z)) / l2;
+                                    t = Math.max(0, Math.min(1, t));
+                                }
+                                const proj = new THREE.Vector3(p1.x + t * (p2.x - p1.x), p1.y + t * (p2.y - p1.y), p1.z + t * (p2.z - p1.z));
+                                if (pos.distanceTo(proj) < maxR * 4) {
+                                    direction = new THREE.Vector3().subVectors(p2, p1).normalize();
+                                }
                             }
                         }
+                    }
+                    if (bore === 0 || !bore) {
                         supportRadius = maxR;
                     }
+
                     console.log(`[Debug-Support-Info] Rendering SUPPORT ${comp.id} at pos:`, pos, `with calculated radius:`, supportRadius, `comp.attributes:`, comp.attributes);
-                    meshes = this._buildSupport(pos, supportRadius, comp);
+                    meshes = this._buildSupport(pos, supportRadius, comp, direction);
                     console.log(`[Debug-Support-Meshes] meshes generated for SUPPORT:`, meshes);
                 }
                 break;
@@ -480,7 +500,7 @@ export class PcfViewer3D {
     }
 
     /** @private — Support graphic based on subtype */
-    _buildSupport(pos, radius, comp) {
+    _buildSupport(pos, radius, comp, direction = null) {
         const r = radius;
         const color = COLORS.SUPPORT;
         const nameRaw = String(comp.attributes?.SKEY || comp.attributes?.['COMPONENT-ATTRIBUTE1'] || '').toUpperCase();
@@ -488,6 +508,17 @@ export class PcfViewer3D {
         // Determine subtype from name keywords
         const isFixed = /FIXED|ANC/i.test(nameRaw);
         const isGuide = /GUIDE|SLIDE|SLID/i.test(nameRaw);
+
+        // Find perpendicular vector for support orientation if pipe direction is given
+        let perpAxis = new THREE.Vector3(1, 0, 0); // Default to X-axis
+        if (direction) {
+            const up = new THREE.Vector3(0, 1, 0);
+            if (Math.abs(direction.y) > 0.99) {
+                 perpAxis.set(1, 0, 0); // Pipe is vertical, support is horizontal X
+            } else {
+                 perpAxis.crossVectors(direction, up).normalize(); // Support is horizontal, perpendicular to pipe
+            }
+        }
 
         if (isFixed) {
             // Anchor / Fixed: Heavy orange base plate under pipe + clamping strap
@@ -529,8 +560,11 @@ export class PcfViewer3D {
 
         // Horizontal bar under the pipe
         const underPos = pos.clone().add(new THREE.Vector3(0, -r * 1.1, 0));
-        const barLeft = underPos.clone().add(new THREE.Vector3(-armHW, 0, 0));
-        const barRight = underPos.clone().add(new THREE.Vector3(armHW, 0, 0));
+
+        // Use the perpAxis to lay out the horizontal bar
+        const barOffset = perpAxis.clone().multiplyScalar(armHW);
+        const barLeft = underPos.clone().sub(barOffset);
+        const barRight = underPos.clone().add(barOffset);
         const hBar = createCylinder(barLeft, barRight, r * 0.25, color);
 
         // Vertical post going down
@@ -551,6 +585,11 @@ export class PcfViewer3D {
         const r = radius;
         const cyl = createCylinder(s, e, r, color);
         return cyl ? [cyl] : [];
+    }
+
+    /** @public — auto-fit camera to scene bounds */
+    fitCamera() {
+        this._fitCamera();
     }
 
     /** @private — auto-fit camera to scene bounds */

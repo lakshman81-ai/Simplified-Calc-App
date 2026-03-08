@@ -158,15 +158,24 @@ export const Viewer3DTab = () => {
           <div className="flex items-center gap-1 px-3 py-2 bg-[#f8fafc] border-b border-slate-200">
 
             <div className="flex bg-slate-100 p-0.5 rounded border border-slate-300 mr-2">
-              <button className="px-3 py-1 bg-[#ffa500] text-white shadow-sm rounded-sm text-[11px] font-bold flex items-center gap-1">
+              <button className="px-3 py-1 bg-[#ffa500] text-white shadow-sm rounded-sm text-[11px] font-bold flex items-center gap-1 cursor-default">
                 <span className="text-[12px]">🧊</span> 3D View
               </button>
-              <button className="px-3 py-1 text-slate-500 hover:text-slate-700 text-[11px] font-medium flex items-center gap-1">
+              <button
+                onClick={() => useAppStore.getState().setActiveTab('dataTable')}
+                className="px-3 py-1 text-slate-500 hover:text-slate-700 text-[11px] font-medium flex items-center gap-1 cursor-pointer"
+              >
                 <span className="text-[12px]">📊</span> 3DV Data Table
               </button>
               <button
-                onClick={() => viewerRef.current?._fitCamera()}
-                className="px-3 py-1 text-slate-500 hover:text-slate-700 text-[11px] font-medium flex items-center gap-1 border-l border-slate-200 ml-1 pl-2"
+                onClick={() => {
+                  if (viewerRef.current && typeof viewerRef.current._fitCamera === 'function') {
+                    viewerRef.current._fitCamera();
+                  } else if (viewerRef.current && typeof viewerRef.current.fitCamera === 'function') {
+                    viewerRef.current.fitCamera();
+                  }
+                }}
+                className="px-3 py-1 text-slate-500 hover:text-slate-700 text-[11px] font-medium flex items-center gap-1 border-l border-slate-200 ml-1 pl-2 cursor-pointer"
               >
                 <span>⊙</span> Auto center
               </button>
