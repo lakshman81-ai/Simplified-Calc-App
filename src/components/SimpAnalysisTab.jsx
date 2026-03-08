@@ -9,8 +9,10 @@ export const SimpAnalysisTab = () => {
   const setNodes = useSimpStore(state => state.setNodes);
   const setSegments = useSimpStore(state => state.setSegments);
   const setPlane = useSimpStore(state => state.setPlane);
+  const setParams = useSimpStore(state => state.setParams);
   const plane = useSimpStore(state => state.plane);
   const batchAnalysisData = useAppStore(state => state.batchAnalysisData);
+  const globalParams = useAppStore(state => state.processParams);
 
   const [activeGeoTab, setActiveGeoTab] = useState('');
 
@@ -65,12 +67,24 @@ export const SimpAnalysisTab = () => {
 
       setNodes(finalNodes);
       setSegments(segments);
+
+      // Sync global process parameters (like materials, E, Sa) down to local SimpStore
+      if (globalParams) {
+         setParams({
+            deltaT: globalParams.deltaT,
+            od: globalParams.od,
+            E: globalParams.E,
+            alpha: globalParams.alpha,
+            Sa: globalParams.Sa
+         });
+      }
+
     } else {
         // Fallback or empty state
         setNodes({});
         setSegments([]);
     }
-  }, [activeGeoTab, batchAnalysisData, setNodes, setSegments, setPlane]);
+  }, [activeGeoTab, batchAnalysisData, globalParams, setNodes, setSegments, setPlane, setParams]);
 
   return (
     <div className="flex-1 flex flex-col h-full bg-slate-900 overflow-hidden relative">

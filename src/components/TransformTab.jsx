@@ -58,50 +58,73 @@ const GhostProjectionCanvas = ({ segments2D, plane, anchors, onToggleAnchor }) =
         segments2D.forEach((seg, i) => {
              const x1 = padding + (seg.start2D[0] - minX) * scale;
              const y1 = height - (padding + (seg.start2D[1] - minY) * scale);
-             nodes.push({ x: x1, y: y1, originalNodeIndex: i }); // Start of segment i
 
+             // In UNIFIED mode, we want to place anchors ON segments, not nodes.
+             // In Geo splits, we just show nodes.
+             // We'll calculate the mid-point of the segment for hover/anchor visual
              const x2 = padding + (seg.end2D[0] - minX) * scale;
              const y2 = height - (padding + (seg.end2D[1] - minY) * scale);
+
+             // Just rendering the normal nodes
+             nodes.push({ x: x1, y: y1, isSegmentNode: false, id: seg.id }); // Start of segment i
              if (i === segments2D.length - 1) {
-                 nodes.push({ x: x2, y: y2, originalNodeIndex: i + 1 }); // Very end node
+                 nodes.push({ x: x2, y: y2, isSegmentNode: false, id: null }); // Very end node
              }
+
+             // Midpoint node for placing anchors
+             const midX = (x1 + x2) / 2;
+             const midY = (y1 + y2) / 2;
+             nodes.push({ x: midX, y: midY, isSegmentNode: true, segmentIndex: i, id: null });
         });
         setNodeMap(nodes);
 
         nodes.forEach(node => {
-             const isAnchor = anchors.includes(node.originalNodeIndex);
-             const isHover = hoveredNode === node.originalNodeIndex;
-             const isValidToAnchor = onToggleAnchor !== null;
+             if (!node.isSegmentNode) {
+                 // Draw standard nodes
+                 ctx.fillStyle = '#f8fafc';
+                 ctx.beginPath(); ctx.arc(node.x, node.y, 4, 0, 2*Math.PI); ctx.fill();
 
-             if (isAnchor) {
-                 // Draw Red Triangle for Anchor
-                 ctx.fillStyle = '#0f172a';
-                 ctx.strokeStyle = '#ef4444'; // Red
-                 ctx.lineWidth = 3;
-                 const size = 10;
-                 ctx.beginPath();
-                 ctx.moveTo(node.x, node.y - size);
-                 ctx.lineTo(node.x + size, node.y + size);
-                 ctx.lineTo(node.x - size, node.y + size);
-                 ctx.closePath();
-                 ctx.fill();
-                 ctx.stroke();
-             } else if (isHover && isValidToAnchor && node.originalNodeIndex > 0 && node.originalNodeIndex < segments2D.length) {
-                 // Draw ghost anchor on valid split nodes
-                 ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
-                 ctx.strokeStyle = '#fca5a5';
-                 ctx.lineWidth = 2;
-                 const size = 10;
-                 ctx.beginPath();
-                 ctx.moveTo(node.x, node.y - size);
-                 ctx.lineTo(node.x + size, node.y + size);
-                 ctx.lineTo(node.x - size, node.y + size);
-                 ctx.closePath();
-                 ctx.fill();
-                 ctx.stroke();
+                 // Show sequence ID text (e.g. 118 from "comp-118-...")
+                 if (node.id) {
+                     const parts = node.id.split('-');
+                     const seqId = parts.length > 1 ? parts[1] : node.id;
+                     ctx.fillStyle = '#94a3b8';
+                     ctx.font = '10px monospace';
+                     ctx.fillText(seqId, node.x + 8, node.y - 8);
+                 }
              } else {
-                 ctx.fillStyle = isHover ? '#38bdf8' : '#f8fafc';
-                 ctx.beginPath(); ctx.arc(node.x, node.y, isHover ? 6 : 4, 0, 2*Math.PI); ctx.fill();
+                 // It's a segment mid-point, handle anchor display
+                 const isAnchor = anchors.find(a => a.index === node.segmentIndex);
+                 const isHover = hoveredNode === node.segmentIndex;
+                 const isValidToAnchor = onToggleAnchor !== null;
+
+                 if (isAnchor) {
+                     // Draw Red Triangle for Anchor
+                     ctx.fillStyle = '#0f172a';
+                     ctx.strokeStyle = '#ef4444'; // Red
+                     ctx.lineWidth = 3;
+                     const size = 10;
+                     ctx.beginPath();
+                     ctx.moveTo(node.x, node.y - size);
+                     ctx.lineTo(node.x + size, node.y + size);
+                     ctx.lineTo(node.x - size, node.y + size);
+                     ctx.closePath();
+                     ctx.fill();
+                     ctx.stroke();
+                 } else if (isHover && isValidToAnchor) {
+                     // Draw ghost anchor on valid segment
+                     ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
+                     ctx.strokeStyle = '#fca5a5';
+                     ctx.lineWidth = 2;
+                     const size = 10;
+                     ctx.beginPath();
+                     ctx.moveTo(node.x, node.y - size);
+                     ctx.lineTo(node.x + size, node.y + size);
+                     ctx.lineTo(node.x - size, node.y + size);
+                     ctx.closePath();
+                     ctx.fill();
+                     ctx.stroke();
+                 }
              }
         });
 
@@ -115,10 +138,11 @@ const GhostProjectionCanvas = ({ segments2D, plane, anchors, onToggleAnchor }) =
 
         let found = null;
         for (const node of nodeMap) {
+            if (!node.isSegmentNode) continue;
             const dx = node.x - x;
             const dy = node.y - y;
-            if (dx*dx + dy*dy < 100) { // radius 10 hover zone
-                found = node.originalNodeIndex;
+            if (dx*dx + dy*dy < 400) { // radius 20 hover zone for segments
+                found = node.segmentIndex;
                 break;
             }
         }
@@ -128,7 +152,9 @@ const GhostProjectionCanvas = ({ segments2D, plane, anchors, onToggleAnchor }) =
 
     const handleClick = (e) => {
         if (hoveredNode !== null && onToggleAnchor) {
-            onToggleAnchor(hoveredNode);
+            // Need the true length of the segment to set initial default dist
+            const seg = segments2D[hoveredNode];
+            onToggleAnchor(hoveredNode, seg ? seg.trueLength : 0);
         }
     };
 
@@ -178,6 +204,7 @@ export const TransformTab = () => {
   const selectedComps = useMemo(() => components.filter(c => selectedIds.has(c.id)), [components, selectedIds]);
 
   // Anchor splitting states
+  // Array of { index: segmentIndex, dist: distanceFromStart }
   const [anchors, setAnchors] = useState([]);
 
   // Find unique materials to map
@@ -241,17 +268,37 @@ export const TransformTab = () => {
       const splits = { UNIFIED: baseSegments3D };
 
       if (anchors.length > 0) {
-          const sortedAnchors = [...anchors].sort((a, b) => a - b);
+          const sortedAnchors = [...anchors].sort((a, b) => a.index - b.index);
           let currentSplitIdx = 1;
           let currentSegs = [];
 
           baseSegments3D.forEach((seg, i) => {
-              if (sortedAnchors.includes(i) && currentSegs.length > 0) {
+              const anchor = sortedAnchors.find(a => a.index === i);
+              if (anchor && anchor.dist > 0) {
+                  // Split this segment
+                  const dx = seg.end[0] - seg.start[0];
+                  const dy = seg.end[1] - seg.start[1];
+                  const dz = seg.end[2] - seg.start[2];
+                  const trueL = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                  const ratio = Math.max(0, Math.min(1, anchor.dist / trueL));
+
+                  const midPt = [
+                      seg.start[0] + dx * ratio,
+                      seg.start[1] + dy * ratio,
+                      seg.start[2] + dz * ratio
+                  ];
+
+                  const part1 = { ...seg, end: midPt, isSplitHalf: true };
+                  const part2 = { ...seg, start: midPt, isSplitHalf: true };
+
+                  currentSegs.push(part1);
                   splits[`GEO${currentSplitIdx}`] = currentSegs;
                   currentSplitIdx++;
-                  currentSegs = [];
+
+                  currentSegs = [part2];
+              } else {
+                  currentSegs.push(seg);
               }
-              currentSegs.push(seg);
           });
 
           if (currentSegs.length > 0) {
@@ -359,13 +406,19 @@ export const TransformTab = () => {
       else resultType = activeSegments.length === 2 ? 'L-Bend' : activeSegments.length === 3 ? 'Z-Bend' : 'Complex';
   }
 
-  const toggleAnchor = (nodeIndex) => {
+  const toggleAnchor = (segmentIndex, trueLength) => {
       setAnchors(prev => {
-          if (prev.includes(nodeIndex)) return prev.filter(a => a !== nodeIndex);
-          return [...prev, nodeIndex];
+          const exists = prev.find(a => a.index === segmentIndex);
+          if (exists) return prev.filter(a => a.index !== segmentIndex);
+          // Split at the middle by default
+          return [...prev, { index: segmentIndex, dist: trueLength / 2 }];
       });
       // Switch to UNIFIED view when changing anchors to see the whole picture
       setActiveGeoTab('UNIFIED');
+  };
+
+  const updateAnchorDist = (segmentIndex, newDist) => {
+      setAnchors(prev => prev.map(a => a.index === segmentIndex ? { ...a, dist: Number(newDist) } : a));
   };
 
   const handleProceed = () => {
@@ -609,15 +662,19 @@ export const TransformTab = () => {
                                 <th style={{ padding: '12px 8px' }}>End 2D [X, Y, Z]</th>
                                 <th style={{ padding: '12px 8px' }}>True L.</th>
                                 <th style={{ padding: '12px 8px' }}>Mapped Material</th>
-                                {activeGeoTab === 'UNIFIED' && <th style={{ padding: '12px 8px', textAlign: 'center' }}>Split Geometry</th>}
+                                {activeGeoTab === 'UNIFIED' && (
+                                    <>
+                                        <th style={{ padding: '12px 8px', textAlign: 'center' }}>Anchor Distance from Start 2D</th>
+                                        <th style={{ padding: '12px 8px', textAlign: 'center' }}>Split Geometry</th>
+                                    </>
+                                )}
                             </tr>
                         </thead>
                         <tbody>
                             {(geometrySplits[activeGeoTab] || transformedData?.segments2D)?.map((seg, i, arr) => {
                                 const matRaw = seg.material || 'Unknown';
                                 const mapped = materialMapping[matRaw] || 'Not Mapped';
-                                const isLastSegment = i === arr.length - 1;
-                                const isAnchored = anchors.includes(i + 1);
+                                const isAnchored = activeGeoTab === 'UNIFIED' && anchors.find(a => a.index === i);
 
                                 return (
                                     <tr key={i} style={{ borderBottom: '1px solid #334155' }}>
@@ -639,10 +696,24 @@ export const TransformTab = () => {
                                             </span>
                                         </td>
                                         {activeGeoTab === 'UNIFIED' && (
-                                            <td style={{ padding: '12px 8px', textAlign: 'center' }}>
-                                                {!isLastSegment && (
+                                            <>
+                                                <td style={{ padding: '12px 8px', textAlign: 'center' }}>
+                                                    {isAnchored ? (
+                                                        <input
+                                                            type="number"
+                                                            step="0.1"
+                                                            value={isAnchored.dist}
+                                                            onChange={e => updateAnchorDist(i, e.target.value)}
+                                                            style={{
+                                                                width: '80px',
+                                                                background: '#0f172a', border: '1px solid #334155', borderRadius: '4px', color: '#f8fafc', padding: '4px', textAlign: 'center'
+                                                            }}
+                                                        />
+                                                    ) : '-'}
+                                                </td>
+                                                <td style={{ padding: '12px 8px', textAlign: 'center' }}>
                                                     <button
-                                                        onClick={() => toggleAnchor(i + 1)}
+                                                        onClick={() => toggleAnchor(i, seg.trueLength)}
                                                         style={{
                                                             background: isAnchored ? 'transparent' : '#334155',
                                                             border: isAnchored ? '1px solid #ef4444' : 'none',
@@ -656,8 +727,8 @@ export const TransformTab = () => {
                                                     >
                                                         {isAnchored ? 'Remove Anchor' : 'Place Anchor Here'}
                                                     </button>
-                                                )}
-                                            </td>
+                                                </td>
+                                            </>
                                         )}
                                     </tr>
                                 )
