@@ -196,7 +196,7 @@ export const Viewer3DTab = () => {
                 const selected = components.filter(c => selectedIds.has(c.id));
                 const params = useAppStore.getState().processParams || {};
                 useGC3DStore.getState().importFromViewer(selected, params);
-                setActiveTab('gc3d');
+                useAppStore.getState().setActiveTab('gc3d');
               }}
               className="px-3 py-1 bg-blue-500 text-white text-[11px] rounded font-semibold shadow-sm hover:bg-blue-600 flex items-center gap-1"
               disabled={selectedIds.size === 0}

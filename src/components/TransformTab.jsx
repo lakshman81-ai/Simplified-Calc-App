@@ -702,14 +702,14 @@ export const TransformTab = () => {
                                 const matRaw = seg.material || 'Unknown';
                                 const mapped = materialMapping[matRaw] || 'Not Mapped';
                                 let distToStart = 0;
-   if (activeGeoTab === 'UNIFIED') {
-       for (let j = 0; j < i; j++) {
-           distToStart += activeSegments[j].trueLength || 0;
-       }
-   }
-   const segLength = seg.trueLength || 0;
-   const isAnchored = activeGeoTab === 'UNIFIED' && anchors.find(a => a.absoluteDist > distToStart - 0.1 && a.absoluteDist < distToStart + segLength + 0.1);
-   const localDistVal = isAnchored ? (isAnchored.absoluteDist - distToStart).toFixed(1) : '-';
+                                if (activeGeoTab === 'UNIFIED') {
+                                    for (let j = 0; j < i; j++) {
+                                        distToStart += activeSegments[j].trueLength || 0;
+                                    }
+                                }
+                                const segLength = seg.trueLength || 0;
+                                const isAnchored = activeGeoTab === 'UNIFIED' && anchors.find(a => a.absoluteDist > distToStart - 0.1 && a.absoluteDist < distToStart + segLength + 0.1);
+                                const localDistVal = isAnchored ? (isAnchored.absoluteDist - distToStart).toFixed(1) : '-';
 
                                 return (
                                     <tr key={i} style={{ borderBottom: '1px solid #334155' }}>
