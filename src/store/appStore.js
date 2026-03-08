@@ -39,12 +39,34 @@ export const useAppStore = create((set, get) => ({
   },
   clearSelection: () => set({ selectedIds: new Set() }),
 
-  transformMode: 'Auto', // 'Auto', 'L', 'Z', 'Loop'
+  // 3D to 2D Transformation states
+  transformMode: 'Auto', // default fallback
   setTransformMode: (mode) => set({ transformMode: mode }),
 
-  // 3D to 2D Transformation states
+  // Mapping of geometry tab names (e.g. 'UNIFIED', 'GEO1') to their specific transform modes
+  tabTransformModes: { 'UNIFIED': 'Auto' },
+  setTabTransformMode: (tabName, mode) => set((state) => ({
+    tabTransformModes: { ...state.tabTransformModes, [tabName]: mode }
+  })),
+
+  // Store the active geometry tab in the TransformTab so controls can access it
+  activeGeoTab: 'UNIFIED',
+  setActiveGeoTab: (tabName) => set({ activeGeoTab: tabName }),
+
   smart2DConversionEnabled: true,
   setSmart2DConversionEnabled: (enabled) => set({ smart2DConversionEnabled: enabled }),
+
+  processParams: {
+    deltaT: 148.9,
+    od: 273.05,
+    E: 199948,
+    alpha: 0.00001116,
+    Sa: 137.9,
+    I: 66896169
+  },
+  setProcessParams: (newParams) => set((state) => ({
+    processParams: { ...state.processParams, ...newParams }
+  })),
 
   materialMapping: {}, // Map 3D CA material attributes to 2D Bundle Material names
   updateMaterialMapping: (caMaterial, bundleMaterial) => set((state) => ({
@@ -62,5 +84,9 @@ export const useAppStore = create((set, get) => ({
 
   // Store the actual 2D payload to send to the analysis canvas
   analysisPayload: null,
-  setAnalysisPayload: (payload) => set({ analysisPayload: payload })
+  setAnalysisPayload: (payload) => set({ analysisPayload: payload }),
+
+  // Store batch of geometries for analysis
+  batchAnalysisData: [],
+  setBatchAnalysisData: (batch) => set({ batchAnalysisData: batch })
 }));
