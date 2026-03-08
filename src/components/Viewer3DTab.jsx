@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Activity } from 'lucide-react';
+import { useGC3DStore } from '../gc3d';
 import { useAppStore } from '../store/appStore';
 import { PcfViewer3D } from '../utils/viewer3d';
 import { parsePcf } from '../utils/pcfParser';
@@ -188,6 +190,22 @@ export const Viewer3DTab = () => {
               <button className="px-3 py-1 bg-[#10b981] text-white text-[11px] rounded font-semibold shadow-sm hover:bg-[#059669]">
                 ↓ Export as PCF
               </button>
+
+            <button
+              onClick={() => {
+                const selected = components.filter(c => selectedIds.has(c.id));
+                const params = useAppStore.getState().processParams || {};
+                useGC3DStore.getState().importFromViewer(selected, params);
+                setActiveTab('gc3d');
+              }}
+              className="px-3 py-1 bg-blue-500 text-white text-[11px] rounded font-semibold shadow-sm hover:bg-blue-600 flex items-center gap-1"
+              disabled={selectedIds.size === 0}
+            >
+              <Activity size={12} /> Send to GC 3D
+            </button>
+<span className="hidden">
+                ↓ Export as PCF
+              </span>
             </div>
 
           </div>
