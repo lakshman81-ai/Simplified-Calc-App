@@ -74,5 +74,9 @@ export const useAppStore = create((set, get) => ({
 
   // Store the actual 2D payload to send to the analysis canvas
   analysisPayload: null,
-  setAnalysisPayload: (payload) => set({ analysisPayload: payload })
+  setAnalysisPayload: (payload) => set({ analysisPayload: payload }),
+
+  // Store batch of geometries for analysis
+  batchAnalysisData: [],
+  setBatchAnalysisData: (batch) => set({ batchAnalysisData: batch })
 }));

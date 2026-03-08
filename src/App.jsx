@@ -12,6 +12,11 @@ import './App.css';
 function App() {
   const activeTab = useAppStore(state => state.activeTab);
 
+  // Expose store for e2e testing
+  if (typeof window !== 'undefined') {
+    window.useAppStore = useAppStore;
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'sans-serif', background: '#0f172a' }}>
       <TopNav />

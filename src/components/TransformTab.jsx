@@ -141,6 +141,7 @@ export const TransformTab = () => {
   const components = useAppStore(state => state.components);
   const mode = useAppStore(state => state.transformMode);
   const setActiveTab = useAppStore(state => state.setActiveTab);
+  const setBatchAnalysisData = useAppStore(state => state.setBatchAnalysisData);
 
   const smart2DConversionEnabled = useAppStore(state => state.smart2DConversionEnabled);
   const setSmart2DConversionEnabled = useAppStore(state => state.setSmart2DConversionEnabled);
@@ -340,19 +341,39 @@ export const TransformTab = () => {
   const handleProceed = () => {
     if (!transformedData) return;
 
-    // We send the currently active geometry split to analysis
-    const activeSegments = geometrySplits[activeGeoTab] || transformedData.segments2D || [];
+    // We send a batch containing all the geometry splits to analysis
+    const batch = [];
+    if (Object.keys(geometrySplits).length > 1) {
+        // If there are multiple tabs (Geo 1, Geo 2), send them
+        Object.keys(geometrySplits).forEach(tab => {
+            if (tab !== 'UNIFIED') {
+                batch.push({
+                    name: tab,
+                    plane: transformedData.plane,
+                    segments: geometrySplits[tab],
+                    matrix: transformedData.matrix,
+                    materials: materialMapping,
+                    timestamp: Date.now()
+                });
+            }
+        });
+    } else {
+        // Just the UNIFIED or initial payload
+        batch.push({
+            name: 'Geo 1',
+            plane: transformedData.plane,
+            segments: geometrySplits['UNIFIED'] || transformedData.segments2D || [],
+            matrix: transformedData.matrix,
+            materials: materialMapping,
+            timestamp: Date.now()
+        });
+    }
 
-    const payload = {
-        plane: transformedData.plane,
-        segments: activeSegments,
-        matrix: transformedData.matrix, // may be undefined for smart2D
-        materials: materialMapping,
-        timestamp: Date.now()
-    };
-    setAnalysisPayload(payload);
+    setBatchAnalysisData(batch);
+    // Backward compatibility for single geometry or default view
+    setAnalysisPayload(batch[0]);
     setActiveTab('simpAnalysis');
-    log('info', 'TransformTab', 'Proceeded to Analysis with payload', payload);
+    log('info', 'TransformTab', 'Proceeded to Analysis with batch payload', batch);
   };
 
   return (
