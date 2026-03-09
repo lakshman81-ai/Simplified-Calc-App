@@ -191,3 +191,7 @@ export function runAllBenchmarks() {
 
   console.log("🎉 ALL BENCHMARKS PASSED");
 }
+
+if (typeof window !== 'undefined') {
+  window.runGC3DBenchmarks = runAllBenchmarks;
+}

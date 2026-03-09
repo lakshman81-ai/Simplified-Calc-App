@@ -202,8 +202,12 @@ export const useGC3DStore = create((set, get) => ({
 
         let n1Id, n2Id;
 
+        const od_in = (c.bore || 273.05) / 25.4;
+        const wt_in = 0.322; // approx 8" sch40
+        const materialName = c.attributes?.MATERIAL || get().config.defaultMaterial;
+
         if (c.type === 'ELBOW' || c.type === 'BEND') {
-             // For elbows/bends we ideally want to connect up to the center point to maintain the corner topology
+             // For elbows/bends we connect up to the center point to maintain corner topology properly
              if (c.centrePoint) {
                  n1Id = addOrGetNode(c.points[0].x, c.points[0].y, c.points[0].z);
                  const centerNodeId = addOrGetNode(c.centrePoint.x, c.centrePoint.y, c.centrePoint.z);
@@ -213,13 +217,29 @@ export const useGC3DStore = create((set, get) => ({
                  nodes[centerNodeId].connections += 2; nodes[centerNodeId].compTypes.push(c.type, c.type);
                  nodes[n2Id].connections++; nodes[n2Id].compTypes.push(c.type);
 
+                 const getAxis = (p1, p2) => {
+                     const dx = p2.x - p1.x; const dy = p2.y - p1.y; const dz = p2.z - p1.z;
+                     if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > Math.abs(dz)) return 'Y';
+                     if (Math.abs(dz) > Math.abs(dx) && Math.abs(dz) > Math.abs(dy)) return 'Z';
+                     return 'X';
+                 };
+
                  // Add two segments to corner
                  const s1_len = Math.sqrt(Math.pow(c.centrePoint.x - c.points[0].x, 2) + Math.pow(c.centrePoint.y - c.points[0].y, 2) + Math.pow(c.centrePoint.z - c.points[0].z, 2)) / 25.4;
                  const s2_len = Math.sqrt(Math.pow(c.points[1].x - c.centrePoint.x, 2) + Math.pow(c.points[1].y - c.centrePoint.y, 2) + Math.pow(c.points[1].z - c.centrePoint.z, 2)) / 25.4;
 
-                 // We use a simplified single segment logic for ELBOW calculations later but map 2 segments visually here
-                 n1Id = addOrGetNode(c.points[0].x, c.points[0].y, c.points[0].z);
-                 n2Id = addOrGetNode(c.points[1].x, c.points[1].y, c.points[1].z);
+                 segments.push({
+                     id: `${c.id}-1`, startNode: n1Id, endNode: centerNodeId, compType: c.type,
+                     axis: getAxis(c.points[0], c.centrePoint), length_in: s1_len, od_in, wt_in, material: materialName
+                 });
+                 segments.push({
+                     id: `${c.id}-2`, startNode: centerNodeId, endNode: n2Id, compType: c.type,
+                     axis: getAxis(c.centrePoint, c.points[1]), length_in: s2_len, od_in, wt_in, material: materialName
+                 });
+
+                 // Continue, but skip standard segment push
+                 fittingData[c.id] = getSIFData(c.type, od_in, wt_in, true, 'LR');
+                 return;
              } else {
                  n1Id = addOrGetNode(c.points[0].x, c.points[0].y, c.points[0].z);
                  n2Id = addOrGetNode(c.points[1].x, c.points[1].y, c.points[1].z);
@@ -240,17 +260,35 @@ export const useGC3DStore = create((set, get) => ({
         if (Math.abs(dz) > Math.abs(dx) && Math.abs(dz) > Math.abs(dy)) axis = 'Z';
 
         const len_in = Math.sqrt(dx*dx + dy*dy + dz*dz) / 25.4;
-        const od_in = (c.bore || 273.05) / 25.4;
-        const wt_in = 0.322; // approx 8" sch40
 
         segments.push({
            id: c.id, startNode: n1Id, endNode: n2Id, compType: c.type,
-           axis, length_in: len_in, od_in, wt_in, material: c.attributes?.MATERIAL || 'Unknown'
+           axis, length_in: len_in, od_in, wt_in, material: materialName
         });
 
         // Step 6
         fittingData[c.id] = getSIFData(c.type, od_in, wt_in, true, 'LR');
      });
+
+     // Step 5: Look up material properties for the first encountered segment to set global params
+     if (segments.length > 0) {
+        const tempC = (get().params.designTemp_F - 32) * 5 / 9;
+        const firstSeg = segments[0];
+        const props = getMaterialProperties(firstSeg.material, tempC, firstSeg.od_in * 25.4, firstSeg.wt_in * 25.4);
+        if (props && props.E) {
+            const E_psi = parseFloat(props.E) / 0.00689476;
+            const alpha_F = parseFloat(props.alpha) / 1.8;
+            const Sa_psi = parseFloat(props.Sa) / 0.00689476;
+            set(s => ({
+                params: {
+                    ...s.params,
+                    E_psi,
+                    alpha_in_in_F: alpha_F,
+                    Sa_psi
+                }
+            }));
+        }
+     }
 
      // Step 3: Classify nodes
      Object.keys(nodes).forEach(nodeId => {

@@ -82,13 +82,19 @@ export const Viewer3DTab = () => {
       viewerRef.current.updateSelection(selectedIds);
     }
 
+    // We no longer dispose the entire WebGL viewer on EVERY component update.
+    // This was causing WebGL context loss bugs when navigating tabs and re-triggering state changes.
+    // Instead, the viewer lifecycle matches the component mount cycle.
+  }, [components]);
+
+  useEffect(() => {
     return () => {
       if (viewerRef.current) {
         viewerRef.current.dispose();
         viewerRef.current = null;
       }
     };
-  }, [components]);
+  }, []);
 
   // Sync colorizer to state updates
   useEffect(() => {
