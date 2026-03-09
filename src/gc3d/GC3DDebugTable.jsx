@@ -1,11 +1,18 @@
 import React from 'react';
 import { useGC3DStore } from './GC3DStore';
+import { displayValue } from './GC3DUnitConverter';
 
 export const GC3DDebugTable = () => {
   const segments = useGC3DStore(s => s.segments);
-  const nodes = useGC3DStore(s => s.nodes);
-  const fittingData = useGC3DStore(s => s.fittingData);
   const legResults = useGC3DStore(s => s.legResults);
+  const fittingData = useGC3DStore(s => s.fittingData);
+  const unitSystem = useGC3DStore(s => s.unitSystem);
+
+  // Helper logic to dynamically label column headers
+  const getLabel = (base, quantity) => {
+      const parts = displayValue(0, quantity, unitSystem, 0).split(' ');
+      return `${base} (${parts[1]})`;
+  };
 
   return (
     <div style={{ flex: 1, overflowY: 'auto', background: '#0f172a', color: '#f8fafc', padding: '24px' }}>
@@ -17,16 +24,16 @@ export const GC3DDebugTable = () => {
             <th style={{ padding: '12px 8px' }}>Type</th>
             <th style={{ padding: '12px 8px' }}>Node A</th>
             <th style={{ padding: '12px 8px' }}>Node B</th>
-            <th style={{ padding: '12px 8px' }}>L (in)</th>
+            <th style={{ padding: '12px 8px' }}>{getLabel('L', 'length')}</th>
             <th style={{ padding: '12px 8px' }}>Axis</th>
-            <th style={{ padding: '12px 8px' }}>OD (in)</th>
-            <th style={{ padding: '12px 8px' }}>WT (in)</th>
+            <th style={{ padding: '12px 8px' }}>{getLabel('OD', 'length')}</th>
+            <th style={{ padding: '12px 8px' }}>{getLabel('WT', 'length')}</th>
             <th style={{ padding: '12px 8px' }}>h</th>
             <th style={{ padding: '12px 8px' }}>i_i</th>
             <th style={{ padding: '12px 8px' }}>k</th>
-            <th style={{ padding: '12px 8px' }}>F (lbf)</th>
-            <th style={{ padding: '12px 8px' }}>M (in·lbf)</th>
-            <th style={{ padding: '12px 8px' }}>Sb (psi)</th>
+            <th style={{ padding: '12px 8px' }}>{getLabel('F', 'force')}</th>
+            <th style={{ padding: '12px 8px' }}>{getLabel('M', 'moment')}</th>
+            <th style={{ padding: '12px 8px' }}>{getLabel('Sb', 'stress')}</th>
           </tr>
         </thead>
         <tbody>
@@ -39,16 +46,16 @@ export const GC3DDebugTable = () => {
                 <td style={{ padding: '12px 8px' }}>{s.compType}</td>
                 <td style={{ padding: '12px 8px', fontFamily: 'monospace' }}>{s.startNode}</td>
                 <td style={{ padding: '12px 8px', fontFamily: 'monospace' }}>{s.endNode}</td>
-                <td style={{ padding: '12px 8px' }}>{s.length_in.toFixed(1)}</td>
+                <td style={{ padding: '12px 8px' }}>{displayValue(s.length_in, 'length', unitSystem, 1).split(' ')[0]}</td>
                 <td style={{ padding: '12px 8px' }}>{s.axis}</td>
-                <td style={{ padding: '12px 8px' }}>{s.od_in.toFixed(3)}</td>
-                <td style={{ padding: '12px 8px' }}>{s.wt_in.toFixed(3)}</td>
+                <td style={{ padding: '12px 8px' }}>{displayValue(s.od_in, 'length', unitSystem, 3).split(' ')[0]}</td>
+                <td style={{ padding: '12px 8px' }}>{displayValue(s.wt_in, 'length', unitSystem, 3).split(' ')[0]}</td>
                 <td style={{ padding: '12px 8px', color: '#10b981' }}>{data.h.toFixed(3)}</td>
                 <td style={{ padding: '12px 8px', color: '#10b981' }}>{data.i_i.toFixed(3)}</td>
                 <td style={{ padding: '12px 8px', color: '#10b981' }}>{data.k.toFixed(3)}</td>
-                <td style={{ padding: '12px 8px', color: '#f59e0b' }}>{res.F_lbf.toFixed(0)}</td>
-                <td style={{ padding: '12px 8px', color: '#f59e0b' }}>{res.M_inlbf.toFixed(0)}</td>
-                <td style={{ padding: '12px 8px', color: '#f59e0b', fontWeight: 'bold' }}>{res.Sb_psi.toFixed(0)}</td>
+                <td style={{ padding: '12px 8px', color: '#f59e0b' }}>{displayValue(res.F_lbf, 'force', unitSystem, 0).split(' ')[0]}</td>
+                <td style={{ padding: '12px 8px', color: '#f59e0b' }}>{displayValue(res.M_inlbf, 'moment', unitSystem, 0).split(' ')[0]}</td>
+                <td style={{ padding: '12px 8px', color: '#f59e0b', fontWeight: 'bold' }}>{displayValue(res.Sb_psi, 'stress', unitSystem, 0).split(' ')[0]}</td>
               </tr>
             );
           })}
