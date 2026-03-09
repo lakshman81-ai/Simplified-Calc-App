@@ -60,7 +60,7 @@ export const GC3DCanvas = () => {
   return (
     <div style={{ flex: 1, position: 'relative', background: '#0f172a' }}>
       <Canvas>
-        <OrthographicCamera makeDefault position={[5000, 5000, 5000]} zoom={0.5} near={-10000} far={10000} />
+        <OrthographicCamera makeDefault position={[5000, 5000, 5000]} zoom={0.5} near={-100000} far={100000} />
         <OrbitControls makeDefault />
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1} />

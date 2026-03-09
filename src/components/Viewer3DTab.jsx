@@ -162,7 +162,7 @@ export const Viewer3DTab = () => {
                 <span className="text-[12px]">🧊</span> 3D View
               </button>
               <button
-                onClick={() => useAppStore.getState().setActiveTab('dataTable')}
+                onClick={() => useAppStore.getState().setActiveTab('datatable')}
                 className="px-3 py-1 text-slate-500 hover:text-slate-700 text-[11px] font-medium flex items-center gap-1 cursor-pointer"
               >
                 <span className="text-[12px]">📊</span> 3DV Data Table

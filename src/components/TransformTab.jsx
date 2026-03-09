@@ -94,7 +94,22 @@ const GhostProjectionCanvas = ({ segments2D, plane, anchors, onToggleAnchor }) =
                  }
              } else {
                  // It's a segment mid-point, handle anchor display
-                 const isAnchor = anchors.find(a => a.index === node.segmentIndex);
+                 // Map the segment index to the absolute distances we saved in the table
+                 // The anchors array stores: { absoluteDist, originalSegmentId }
+                 // We need to match it against this segment's absolute position.
+                 // We can roughly check if any anchor exists inside this segment.
+                 let segDistAccum = 0;
+                 let isAnchor = false;
+                 for (let j = 0; j <= node.segmentIndex; j++) {
+                     if (j === node.segmentIndex) {
+                         // Check if any anchor falls in this segment's bounds
+                         const startDist = segDistAccum;
+                         const endDist = segDistAccum + segments2D[j].trueLength;
+                         isAnchor = anchors.find(a => a.absoluteDist >= startDist - 0.1 && a.absoluteDist <= endDist + 0.1);
+                     }
+                     segDistAccum += segments2D[j].trueLength;
+                 }
+
                  const isHover = hoveredNode === node.segmentIndex;
                  const isValidToAnchor = onToggleAnchor !== null;
 
