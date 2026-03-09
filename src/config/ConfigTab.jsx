@@ -25,6 +25,64 @@ const styles = {
     refreshBtn: { marginTop: 12, padding: '6px 14px', background: '#1e3a5f', color: '#93c5fd', border: '1px solid #1e40af', borderRadius: 5, cursor: 'pointer', fontSize: 12 },
 };
 
+// Deep Architect Format Helper
+const renderLogData = (data) => {
+    if (!data) return null;
+
+    if (typeof data === 'object' && data !== null) {
+        // Specifically format known objects structurally
+        if (Array.isArray(data)) {
+            return (
+                <div style={{ marginTop: 8, padding: 8, background: '#0f172a', border: '1px solid #1e293b', borderRadius: 4 }}>
+                    <div style={{ color: '#94a3b8', fontSize: 10, textTransform: 'uppercase', marginBottom: 4 }}>[Array — {data.length} items]</div>
+                    {data.map((item, idx) => (
+                        <div key={idx} style={{ padding: '2px 0', borderBottom: idx < data.length - 1 ? '1px dashed #334155' : 'none' }}>
+                            <span style={{ color: '#38bdf8' }}>[{idx}]</span> {JSON.stringify(item)}
+                        </div>
+                    ))}
+                </div>
+            );
+        } else if (data.segments || data.plane || data.name) {
+             // Handle Geometry Batch format explicitly for human readability
+             return (
+                <div style={{ marginTop: 8, padding: 8, background: '#0f172a', border: '1px solid #1e293b', borderRadius: 4 }}>
+                     <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 4, marginBottom: 8 }}>
+                         <span style={{ color: '#94a3b8' }}>Batch Name:</span> <span style={{ color: '#e2e8f0' }}>{data.name}</span>
+                         <span style={{ color: '#94a3b8' }}>Target Plane:</span> <span style={{ color: '#e2e8f0' }}>{data.plane}</span>
+                         <span style={{ color: '#94a3b8' }}>Segment Count:</span> <span style={{ color: '#e2e8f0' }}>{data.segments?.length}</span>
+                     </div>
+                     {data.segments && data.segments.length > 0 && (
+                         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11, color: '#cbd5e1' }}>
+                             <thead>
+                                 <tr style={{ borderBottom: '1px solid #334155', textAlign: 'left' }}>
+                                     <th>ID</th>
+                                     <th>Start (x,y,z)</th>
+                                     <th>End (x,y,z)</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 {data.segments.slice(0, 5).map(seg => (
+                                     <tr key={seg.id} style={{ borderBottom: '1px solid #1e293b' }}>
+                                         <td style={{ color: '#38bdf8' }}>{seg.id}</td>
+                                         <td>[{seg.start2D?.[0]?.toFixed(1)}, {seg.start2D?.[1]?.toFixed(1)}, {seg.start2D?.[2]?.toFixed(1)}]</td>
+                                         <td>[{seg.end2D?.[0]?.toFixed(1)}, {seg.end2D?.[1]?.toFixed(1)}, {seg.end2D?.[2]?.toFixed(1)}]</td>
+                                     </tr>
+                                 ))}
+                                 {data.segments.length > 5 && (
+                                     <tr><td colSpan="3" style={{ textAlign: 'center', color: '#64748b', fontStyle: 'italic', paddingTop: 4 }}>... +{data.segments.length - 5} more segments</td></tr>
+                                 )}
+                             </tbody>
+                         </table>
+                     )}
+                </div>
+             );
+        }
+    }
+
+    // Fallback for standard objects
+    return <div style={styles.logData}>{JSON.stringify(data, null, 2)}</div>;
+};
+
 export function ConfigTab() {
     // Force refresh when user clicks "Refresh Log"
     const [tick, setTick] = useState(0);
@@ -49,7 +107,7 @@ export function ConfigTab() {
                             <span style={styles.logLevel(e.level)}>[{e.level.toUpperCase()}]</span>
                             <span style={styles.logCtx}>[{e.context}]</span>
                             <span style={styles.logMsg}>{e.message}</span>
-                            {e.data && <div style={styles.logData}>{JSON.stringify(e.data, null, 2)}</div>}
+                            {e.data && renderLogData(e.data)}
                         </div>
                     ))}
                 </div>

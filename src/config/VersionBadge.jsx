@@ -5,19 +5,8 @@
 
 import React from 'react';
 
-// Injected at build time by Vite via define; falls back to runtime date.
-const BUILD_TIME = typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : new Date().toISOString();
-
-function formatVersion(isoString) {
-    const d = new Date(isoString);
-    const pad = n => String(n).padStart(2, '0');
-    const dd = pad(d.getDate());
-    const mm = pad(d.getMonth() + 1);
-    const yy = String(d.getFullYear()).slice(2);
-    const HH = pad(d.getHours());
-    const min = pad(d.getMinutes());
-    return `ver.${dd}-${mm}-${yy} ${HH}:${min}`;
-}
+// Deep Architect Version Protocol per AGENTS.md
+const VERSION_STRING = "Ver 09-03-2026 (2)";
 
 const style = {
     position: 'fixed',
@@ -32,5 +21,5 @@ const style = {
 };
 
 export function VersionBadge() {
-    return <span style={style}>{formatVersion(BUILD_TIME)}</span>;
+    return <span style={style}>{VERSION_STRING}</span>;
 }

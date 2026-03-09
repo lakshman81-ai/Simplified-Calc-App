@@ -689,8 +689,8 @@ export const TransformTab = () => {
                 <GhostProjectionCanvas
                     segments2D={geometrySplits[activeGeoTab] || transformedData?.segments2D}
                     plane={transformedData?.plane}
-                    anchors={(activeGeoTab === 'UNIFIED' || !useSmartMode) ? anchors : []} // Only show interactive anchors in Unified view or if smart mode is disabled
-                    onToggleAnchor={(activeGeoTab === 'UNIFIED' || !useSmartMode) ? toggleAnchor : null}
+                    anchors={(activeGeoTab === 'UNIFIED' || !smart2DConversionEnabled) ? anchors : []} // Only show interactive anchors in Unified view or if smart mode is disabled
+                    onToggleAnchor={(activeGeoTab === 'UNIFIED' || !smart2DConversionEnabled) ? toggleAnchor : null}
                 />
 
                 {/* 2D Transformation Table */}
@@ -745,7 +745,7 @@ export const TransformTab = () => {
                                                 {mapped}
                                             </span>
                                         </td>
-                                        {(activeGeoTab === 'UNIFIED' || !useSmartMode) && (
+                                        {(activeGeoTab === 'UNIFIED' || !smart2DConversionEnabled) && (
                                             <>
                                                 <td style={{ padding: '12px 8px', textAlign: 'center' }}>
                                                     {isAnchored ? (
