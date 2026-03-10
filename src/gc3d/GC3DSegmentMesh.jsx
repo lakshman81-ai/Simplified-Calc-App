@@ -18,6 +18,8 @@ export const GC3DSegmentMesh = ({ id, startPos, endPos, compType, length_in }) =
   const [hovered, setHovered] = useState(false);
   const selectedSegmentId = useGC3DStore(s => s.selectedSegmentId);
   const setSelectedSegment = useGC3DStore(s => s.setSelectedSegment);
+  const segmentData = useGC3DStore(s => s.segments.find(seg => seg.id === id));
+
   const isSelected = selectedSegmentId === id;
 
   const startVec = new THREE.Vector3(...startPos);
@@ -34,6 +36,9 @@ export const GC3DSegmentMesh = ({ id, startPos, endPos, compType, length_in }) =
   const baseColor = COLORS[compType] || COLORS.PIPE;
   const color = isSelected ? '#ffa500' : (hovered ? '#ffffff' : baseColor);
 
+  // Dynamic radius based on segment OD if available, otherwise fallback to 80
+  const radius = segmentData?.od_in ? (segmentData.od_in * 25.4) / 2 : 80;
+
   return (
     <group position={mid} quaternion={quaternion}>
       <mesh
@@ -41,12 +46,12 @@ export const GC3DSegmentMesh = ({ id, startPos, endPos, compType, length_in }) =
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
       >
-        <cylinderGeometry args={[80, 80, length, 16]} />
+        <cylinderGeometry args={[radius, radius, length, 16]} />
         <meshStandardMaterial color={color} />
       </mesh>
       {isSelected && (
-        <Html position={[0, 0, 150]} center>
-          <div style={{ color: '#fff', background: 'rgba(0,0,0,0.7)', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', pointerEvents: 'none' }}>
+        <Html position={[0, 0, radius + 50]} center zIndexRange={[100, 0]}>
+          <div style={{ color: '#fff', background: 'rgba(0,0,0,0.8)', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', pointerEvents: 'none', whiteSpace: 'nowrap' }}>
             L={(length_in * 25.4).toFixed(0)}mm ({length_in.toFixed(1)}in)
           </div>
         </Html>
