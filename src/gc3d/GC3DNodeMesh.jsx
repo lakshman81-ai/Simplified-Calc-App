@@ -22,7 +22,11 @@ export const GC3DNodeMesh = ({ id, pos, type, label }) => {
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
-      <sphereGeometry args={[radius, 32, 32]} />
+      {type === 'anchor' ? (
+        <coneGeometry args={[radius, radius * 2, 32]} />
+      ) : (
+        <sphereGeometry args={[radius, 32, 32]} />
+      )}
       <meshStandardMaterial
         color={color}
         emissive={hovered ? color : '#000000'}

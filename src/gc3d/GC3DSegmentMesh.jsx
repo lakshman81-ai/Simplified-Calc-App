@@ -16,11 +16,14 @@ const COLORS = {
 
 export const GC3DSegmentMesh = ({ id, startPos, endPos, compType, length_in }) => {
   const [hovered, setHovered] = useState(false);
-  const selectedSegmentId = useGC3DStore(s => s.selectedSegmentId);
-  const setSelectedSegment = useGC3DStore(s => s.setSelectedSegment);
+  const selectedSegmentIds = useGC3DStore(s => s.selectedSegmentIds);
+  const toggleSegmentSelection = useGC3DStore(s => s.toggleSegmentSelection);
+  const colorMode = useGC3DStore(s => s.colorMode);
+  const activeTool = useGC3DStore(s => s.activeTool);
+  const splitSegmentAtPoint = useGC3DStore(s => s.splitSegmentAtPoint);
   const segmentData = useGC3DStore(s => s.segments.find(seg => seg.id === id));
 
-  const isSelected = selectedSegmentId === id;
+  const isSelected = selectedSegmentIds.has(id);
 
   const startVec = new THREE.Vector3(...startPos);
   const endVec = new THREE.Vector3(...endPos);
@@ -33,7 +36,11 @@ export const GC3DSegmentMesh = ({ id, startPos, endPos, compType, length_in }) =
     diff.clone().normalize()
   );
 
-  const baseColor = COLORS[compType] || COLORS.PIPE;
+  let baseColor = COLORS[compType] || COLORS.PIPE;
+  if (colorMode === 'stress') {
+     // fallback if stress data missing
+     baseColor = COLORS[compType] || COLORS.PIPE;
+  }
   const color = isSelected ? '#ffa500' : (hovered ? '#ffffff' : baseColor);
 
   // Dynamic radius based on segment OD if available, otherwise fallback to 80
@@ -42,9 +49,25 @@ export const GC3DSegmentMesh = ({ id, startPos, endPos, compType, length_in }) =
   return (
     <group position={mid} quaternion={quaternion}>
       <mesh
-        onClick={(e) => { e.stopPropagation(); setSelectedSegment(id); }}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        userData={{ isSegment: true, id }}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (activeTool === 'anchor') {
+              if (e.point) splitSegmentAtPoint(id, e.point);
+          } else {
+              toggleSegmentSelection(id, e.shiftKey || e.ctrlKey || e.metaKey);
+          }
+        }}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHovered(true);
+          if (activeTool === 'anchor') document.body.style.cursor = 'crosshair';
+        }}
+        onPointerOut={(e) => {
+          e.stopPropagation();
+          setHovered(false);
+          if (activeTool === 'anchor') document.body.style.cursor = 'default';
+        }}
       >
         <cylinderGeometry args={[radius, radius, length, 16]} />
         <meshStandardMaterial color={color} />
