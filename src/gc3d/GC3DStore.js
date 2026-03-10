@@ -24,11 +24,15 @@ export const useGC3DStore = create((set, get) => ({
   criticalNode: null,
   overallResult: null,
   debugLog: [],
-  selectedSegmentId: null,
+  selectedSegmentIds: new Set(),
   selectedNodeId: null,
   activeSubTab: '3dview',
   unitSystem: 'imperial',
   consoleCollapsed: false,
+  activeTool: 'select',
+  setActiveTool: (tool) => set({ activeTool: tool, selectedSegmentIds: new Set(), selectedNodeId: null }),
+  cameraViewMode: 'auto',
+  setCameraViewMode: (mode) => set({ cameraViewMode: mode }),
   config: {
     gridSnap_mm: 100,
     displayPrecision: { stress: 0, sif: 3, length: 1, force: 0 },
@@ -45,8 +49,15 @@ export const useGC3DStore = create((set, get) => ({
     set(s => ({ params: { ...s.params, Sa_psi: f * (1.25 * Sc_psi + 0.25 * Sh_psi) } }));
     get().runAnalysis();
   },
-  setSelectedSegment: (id) => set({ selectedSegmentId: id, selectedNodeId: null }),
-  setSelectedNode: (id) => set({ selectedNodeId: id, selectedSegmentId: null }),
+  setSelectedSegment: (id) => set({ selectedSegmentIds: new Set([id]), selectedNodeId: null }),
+  toggleSegmentSelection: (id, multi) => set(s => {
+      const newSet = new Set(multi ? s.selectedSegmentIds : []);
+      if (newSet.has(id)) newSet.delete(id);
+      else newSet.add(id);
+      return { selectedSegmentIds: newSet, selectedNodeId: null };
+  }),
+  setSelectedNode: (id) => set({ selectedNodeId: id, selectedSegmentIds: new Set() }),
+  clearSelection: () => set({ selectedSegmentIds: new Set(), selectedNodeId: null }),
   setActiveSubTab: (tab) => set({ activeSubTab: tab }),
   setUnitSystem: (sys) => set({ unitSystem: sys }),
   toggleConsole: () => set(s => ({ consoleCollapsed: !s.consoleCollapsed })),
@@ -121,6 +132,145 @@ export const useGC3DStore = create((set, get) => ({
         }
     }
 
+    get().runAnalysis();
+  },
+
+  adjustSegmentDelta: (segId, dx, dy, dz) => {
+    const { nodes, segments } = get();
+    const segIdx = segments.findIndex(s => s.id === segId);
+    if (segIdx === -1) return;
+
+    const seg = segments[segIdx];
+    const startNode = nodes[seg.startNode];
+    const endNode = nodes[seg.endNode];
+
+    if (!startNode || !endNode) return;
+
+    const newEndPos = [
+        startNode.pos[0] + dx,
+        startNode.pos[1] + dy,
+        startNode.pos[2] + dz
+    ];
+
+    const deltaNode = {
+        x: newEndPos[0] - endNode.pos[0],
+        y: newEndPos[1] - endNode.pos[1],
+        z: newEndPos[2] - endNode.pos[2]
+    };
+
+    // Shift endNode and all downstream nodes
+    const newNodes = { ...nodes };
+
+    // Simple graph traversal to find downstream nodes
+    const visited = new Set();
+    const toVisit = [seg.endNode];
+
+    while (toVisit.length > 0) {
+        const curr = toVisit.pop();
+        if (visited.has(curr)) continue;
+        visited.add(curr);
+
+        newNodes[curr] = {
+            ...newNodes[curr],
+            pos: [
+                newNodes[curr].pos[0] + deltaNode.x,
+                newNodes[curr].pos[1] + deltaNode.y,
+                newNodes[curr].pos[2] + deltaNode.z
+            ]
+        };
+
+        // Find segments starting from this node
+        segments.forEach(s => {
+            if (s.startNode === curr && !visited.has(s.endNode)) {
+                toVisit.push(s.endNode);
+            }
+        });
+    }
+
+    // Recalculate lengths for affected segments
+    const newSegments = segments.map(s => {
+        if (visited.has(s.startNode) || visited.has(s.endNode) || s.id === segId) {
+            const n1 = newNodes[s.startNode];
+            const n2 = newNodes[s.endNode];
+            if (n1 && n2) {
+                const ldx = n2.pos[0] - n1.pos[0];
+                const ldy = n2.pos[1] - n1.pos[1];
+                const ldz = n2.pos[2] - n1.pos[2];
+                const newLen = Math.sqrt(ldx*ldx + ldy*ldy + ldz*ldz) / 25.4; // to inches
+                return { ...s, length_in: newLen };
+            }
+        }
+        return s;
+    });
+
+    set({ nodes: newNodes, segments: newSegments });
+    get().runAnalysis();
+  },
+
+  splitSegmentAtPoint: (segId, point) => {
+    const { nodes, segments, fittingData } = get();
+    const segIdx = segments.findIndex(s => s.id === segId);
+    if (segIdx === -1) return;
+
+    const origSeg = segments[segIdx];
+    const startNode = nodes[origSeg.startNode];
+    const endNode = nodes[origSeg.endNode];
+
+    if (!startNode || !endNode) return;
+
+    // Calculate direction vector to create a visual gap
+    const dir = {
+        x: endNode.pos[0] - startNode.pos[0],
+        y: endNode.pos[1] - startNode.pos[1],
+        z: endNode.pos[2] - startNode.pos[2]
+    };
+    const totalLen = Math.sqrt(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z);
+
+    dir.x /= totalLen; dir.y /= totalLen; dir.z /= totalLen;
+
+    // Gap size
+    const gapHalf = 50;
+
+    const t = Date.now();
+    const nId1 = `N${t}-A`;
+    const nId2 = `N${t}-B`;
+
+    const pos1 = [point.x - dir.x * gapHalf, point.y - dir.y * gapHalf, point.z - dir.z * gapHalf];
+    const pos2 = [point.x + dir.x * gapHalf, point.y + dir.y * gapHalf, point.z + dir.z * gapHalf];
+
+    const newNodes = {
+        ...nodes,
+        [nId1]: { pos: pos1, type: 'anchor', label: 'Anchor A' },
+        [nId2]: { pos: pos2, type: 'anchor', label: 'Anchor B' }
+    };
+
+    const dx1 = pos1[0] - startNode.pos[0];
+    const dy1 = pos1[1] - startNode.pos[1];
+    const dz1 = pos1[2] - startNode.pos[2];
+    const len1_in = Math.sqrt(dx1*dx1 + dy1*dy1 + dz1*dz1) / 25.4;
+
+    const dx2 = endNode.pos[0] - pos2[0];
+    const dy2 = endNode.pos[1] - pos2[1];
+    const dz2 = endNode.pos[2] - pos2[2];
+    const len2_in = Math.sqrt(dx2*dx2 + dy2*dy2 + dz2*dz2) / 25.4;
+
+    const seg1 = { ...origSeg, id: `${origSeg.id}-A`, endNode: nId1, length_in: len1_in };
+    const seg2 = { ...origSeg, id: `${origSeg.id}-B`, startNode: nId2, length_in: len2_in };
+
+    const newSegments = [...segments];
+    newSegments.splice(segIdx, 1, seg1, seg2);
+
+    const newFittingData = { ...fittingData };
+    if (newFittingData[origSeg.id]) {
+        newFittingData[seg1.id] = { ...newFittingData[origSeg.id] };
+        newFittingData[seg2.id] = { ...newFittingData[origSeg.id] };
+        delete newFittingData[origSeg.id];
+    } else {
+        newFittingData[seg1.id] = getSIFData(seg1.compType, seg1.od_in, seg1.wt_in, true, 'LR');
+        newFittingData[seg2.id] = getSIFData(seg2.compType, seg2.od_in, seg2.wt_in, true, 'LR');
+    }
+
+    set({ nodes: newNodes, segments: newSegments, fittingData: newFittingData, activeTool: 'select' });
     get().runAnalysis();
   },
 

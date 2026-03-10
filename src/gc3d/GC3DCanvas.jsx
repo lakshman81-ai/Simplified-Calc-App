@@ -11,11 +11,25 @@ const SceneBounds = () => {
   const segments = useGC3DStore(s => s.segments);
   const nodes = useGC3DStore(s => s.nodes);
 
+  const selectedSegmentIds = useGC3DStore(s => s.selectedSegmentIds);
+  const cameraViewMode = useGC3DStore(s => s.cameraViewMode);
+
   useEffect(() => {
     if (segments.length === 0 || !nodes || Object.keys(nodes).length === 0) return;
 
     const timer = setTimeout(() => {
-      const box = new THREE.Box3().setFromObject(scene);
+      const box = new THREE.Box3();
+
+      if (selectedSegmentIds && selectedSegmentIds.size > 0) {
+        scene.traverse((child) => {
+          if (child.isMesh && child.userData && child.userData.isSegment && selectedSegmentIds.has(child.userData.id)) {
+            box.expandByObject(child);
+          }
+        });
+      }
+      if (box.isEmpty() || !isFinite(box.max.x)) {
+         box.setFromObject(scene);
+      }
       if (box.isEmpty()) return;
 
       const center = box.getCenter(new THREE.Vector3());
@@ -25,10 +39,17 @@ const SceneBounds = () => {
       // Simple perspective fit
       const fov = camera.fov * (Math.PI / 180);
       let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+      cameraZ = Math.max(cameraZ, 500); // Minimum zoom distance
       cameraZ *= 1.5; // padding
 
-      // Set position isometric-ish to center
-      camera.position.set(center.x + cameraZ, center.y + cameraZ, center.z + cameraZ);
+      if (cameraViewMode === 'iso' || cameraViewMode === 'auto') {
+        camera.position.set(center.x + cameraZ, center.y + cameraZ, center.z + cameraZ);
+      } else if (cameraViewMode === 'top') {
+        camera.position.set(center.x, center.y + cameraZ * 1.5, center.z);
+      } else if (cameraViewMode === 'front') {
+        camera.position.set(center.x, center.y, center.z + cameraZ * 1.5);
+      }
+
       camera.near = maxDim / 100;
       camera.far = maxDim * 100;
       camera.updateProjectionMatrix();
@@ -37,11 +58,13 @@ const SceneBounds = () => {
         controls.target.copy(center);
         controls.update();
       }
-      camera.lookAt(center);
+      if (cameraViewMode !== 'selected') {
+         camera.lookAt(center);
+      }
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [segments, nodes, camera, controls, scene]);
+  }, [segments, nodes, camera, controls, scene, selectedSegmentIds, cameraViewMode]);
 
   return null;
 };
@@ -50,9 +73,35 @@ export const GC3DCanvas = () => {
   const segments = useGC3DStore(s => s.segments);
   const nodes = useGC3DStore(s => s.nodes);
 
+  const clearSelection = useGC3DStore(s => s.clearSelection);
+  const activeTool = useGC3DStore(s => s.activeTool);
+  const setActiveTool = useGC3DStore(s => s.setActiveTool);
+  const setCameraViewMode = useGC3DStore(s => s.setCameraViewMode);
+
   return (
     <div style={{ flex: 1, position: 'relative', background: '#0f172a' }}>
-      <Canvas>
+
+      {/* Top Toolbar Overlay */}
+      <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: '8px', background: 'rgba(30, 41, 59, 0.8)', padding: '8px', borderRadius: '8px', border: '1px solid #334155' }}>
+        <button onClick={() => setCameraViewMode('auto')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>⛶ Auto Center</button>
+        <button onClick={() => setCameraViewMode('selected')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>🔍 Zoom Selected</button>
+        <div style={{ width: '1px', background: '#475569', margin: '0 4px' }} />
+        <button onClick={() => setCameraViewMode('top')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Top</button>
+        <button onClick={() => setCameraViewMode('front')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Front</button>
+        <button onClick={() => setCameraViewMode('iso')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Iso</button>
+        <div style={{ width: '1px', background: '#475569', margin: '0 4px' }} />
+        <button
+           onClick={() => setActiveTool(activeTool === 'anchor' ? 'select' : 'anchor')}
+           style={{ background: activeTool === 'anchor' ? '#ef4444' : '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}
+        >
+          <span style={{ display: 'inline-block', width: '10px', height: '10px', background: 'white', clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}></span>
+          Add Anchor
+        </button>
+      </div>
+
+      <Canvas onPointerMissed={() => {
+        if (activeTool === 'select') clearSelection();
+      }}>
         <PerspectiveCamera makeDefault position={[5000, 5000, 5000]} fov={50} />
         <OrbitControls makeDefault />
         <ambientLight intensity={0.5} />
