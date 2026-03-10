@@ -72,6 +72,58 @@ export const useGC3DStore = create((set, get) => ({
     set({ segments: updated });
   },
 
+  updateSegmentProperty: (segId, updates) => {
+    const { segments, fittingData } = get();
+    const segIdx = segments.findIndex(s => s.id === segId);
+    if (segIdx === -1) return;
+
+    const newSegments = [...segments];
+    const seg = newSegments[segIdx];
+
+    // Apply updates (od_in, wt_in, material, etc.)
+    newSegments[segIdx] = { ...seg, ...updates };
+
+    // If geometry changed, recalculate SIF data for this fitting
+    const newFittingData = { ...fittingData };
+    if (updates.od_in !== undefined || updates.wt_in !== undefined) {
+      newFittingData[segId] = getSIFData(
+        seg.compType,
+        newSegments[segIdx].od_in,
+        newSegments[segIdx].wt_in,
+        true,
+        'LR'
+      );
+    }
+
+    set({ segments: newSegments, fittingData: newFittingData });
+
+    // If material changed, attempt to update global params (simplified assumption: system uses 1 material)
+    if (updates.material) {
+        const tempC = (get().params.designTemp_F - 32) * 5 / 9;
+        const props = getMaterialProperties(
+            updates.material,
+            tempC,
+            newSegments[segIdx].od_in * 25.4,
+            newSegments[segIdx].wt_in * 25.4
+        );
+        if (props && props.E) {
+            const E_psi = parseFloat(props.E) / 0.00689476;
+            const alpha_F = parseFloat(props.alpha) / 1.8;
+            const Sa_psi = parseFloat(props.Sa) / 0.00689476;
+            set(s => ({
+                params: {
+                    ...s.params,
+                    E_psi,
+                    alpha_in_in_F: alpha_F,
+                    Sa_psi
+                }
+            }));
+        }
+    }
+
+    get().runAnalysis();
+  },
+
   runAnalysis: () => {
     get().clearLog();
     const { nodes, segments, params, includeSIF, fittingData } = get();

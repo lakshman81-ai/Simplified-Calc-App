@@ -8,11 +8,12 @@ export const GC3DNodeMesh = ({ id, pos, type, label }) => {
   const setSelectedNode = useGC3DStore(s => s.setSelectedNode);
   const isSelected = selectedNodeId === id;
 
+  // Determine dynamic radius and color based on type
   let color = '#ffa500'; // free
-  let radius = 200;
-  if (type === 'anchor') { color = '#1e90ff'; radius = 250; }
-  else if (type === 'elbow') { color = '#800080'; }
-  else if (type === 'tee') { color = '#ffd700'; }
+  let radius = 100; // Smaller default radius to match piping OD visually
+  if (type === 'anchor') { color = '#1e90ff'; radius = 150; }
+  else if (type === 'elbow') { color = '#32cd32'; radius = 120; } // Green to match BEND/ELBOW in COLORS
+  else if (type === 'tee') { color = '#ff69b4'; radius = 120; }   // Pink to match TEE in COLORS
 
   return (
     <mesh
@@ -28,8 +29,8 @@ export const GC3DNodeMesh = ({ id, pos, type, label }) => {
         emissiveIntensity={0.3}
       />
       {isSelected && <Outlines color="white" thickness={0.1} />}
-      <Html position={[0, radius + 50, 0]} center>
-        <div style={{ color: '#fff', background: 'rgba(0,0,0,0.7)', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', pointerEvents: 'none' }}>
+      <Html position={[0, radius + 20, 0]} center zIndexRange={[100, 0]}>
+        <div style={{ color: '#fff', background: 'rgba(0,0,0,0.8)', padding: '4px 6px', borderRadius: '4px', fontSize: '11px', pointerEvents: 'none', whiteSpace: 'nowrap' }}>
           {label || id}
         </div>
       </Html>
