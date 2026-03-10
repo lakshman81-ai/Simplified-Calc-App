@@ -218,6 +218,15 @@ export const Viewer3DTab = () => {
             >
               <Activity size={12} /> Send to GC 3D
             </button>
+
+            <button
+              onClick={() => {
+                useAppStore.getState().setActiveTab('sketcher');
+              }}
+              className="px-3 py-1 bg-[#8b5cf6] text-white text-[11px] rounded font-semibold shadow-sm hover:bg-[#7c3aed] flex items-center gap-1"
+            >
+              <span className="text-[12px]">✎</span> Edit in 2D Sketcher
+            </button>
 <span className="hidden">
                 ↓ Export as PCF
               </span>
