@@ -54,9 +54,9 @@ const SketcherToolbar = () => {
             <button title="Add Node/Anchor" style={btnStyle(activeTool === 'add_node')} onClick={() => setActiveTool('add_node')}>
                 <Triangle size={18} />
             </button>
-
+            
             <div style={{ height: '1px', background: '#334155', width: '100%', margin: '4px 0' }} />
-
+            
             <button title="Working Plane" style={btnStyle(false)} onClick={() => setWorkingPlane(workingPlane === 'XY' ? 'XZ' : 'XY')}>
                 <span style={{ fontSize: '10px', fontWeight: 'bold' }}>{workingPlane}</span>
             </button>
@@ -79,7 +79,7 @@ const SketcherToolbar = () => {
 // Interactive Plane for catching clicks in 2D View
 const InteractivePlane = () => {
     const { activeTool, workingPlane, setDraftingState, draftingState, createNode, createSegment, resolve3DPoint } = useSketchStore();
-
+    
     // Rotate the invisible plane to match the working plane
     let rotation = [0, 0, 0];
     if (workingPlane === 'XZ') rotation = [-Math.PI/2, 0, 0];
@@ -97,7 +97,7 @@ const InteractivePlane = () => {
 
         if (activeTool === 'add_node') {
             createNode(pt3D, 'anchor');
-        }
+        } 
         else if (activeTool === 'draw_pipe') {
             if (!draftingState.isDrawing) {
                 // First click: start drawing
@@ -124,9 +124,9 @@ const InteractivePlane = () => {
     }, [draftingState.isDrawing, setDraftingState]);
 
     return (
-        <mesh
-            rotation={rotation}
-            visible={false}
+        <mesh 
+            rotation={rotation} 
+            visible={false} 
             onPointerMove={handlePointerMove}
             onClick={handleClick}
             onContextMenu={(e) => {
@@ -160,13 +160,13 @@ const GraphRenderer = ({ is3D }) => {
                 const n1 = nodes[seg.startNode];
                 const n2 = nodes[seg.endNode];
                 if (!n1 || !n2) return null;
-
+                
                 const startVec = new THREE.Vector3(...n1.pos);
                 const endVec = new THREE.Vector3(...n2.pos);
                 const diff = endVec.clone().sub(startVec);
                 const length = diff.length();
                 if (length < 1) return null; // prevent zero-length errors
-
+                
                 const mid = startVec.clone().add(diff.clone().multiplyScalar(0.5));
                 const quaternion = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), diff.normalize());
 
@@ -177,7 +177,7 @@ const GraphRenderer = ({ is3D }) => {
                     </mesh>
                 );
             })}
-
+            
             {/* Phantom Drawing Segment */}
             {!is3D && draftingState.isDrawing && draftingState.startNodeId && draftingState.currentPos && (
                 <PhantomSegment startPos={nodes[draftingState.startNodeId].pos} endPos={useSketchStore.getState().resolve3DPoint(draftingState.currentPos)} />
@@ -220,11 +220,11 @@ export const SketcherTab = () => {
                 </div>
 
                 <Canvas style={{ cursor: activeTool !== 'select' ? 'crosshair' : 'default' }}>
-                    <OrthographicCamera
-                        makeDefault
-                        position={workingPlane === 'XY' ? [0, 0, 10000] : (workingPlane === 'XZ' ? [0, 10000, 0] : [10000, 0, 0])}
-                        zoom={0.2}
-                        near={-100000} far={100000}
+                    <OrthographicCamera 
+                        makeDefault 
+                        position={workingPlane === 'XY' ? [0, 0, 10000] : (workingPlane === 'XZ' ? [0, 10000, 0] : [10000, 0, 0])} 
+                        zoom={0.2} 
+                        near={-100000} far={100000} 
                     />
                     <OrbitControls makeDefault enableRotate={false} />
                     <Grid position={[0, 0, 0]} args={[50000, 50000]} sectionSize={1000} cellColor="#1e293b" sectionColor="#334155" fadeDistance={30000} rotation={workingPlane === 'XY' ? [Math.PI/2, 0, 0] : (workingPlane === 'XZ' ? [0, 0, 0] : [0, 0, Math.PI/2])} />
@@ -233,10 +233,10 @@ export const SketcherTab = () => {
                 </Canvas>
 
                 {/* PiP 3D Container (Top Right) */}
-                <div style={{
-                    position: 'absolute', top: 16, right: 16, width: '300px', height: '300px',
-                    background: '#1e293b', border: '2px solid #3b82f6', borderRadius: '8px',
-                    overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)'
+                <div style={{ 
+                    position: 'absolute', top: 16, right: 16, width: '300px', height: '300px', 
+                    background: '#1e293b', border: '2px solid #3b82f6', borderRadius: '8px', 
+                    overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)' 
                 }}>
                     <div style={{ position: 'absolute', top: 4, left: 8, zIndex: 10, color: '#38bdf8', fontSize: '10px', fontWeight: 'bold', textShadow: '1px 1px 2px black' }}>3D VERIFICATION VIEW</div>
                     <Canvas>
