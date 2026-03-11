@@ -10,12 +10,14 @@ export const useSketchStore = create((set, get) => ({
   snapToGrid: true,
 
   draftingState: { isDrawing: false, startNodeId: null, currentPos: null },
+  snapNodeId: null, // OSnap feature: ID of the node currently hovered for snapping
+  setSnapNodeId: (id) => set({ snapNodeId: id }),
   gridSize: 100,
 
   setWorkingPlane: (plane) => set({ workingPlane: plane, draftingState: { isDrawing: false, startNodeId: null, currentPos: null } }),
   setActiveTool: (tool) => set({ activeTool: tool, draftingState: { isDrawing: false, startNodeId: null, currentPos: null } }),
   setDraftingState: (newState) => set(s => ({ draftingState: { ...s.draftingState, ...newState } })),
-
+  
   importFromComponents: (components) => {
       const { nodes, segments } = buildGraphFromComponents(components);
       set({ nodes, segments });
@@ -50,12 +52,12 @@ export const useSketchStore = create((set, get) => ({
       const x = snapCoordinate(point2D.x);
       const y = snapCoordinate(point2D.y);
       const z = snapCoordinate(point2D.z);
-
+      
       if (workingPlane === 'XY') return [x, y, workingElevation];
       if (workingPlane === 'XZ') return [x, workingElevation, -z]; // R3F Z maps to -Z for standard elevation view
       if (workingPlane === 'YZ') return [workingElevation, y, -z];
       return [x, y, z];
   },
-
+  
   clearSketch: () => set({ nodes: {}, segments: [] })
 }));

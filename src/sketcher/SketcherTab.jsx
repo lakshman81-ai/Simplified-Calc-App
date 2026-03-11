@@ -3,6 +3,7 @@ import { useAppStore } from '../store/appStore';
 import { useSketchStore } from './SketcherStore';
 import { Canvas } from '@react-three/fiber';
 import { OrthographicCamera, PerspectiveCamera, OrbitControls, Grid } from '@react-three/drei';
+import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { MousePointer2, PenTool, Triangle, Axis3D, DownloadCloud, UploadCloud, Trash2 } from 'lucide-react';
 
@@ -78,7 +79,7 @@ const SketcherToolbar = () => {
 
 // Interactive Plane for catching clicks in 2D View
 const InteractivePlane = () => {
-    const { activeTool, workingPlane, setDraftingState, draftingState, createNode, createSegment, resolve3DPoint } = useSketchStore();
+    const { activeTool, workingPlane, setDraftingState, draftingState, createNode, createSegment, resolve3DPoint, snapNodeId, nodes } = useSketchStore();
     
     // Rotate the invisible plane to match the working plane
     let rotation = [0, 0, 0];
@@ -87,27 +88,53 @@ const InteractivePlane = () => {
 
     const handlePointerMove = (e) => {
         if (draftingState.isDrawing) {
-            setDraftingState({ currentPos: e.point });
+            // If snapped, use the exact node position for phantom visual, else use plane pos
+            if (snapNodeId && nodes[snapNodeId]) {
+                const n = nodes[snapNodeId];
+                setDraftingState({ currentPos: new THREE.Vector3(...n.pos) });
+            } else {
+                setDraftingState({ currentPos: e.point });
+            }
         }
     };
 
     const handleClick = (e) => {
         e.stopPropagation();
-        const pt3D = resolve3DPoint(e.point);
+        
+        let targetId = null;
+        let pt3D;
+
+        if (snapNodeId && nodes[snapNodeId]) {
+            // OSNAP logic: User clicked while hovered over an existing node
+            targetId = snapNodeId;
+            pt3D = nodes[snapNodeId].pos; // use exact coordinate
+        } else {
+            // User clicked on the grid, resolve new 3D coordinate
+            pt3D = resolve3DPoint(e.point);
+        }
 
         if (activeTool === 'add_node') {
-            createNode(pt3D, 'anchor');
+            if (!targetId) createNode(pt3D, 'anchor');
+            else {
+                // Future: convert free node to anchor
+            }
         } 
         else if (activeTool === 'draw_pipe') {
             if (!draftingState.isDrawing) {
                 // First click: start drawing
-                const startId = createNode(pt3D, 'free');
-                setDraftingState({ isDrawing: true, startNodeId: startId, currentPos: pt3D });
+                const startId = targetId || createNode(pt3D, 'free');
+                setDraftingState({ isDrawing: true, startNodeId: startId, currentPos: new THREE.Vector3(...(targetId ? pt3D : resolve3DPoint(e.point))) });
             } else {
                 // Second click: end drawing, create segment, continue from new node
-                const endId = createNode(pt3D, 'free');
+                // Do not allow zero length segments (clicking on start node)
+                if (targetId && targetId === draftingState.startNodeId) return;
+
+                const endId = targetId || createNode(pt3D, 'free');
                 createSegment(draftingState.startNodeId, endId, { type: 'PIPE', bore: 100, material: 'CARBON STEEL' });
-                setDraftingState({ startNodeId: endId, currentPos: pt3D });
+                
+                // Continue drawing from the new end node
+                const nextPos = targetId ? new THREE.Vector3(...pt3D) : new THREE.Vector3(...resolve3DPoint(e.point));
+                setDraftingState({ startNodeId: endId, currentPos: nextPos });
             }
         }
     };
@@ -142,18 +169,65 @@ const InteractivePlane = () => {
     );
 };
 
+// AutoCenter bounds for the 3D Verification View
+const VerificationViewBounds = () => {
+    const { camera, controls } = useThree();
+    const nodes = useSketchStore(s => s.nodes);
+    
+    useEffect(() => {
+        const nodeValues = Object.values(nodes);
+        if (nodeValues.length === 0) return;
+
+        const box = new THREE.Box3();
+        nodeValues.forEach(n => {
+            box.expandByPoint(new THREE.Vector3(...n.pos));
+        });
+
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const safeMaxDim = maxDim === 0 ? 1000 : maxDim;
+
+        const fov = camera.fov * (Math.PI / 180);
+        const boundingSphereRadius = (safeMaxDim / 2) * Math.sqrt(3);
+        let targetDistance = (boundingSphereRadius * 1.2) / Math.sin(fov / 2);
+        targetDistance = Math.max(targetDistance, 1000); 
+
+        const offset = Math.sqrt((targetDistance * targetDistance) / 3);
+        camera.position.set(center.x + offset, center.y + offset, center.z + offset);
+        
+        camera.near = 1;
+        camera.far = targetDistance * 100;
+        camera.updateProjectionMatrix();
+
+        if (controls) {
+            controls.target.copy(center);
+            controls.update();
+        }
+    }, [nodes, camera, controls]);
+
+    return null;
+};
+
 // Abstract rendering of the graph
 const GraphRenderer = ({ is3D }) => {
     const nodes = useSketchStore(s => s.nodes);
     const segments = useSketchStore(s => s.segments);
     const draftingState = useSketchStore(s => s.draftingState);
+    const setSnapNodeId = useSketchStore(s => s.setSnapNodeId);
+    const snapNodeId = useSketchStore(s => s.snapNodeId);
 
     return (
         <group>
             {Object.entries(nodes).map(([id, node]) => (
-                <mesh key={id} position={node.pos}>
-                    <sphereGeometry args={[is3D ? 100 : 50, 16, 16]} />
-                    <meshBasicMaterial color={node.type === 'anchor' ? '#1e90ff' : '#ffa500'} />
+                <mesh 
+                    key={id} 
+                    position={node.pos}
+                    onPointerEnter={(e) => { e.stopPropagation(); setSnapNodeId(id); }}
+                    onPointerLeave={(e) => { e.stopPropagation(); if (snapNodeId === id) setSnapNodeId(null); }}
+                >
+                    <sphereGeometry args={[is3D ? 100 : (snapNodeId === id ? 80 : 50), 16, 16]} />
+                    <meshBasicMaterial color={snapNodeId === id ? '#ef4444' : (node.type === 'anchor' ? '#1e90ff' : '#ffa500')} />
                 </mesh>
             ))}
             {segments.map(seg => {
@@ -244,6 +318,7 @@ export const SketcherTab = () => {
                         <OrbitControls makeDefault />
                         <ambientLight intensity={0.5} />
                         <directionalLight position={[10, 10, 5]} intensity={1} />
+                        <VerificationViewBounds />
                         <GraphRenderer is3D={true} />
                     </Canvas>
                 </div>
