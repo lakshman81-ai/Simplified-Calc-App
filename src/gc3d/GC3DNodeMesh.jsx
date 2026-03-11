@@ -6,35 +6,38 @@ export const GC3DNodeMesh = ({ id, pos, type, label }) => {
   const [hovered, setHovered] = useState(false);
   const selectedNodeId = useGC3DStore(s => s.selectedNodeId);
   const setSelectedNode = useGC3DStore(s => s.setSelectedNode);
+  const snapNodeId = useGC3DStore(s => s.snapNodeId);
+  const setSnapNodeId = useGC3DStore(s => s.setSnapNodeId);
   const isSelected = selectedNodeId === id;
+  const isSnapped = snapNodeId === id;
 
-  // Determine dynamic radius and color based on type
   let color = '#ffa500'; // free
-  let radius = 100; // Smaller default radius to match piping OD visually
-  if (type === 'anchor') { color = '#1e90ff'; radius = 150; }
-  else if (type === 'elbow') { color = '#32cd32'; radius = 120; } // Green to match BEND/ELBOW in COLORS
-  else if (type === 'tee') { color = '#ff69b4'; radius = 120; }   // Pink to match TEE in COLORS
+  let radius = 200;
+  if (type === 'anchor') { color = '#1e90ff'; radius = 250; }
+  else if (type === 'elbow') { color = '#800080'; }
+  else if (type === 'tee') { color = '#ffd700'; }
+
+  if (isSnapped) {
+    color = '#ef4444'; // Red for snap
+    radius = 250;
+  }
 
   return (
     <mesh
       position={pos}
       onClick={(e) => { e.stopPropagation(); setSelectedNode(id); }}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
+      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); setSnapNodeId(id); }}
+      onPointerOut={(e) => { e.stopPropagation(); setHovered(false); if (snapNodeId === id) setSnapNodeId(null); }}
     >
-      {type === 'anchor' ? (
-        <coneGeometry args={[radius, radius * 2, 32]} />
-      ) : (
-        <sphereGeometry args={[radius, 32, 32]} />
-      )}
+      <sphereGeometry args={[radius, 32, 32]} />
       <meshStandardMaterial
         color={color}
         emissive={hovered ? color : '#000000'}
         emissiveIntensity={0.3}
       />
       {isSelected && <Outlines color="white" thickness={0.1} />}
-      <Html position={[0, radius + 20, 0]} center zIndexRange={[100, 0]}>
-        <div style={{ color: '#fff', background: 'rgba(0,0,0,0.8)', padding: '4px 6px', borderRadius: '4px', fontSize: '11px', pointerEvents: 'none', whiteSpace: 'nowrap' }}>
+      <Html position={[0, radius + 50, 0]} center>
+        <div style={{ color: '#fff', background: 'rgba(0,0,0,0.7)', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', pointerEvents: 'none' }}>
           {label || id}
         </div>
       </Html>

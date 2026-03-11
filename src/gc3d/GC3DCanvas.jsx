@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { useGC3DStore } from './GC3DStore';
 import { GC3DNodeMesh } from './GC3DNodeMesh';
 import { GC3DSegmentMesh } from './GC3DSegmentMesh';
+import { MarqueeZoom } from './MarqueeZoom';
 
 const SceneBounds = () => {
   const { camera, controls, scene } = useThree();
@@ -99,6 +100,29 @@ const SceneBounds = () => {
   return null;
 };
 
+const InteractivePlane = () => {
+  const activeTool = useGC3DStore(s => s.activeTool);
+  const setActiveTool = useGC3DStore(s => s.setActiveTool);
+  const snapNodeId = useGC3DStore(s => s.snapNodeId);
+  const nodes = useGC3DStore(s => s.nodes);
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    if (activeTool === 'anchor' && snapNodeId && nodes[snapNodeId]) {
+      // Future: add anchor to the exact node
+      console.log('Placed anchor on node:', snapNodeId);
+      setActiveTool('select');
+    }
+  };
+
+  return (
+    <mesh visible={false} onClick={handleClick}>
+      <planeGeometry args={[100000, 100000]} />
+      <meshBasicMaterial side={THREE.DoubleSide} />
+    </mesh>
+  );
+};
+
 export const GC3DCanvas = () => {
   const segments = useGC3DStore(s => s.segments);
   const nodes = useGC3DStore(s => s.nodes);
@@ -115,7 +139,13 @@ export const GC3DCanvas = () => {
       <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: '8px', background: 'rgba(30, 41, 59, 0.8)', padding: '8px', borderRadius: '8px', border: '1px solid #334155' }}>
         <button onClick={() => setCameraViewMode('auto')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>⛶ Auto Center</button>
         <button onClick={() => setCameraViewMode('selected')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>🔍 Zoom Selected</button>
-        <button title="Click and drag to zoom" style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'not-allowed', fontSize: '12px', opacity: 0.5 }}>🔲 Marquee (TODO)</button>
+        <button 
+           onClick={() => setActiveTool(activeTool === 'marquee' ? 'select' : 'marquee')} 
+           title="Click and drag to zoom" 
+           style={{ background: activeTool === 'marquee' ? '#ef4444' : '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}
+        >
+          🔲 Marquee
+        </button>
         <div style={{ width: '1px', background: '#475569', margin: '0 4px' }} />
         <button onClick={() => setCameraViewMode('top')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Top</button>
         <button onClick={() => setCameraViewMode('front')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Front</button>
@@ -143,6 +173,10 @@ export const GC3DCanvas = () => {
         <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
           <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="white" />
         </GizmoHelper>
+        
+        {activeTool === 'anchor' && <InteractivePlane />}
+        
+        <MarqueeZoom />
 
         <Suspense fallback={null}>
           <group>

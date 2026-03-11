@@ -27,12 +27,16 @@ export const useGC3DStore = create((set, get) => ({
   selectedSegmentIds: new Set(),
   selectedNodeId: null,
   activeSubTab: '3dview',
+  colorMode: 'type', // 'type', 'material', 'od', 'wt'
+  setColorMode: (mode) => set({ colorMode: mode }),
+  activeTool: 'select', // 'select', 'anchor'
+  setActiveTool: (tool) => set({ activeTool: tool, selectedSegmentIds: new Set(), selectedNodeId: null }),
+  snapNodeId: null, // OSnap support for GC3D
+  setSnapNodeId: (id) => set({ snapNodeId: id }),
+  cameraViewMode: 'auto', // 'auto', 'top', 'iso', 'front', 'selected'
+  setCameraViewMode: (mode) => set({ cameraViewMode: mode }),
   unitSystem: 'imperial',
   consoleCollapsed: false,
-  activeTool: 'select',
-  setActiveTool: (tool) => set({ activeTool: tool, selectedSegmentIds: new Set(), selectedNodeId: null }),
-  cameraViewMode: 'auto',
-  setCameraViewMode: (mode) => set({ cameraViewMode: mode }),
   config: {
     gridSnap_mm: 100,
     displayPrecision: { stress: 0, sif: 3, length: 1, force: 0 },
@@ -49,12 +53,14 @@ export const useGC3DStore = create((set, get) => ({
     set(s => ({ params: { ...s.params, Sa_psi: f * (1.25 * Sc_psi + 0.25 * Sh_psi) } }));
     get().runAnalysis();
   },
-  setSelectedSegment: (id) => set({ selectedSegmentIds: new Set([id]), selectedNodeId: null }),
-  toggleSegmentSelection: (id, multi) => set(s => {
-      const newSet = new Set(multi ? s.selectedSegmentIds : []);
-      if (newSet.has(id)) newSet.delete(id);
-      else newSet.add(id);
-      return { selectedSegmentIds: newSet, selectedNodeId: null };
+  toggleSegmentSelection: (id, multi) => set((s) => {
+    const newSelected = new Set(multi ? s.selectedSegmentIds : []);
+    if (newSelected.has(id)) {
+      newSelected.delete(id);
+    } else {
+      newSelected.add(id);
+    }
+    return { selectedSegmentIds: newSelected, selectedNodeId: null };
   }),
   setSelectedNode: (id) => set({ selectedNodeId: id, selectedSegmentIds: new Set() }),
   clearSelection: () => set({ selectedSegmentIds: new Set(), selectedNodeId: null }),
@@ -68,6 +74,26 @@ export const useGC3DStore = create((set, get) => ({
     set(s => ({ nodes: { ...s.nodes, [id]: { ...s.nodes[id], pos: newPos } } }));
     get().recalcSegmentLengths();
     get().runAnalysis();
+  },
+  
+  adjustSegmentDelta: (segId, dx, dy, dz) => {
+    const { nodes, segments } = get();
+    const seg = segments.find(s => s.id === segId);
+    if (!seg) return;
+    
+    // Simple approach: Adjust the endNode position based on startNode + new deltas
+    // In a real FEA app, this would shift the entire downstream system.
+    const startNode = nodes[seg.startNode];
+    const endNodeId = seg.endNode;
+    
+    if (startNode) {
+       const newPos = [
+          startNode.pos[0] + dx,
+          startNode.pos[1] + dy,
+          startNode.pos[2] + dz
+       ];
+       get().moveNode(endNodeId, newPos);
+    }
   },
 
   recalcSegmentLengths: () => {
@@ -83,39 +109,46 @@ export const useGC3DStore = create((set, get) => ({
     set({ segments: updated });
   },
 
-  updateSegmentProperty: (segId, updates) => {
+  updateSegmentProperty: (segIds, updates) => {
     const { segments, fittingData } = get();
-    const segIdx = segments.findIndex(s => s.id === segId);
-    if (segIdx === -1) return;
+    const ids = Array.isArray(segIds) ? segIds : [segIds];
+    
+    let newSegments = [...segments];
+    let newFittingData = { ...fittingData };
+    let firstUpdatedSegIdx = -1;
 
-    const newSegments = [...segments];
-    const seg = newSegments[segIdx];
+    ids.forEach(segId => {
+      const segIdx = newSegments.findIndex(s => s.id === segId);
+      if (segIdx === -1) return;
+      
+      if (firstUpdatedSegIdx === -1) firstUpdatedSegIdx = segIdx;
 
-    // Apply updates (od_in, wt_in, material, etc.)
-    newSegments[segIdx] = { ...seg, ...updates };
+      const seg = newSegments[segIdx];
+      newSegments[segIdx] = { ...seg, ...updates };
 
-    // If geometry changed, recalculate SIF data for this fitting
-    const newFittingData = { ...fittingData };
-    if (updates.od_in !== undefined || updates.wt_in !== undefined) {
-      newFittingData[segId] = getSIFData(
-        seg.compType,
-        newSegments[segIdx].od_in,
-        newSegments[segIdx].wt_in,
-        true,
-        'LR'
-      );
-    }
+      if (updates.od_in !== undefined || updates.wt_in !== undefined) {
+        newFittingData[segId] = getSIFData(
+          seg.compType, 
+          newSegments[segIdx].od_in, 
+          newSegments[segIdx].wt_in, 
+          true, 
+          'LR'
+        );
+      }
+    });
+
+    if (firstUpdatedSegIdx === -1) return;
 
     set({ segments: newSegments, fittingData: newFittingData });
-
+    
     // If material changed, attempt to update global params (simplified assumption: system uses 1 material)
     if (updates.material) {
         const tempC = (get().params.designTemp_F - 32) * 5 / 9;
         const props = getMaterialProperties(
-            updates.material,
-            tempC,
-            newSegments[segIdx].od_in * 25.4,
-            newSegments[segIdx].wt_in * 25.4
+            updates.material, 
+            tempC, 
+            newSegments[firstUpdatedSegIdx].od_in * 25.4, 
+            newSegments[firstUpdatedSegIdx].wt_in * 25.4
         );
         if (props && props.E) {
             const E_psi = parseFloat(props.E) / 0.00689476;
@@ -135,131 +168,58 @@ export const useGC3DStore = create((set, get) => ({
     get().runAnalysis();
   },
 
-  adjustSegmentDelta: (segId, dx, dy, dz) => {
-    const { nodes, segments } = get();
-    const segIdx = segments.findIndex(s => s.id === segId);
-    if (segIdx === -1) return;
-
-    const seg = segments[segIdx];
-    const startNode = nodes[seg.startNode];
-    const endNode = nodes[seg.endNode];
-
-    if (!startNode || !endNode) return;
-
-    const newEndPos = [
-        startNode.pos[0] + dx,
-        startNode.pos[1] + dy,
-        startNode.pos[2] + dz
-    ];
-
-    const deltaNode = {
-        x: newEndPos[0] - endNode.pos[0],
-        y: newEndPos[1] - endNode.pos[1],
-        z: newEndPos[2] - endNode.pos[2]
-    };
-
-    // Shift endNode and all downstream nodes
-    const newNodes = { ...nodes };
-
-    // Simple graph traversal to find downstream nodes
-    const visited = new Set();
-    const toVisit = [seg.endNode];
-
-    while (toVisit.length > 0) {
-        const curr = toVisit.pop();
-        if (visited.has(curr)) continue;
-        visited.add(curr);
-
-        newNodes[curr] = {
-            ...newNodes[curr],
-            pos: [
-                newNodes[curr].pos[0] + deltaNode.x,
-                newNodes[curr].pos[1] + deltaNode.y,
-                newNodes[curr].pos[2] + deltaNode.z
-            ]
-        };
-
-        // Find segments starting from this node
-        segments.forEach(s => {
-            if (s.startNode === curr && !visited.has(s.endNode)) {
-                toVisit.push(s.endNode);
-            }
-        });
-    }
-
-    // Recalculate lengths for affected segments
-    const newSegments = segments.map(s => {
-        if (visited.has(s.startNode) || visited.has(s.endNode) || s.id === segId) {
-            const n1 = newNodes[s.startNode];
-            const n2 = newNodes[s.endNode];
-            if (n1 && n2) {
-                const ldx = n2.pos[0] - n1.pos[0];
-                const ldy = n2.pos[1] - n1.pos[1];
-                const ldz = n2.pos[2] - n1.pos[2];
-                const newLen = Math.sqrt(ldx*ldx + ldy*ldy + ldz*ldz) / 25.4; // to inches
-                return { ...s, length_in: newLen };
-            }
-        }
-        return s;
-    });
-
-    set({ nodes: newNodes, segments: newSegments });
-    get().runAnalysis();
-  },
-
   splitSegmentAtPoint: (segId, point) => {
     const { nodes, segments, fittingData } = get();
     const segIdx = segments.findIndex(s => s.id === segId);
     if (segIdx === -1) return;
-
+    
     const origSeg = segments[segIdx];
     const startNode = nodes[origSeg.startNode];
     const endNode = nodes[origSeg.endNode];
-
+    
     if (!startNode || !endNode) return;
 
-    // Calculate direction vector to create a visual gap
-    const dir = {
-        x: endNode.pos[0] - startNode.pos[0],
-        y: endNode.pos[1] - startNode.pos[1],
-        z: endNode.pos[2] - startNode.pos[2]
-    };
-    const totalLen = Math.sqrt(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z);
-
-    dir.x /= totalLen; dir.y /= totalLen; dir.z /= totalLen;
-
-    // Gap size
-    const gapHalf = 50;
-
-    const t = Date.now();
-    const nId1 = `N${t}-A`;
-    const nId2 = `N${t}-B`;
-
-    const pos1 = [point.x - dir.x * gapHalf, point.y - dir.y * gapHalf, point.z - dir.z * gapHalf];
-    const pos2 = [point.x + dir.x * gapHalf, point.y + dir.y * gapHalf, point.z + dir.z * gapHalf];
-
+    // Create new node at point
+    const newNodeId = `N${Date.now()}`;
     const newNodes = {
         ...nodes,
-        [nId1]: { pos: pos1, type: 'anchor', label: 'Anchor A' },
-        [nId2]: { pos: pos2, type: 'anchor', label: 'Anchor B' }
+        [newNodeId]: {
+            pos: [point.x, point.y, point.z],
+            type: 'anchor',
+            label: 'Support'
+        }
     };
 
-    const dx1 = pos1[0] - startNode.pos[0];
-    const dy1 = pos1[1] - startNode.pos[1];
-    const dz1 = pos1[2] - startNode.pos[2];
+    // Calculate lengths
+    const dx1 = point.x - startNode.pos[0];
+    const dy1 = point.y - startNode.pos[1];
+    const dz1 = point.z - startNode.pos[2];
     const len1_in = Math.sqrt(dx1*dx1 + dy1*dy1 + dz1*dz1) / 25.4;
 
-    const dx2 = endNode.pos[0] - pos2[0];
-    const dy2 = endNode.pos[1] - pos2[1];
-    const dz2 = endNode.pos[2] - pos2[2];
+    const dx2 = endNode.pos[0] - point.x;
+    const dy2 = endNode.pos[1] - point.y;
+    const dz2 = endNode.pos[2] - point.z;
     const len2_in = Math.sqrt(dx2*dx2 + dy2*dy2 + dz2*dz2) / 25.4;
 
-    const seg1 = { ...origSeg, id: `${origSeg.id}-A`, endNode: nId1, length_in: len1_in };
-    const seg2 = { ...origSeg, id: `${origSeg.id}-B`, startNode: nId2, length_in: len2_in };
+    // Create 2 new segments
+    const seg1 = {
+        ...origSeg,
+        id: `${origSeg.id}-A`,
+        endNode: newNodeId,
+        length_in: len1_in
+    };
+
+    const seg2 = {
+        ...origSeg,
+        id: `${origSeg.id}-B`,
+        startNode: newNodeId,
+        length_in: len2_in
+    };
 
     const newSegments = [...segments];
     newSegments.splice(segIdx, 1, seg1, seg2);
-
+    
+    // Copy SIF data
     const newFittingData = { ...fittingData };
     if (newFittingData[origSeg.id]) {
         newFittingData[seg1.id] = { ...newFittingData[origSeg.id] };
