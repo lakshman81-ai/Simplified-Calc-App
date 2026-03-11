@@ -34,33 +34,55 @@ const SceneBounds = () => {
 
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
+
+      // The geometry might be a single point if imported weirdly
       const maxDim = Math.max(size.x, size.y, size.z);
 
-      // Simple perspective fit
-      const fov = camera.fov * (Math.PI / 180);
-      let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
-      cameraZ = Math.max(cameraZ, 500); // Minimum zoom distance
-      cameraZ *= 1.5; // padding
+      // If maxDim is 0, default to 1000 to prevent division by zero
+      const safeMaxDim = maxDim === 0 ? 1000 : maxDim;
 
+      // Ensure we don't zoom out infinitely if the selection is a tiny single pipe
+      const fov = camera.fov * (Math.PI / 180);
+
+      // Calculate distance to fit the bounding sphere
+      // Radius of bounding sphere is roughly safeMaxDim / 2 * sqrt(3)
+      const boundingSphereRadius = (safeMaxDim / 2) * Math.sqrt(3);
+
+      // We want the sphere to fit within the FOV, with some padding (e.g. 1.2)
+      let targetDistance = (boundingSphereRadius * 1.2) / Math.sin(fov / 2);
+
+      // Enforce a sensible minimum zoom distance so a single 10mm pipe isn't microscopic or massive
+      targetDistance = Math.max(targetDistance, 2000);
+
+      // Update camera position based on view mode
       if (cameraViewMode === 'iso' || cameraViewMode === 'auto') {
-        camera.position.set(center.x + cameraZ, center.y + cameraZ, center.z + cameraZ);
+        // Calculate offset for isometric view (equal X, Y, Z offsets)
+        // offset^2 + offset^2 + offset^2 = targetDistance^2
+        // 3 * offset^2 = targetDistance^2
+        const offset = Math.sqrt((targetDistance * targetDistance) / 3);
+        camera.position.set(center.x + offset, center.y + offset, center.z + offset);
       } else if (cameraViewMode === 'top') {
-        camera.position.set(center.x, center.y + cameraZ * 1.5, center.z);
+        camera.position.set(center.x, center.y + targetDistance, center.z);
       } else if (cameraViewMode === 'front') {
-        camera.position.set(center.x, center.y, center.z + cameraZ * 1.5);
+        camera.position.set(center.x, center.y, center.z + targetDistance);
+      } else if (cameraViewMode === 'selected') {
+        // Keep current position relative to new target
+        const currentDir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
+        if (currentDir.length() < 0.1) currentDir.set(1, 1, 1).normalize();
+        camera.position.copy(center).add(currentDir.multiplyScalar(targetDistance));
       }
 
-      camera.near = maxDim / 100;
-      camera.far = maxDim * 100;
+      // Fix: Near/Far planes need to handle large coordinate offsets, not just object size
+      camera.near = 1;
+      camera.far = targetDistance * 100;
       camera.updateProjectionMatrix();
 
       if (controls) {
         controls.target.copy(center);
         controls.update();
       }
-      if (cameraViewMode !== 'selected') {
-         camera.lookAt(center);
-      }
+
+      camera.lookAt(center);
     }, 100);
 
     return () => clearTimeout(timer);
@@ -85,6 +107,7 @@ export const GC3DCanvas = () => {
       <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: '8px', background: 'rgba(30, 41, 59, 0.8)', padding: '8px', borderRadius: '8px', border: '1px solid #334155' }}>
         <button onClick={() => setCameraViewMode('auto')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>⛶ Auto Center</button>
         <button onClick={() => setCameraViewMode('selected')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>🔍 Zoom Selected</button>
+        <button title="Click and drag to zoom" style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'not-allowed', fontSize: '12px', opacity: 0.5 }}>🔲 Marquee (TODO)</button>
         <div style={{ width: '1px', background: '#475569', margin: '0 4px' }} />
         <button onClick={() => setCameraViewMode('top')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Top</button>
         <button onClick={() => setCameraViewMode('front')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Front</button>
@@ -103,7 +126,7 @@ export const GC3DCanvas = () => {
         if (activeTool === 'select') clearSelection();
       }}>
         <PerspectiveCamera makeDefault position={[5000, 5000, 5000]} fov={50} />
-        <OrbitControls makeDefault />
+        <OrbitControls makeDefault enableDamping dampingFactor={0.1} />
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
         <Grid position={[0, -500, 0]} args={[50000, 50000]} sectionSize={1000} cellColor="#1e293b" sectionColor="#334155" fadeDistance={30000} />
