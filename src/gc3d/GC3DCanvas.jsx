@@ -1,103 +1,126 @@
 import React, { Suspense, useEffect, useRef } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls, Grid, PerspectiveCamera, Environment, GizmoHelper, GizmoViewport, Html } from '@react-three/drei';
+import { Canvas, useThree, useFrame } from '@react-three/fiber';
+import { OrbitControls, Grid, PerspectiveCamera, OrthographicCamera, Environment, GizmoHelper, GizmoViewport, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useGC3DStore } from './GC3DStore';
 import { GC3DNodeMesh } from './GC3DNodeMesh';
 import { GC3DSegmentMesh } from './GC3DSegmentMesh';
 import { MarqueeZoom } from './MarqueeZoom';
 
-const SceneBounds = () => {
-  const { camera, controls, scene } = useThree();
-  const segments = useGC3DStore(s => s.segments);
-  const nodes = useGC3DStore(s => s.nodes);
+const CameraController = () => {
+    const { camera, scene } = useThree();
+    const controlsRef = useRef();
 
-  const selectedSegmentIds = useGC3DStore(s => s.selectedSegmentIds);
-  const cameraViewMode = useGC3DStore(s => s.cameraViewMode); // 'auto', 'top', 'iso', 'front'
-  
-  useEffect(() => {
-    if (segments.length === 0 || !nodes || Object.keys(nodes).length === 0) return;
+    const selectedSegmentIds = useGC3DStore(s => s.selectedSegmentIds);
+    const selectedNodeId = useGC3DStore(s => s.selectedNodeId);
+    const nodes = useGC3DStore(s => s.nodes);
 
-    const timer = setTimeout(() => {
-      // Focus on selection if exists, else the whole scene
-      const box = new THREE.Box3();
-      
-      if (selectedSegmentIds.size > 0) {
-          const selectedMeshes = [];
-          scene.traverse((child) => {
-              if (child.userData && child.userData.isSegment && selectedSegmentIds.has(child.userData.id)) {
-                  selectedMeshes.push(child);
-              }
-          });
-          if (selectedMeshes.length > 0) {
-             selectedMeshes.forEach(m => box.expandByObject(m));
-          } else {
-             box.setFromObject(scene);
-          }
-      } else {
-          box.setFromObject(scene);
-      }
+    const cameraViewMode = useGC3DStore(s => s.cameraViewMode);
 
-      if (box.isEmpty()) return;
+    // Store target vectors
+    const targetCenter = useRef(new THREE.Vector3(0, 0, 0));
+    const targetDistance = useRef(10000);
+    const targetPosition = useRef(new THREE.Vector3(5000, 5000, 5000));
 
-      const center = box.getCenter(new THREE.Vector3());
-      const size = box.getSize(new THREE.Vector3());
-      
-      // The geometry might be a single point if imported weirdly
-      const maxDim = Math.max(size.x, size.y, size.z);
-      
-      // If maxDim is 0, default to 1000 to prevent division by zero
-      const safeMaxDim = maxDim === 0 ? 1000 : maxDim;
+    // Calculate target whenever selection or view mode changes
+    useEffect(() => {
+        const box = new THREE.Box3();
+        let hasSelection = false;
 
-      // Ensure we don't zoom out infinitely if the selection is a tiny single pipe
-      const fov = camera.fov * (Math.PI / 180);
-      
-      // Calculate distance to fit the bounding sphere
-      // Radius of bounding sphere is roughly safeMaxDim / 2 * sqrt(3)
-      const boundingSphereRadius = (safeMaxDim / 2) * Math.sqrt(3);
-      
-      // We want the sphere to fit within the FOV, with some padding (e.g. 1.2)
-      let targetDistance = (boundingSphereRadius * 1.2) / Math.sin(fov / 2);
-      
-      // Enforce a sensible minimum zoom distance so a single 10mm pipe isn't microscopic or massive
-      targetDistance = Math.max(targetDistance, 2000); 
+        if (selectedNodeId && nodes[selectedNodeId]) {
+            const pos = nodes[selectedNodeId].pos;
+            box.expandByPoint(new THREE.Vector3(pos[0], pos[1], pos[2]));
+            hasSelection = true;
+        } else if (selectedSegmentIds.size > 0) {
+            scene.traverse((child) => {
+                if (child.userData && child.userData.isSegment && selectedSegmentIds.has(child.userData.id)) {
+                    box.expandByObject(child);
+                    hasSelection = true;
+                }
+            });
+        }
 
-      // Update camera position based on view mode
-      if (cameraViewMode === 'iso' || cameraViewMode === 'auto') {
-        // Calculate offset for isometric view (equal X, Y, Z offsets)
-        // offset^2 + offset^2 + offset^2 = targetDistance^2
-        // 3 * offset^2 = targetDistance^2
-        const offset = Math.sqrt((targetDistance * targetDistance) / 3);
-        camera.position.set(center.x + offset, center.y + offset, center.z + offset);
-      } else if (cameraViewMode === 'top') {
-        camera.position.set(center.x, center.y + targetDistance, center.z);
-      } else if (cameraViewMode === 'front') {
-        camera.position.set(center.x, center.y, center.z + targetDistance);
-      } else if (cameraViewMode === 'selected') {
-        // If 'selected' mode is active, we just point the camera and adjust distance without changing the angle
-        const currentDir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
-        if (currentDir.length() < 0.1) currentDir.set(1, 1, 1).normalize();
-        camera.position.copy(center).add(currentDir.multiplyScalar(targetDistance));
-      }
-      
-      // Fix: Near/Far planes need to handle large coordinate offsets, not just object size
-      camera.near = 1;
-      camera.far = targetDistance * 100;
-      camera.updateProjectionMatrix();
-      
-      if (controls) {
-        // Always set the rotation target to the center of the bounding box (either scene or selection)
-        controls.target.copy(center);
-        controls.update();
-      }
-      
-      camera.lookAt(center);
-    }, 100);
+        if (!hasSelection || cameraViewMode === 'auto' || ['top', 'front', 'iso'].includes(cameraViewMode)) {
+            box.setFromObject(scene);
+            // If the scene is empty (e.g. at startup), provide a tiny default bounds
+            if (box.isEmpty()) {
+                box.min.set(-100, -100, -100);
+                box.max.set(100, 100, 100);
+            }
+        }
 
-    return () => clearTimeout(timer);
-  }, [segments, nodes, camera, controls, scene, selectedSegmentIds, cameraViewMode]);
+        box.getCenter(targetCenter.current);
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const safeMaxDim = maxDim === 0 ? 1000 : maxDim;
 
-  return null;
+        // Standard perspective fallback FOV math
+        const fov = (camera.type === 'PerspectiveCamera' ? camera.fov : 50) * (Math.PI / 180);
+        const boundingSphereRadius = (safeMaxDim / 2) * Math.sqrt(3);
+        let dist = (boundingSphereRadius * 1.2) / Math.sin(fov / 2);
+        targetDistance.current = Math.max(dist, 1500); // enforce floor to avoid microscopic scaling
+
+        // Determine target position based on mode
+        if (cameraViewMode === 'iso' || cameraViewMode === 'auto') {
+            const offset = Math.sqrt((targetDistance.current * targetDistance.current) / 3);
+            targetPosition.current.set(
+                targetCenter.current.x + offset,
+                targetCenter.current.y + offset,
+                targetCenter.current.z + offset
+            );
+        } else if (cameraViewMode === 'top') {
+            targetPosition.current.set(
+                targetCenter.current.x,
+                targetCenter.current.y + targetDistance.current,
+                targetCenter.current.z
+            );
+        } else if (cameraViewMode === 'front') {
+            targetPosition.current.set(
+                targetCenter.current.x,
+                targetCenter.current.y,
+                targetCenter.current.z + targetDistance.current
+            );
+        } else if (cameraViewMode === 'selected') {
+            const currentDir = new THREE.Vector3().subVectors(camera.position, controlsRef.current?.target || targetCenter.current).normalize();
+            if (currentDir.length() < 0.1) currentDir.set(1, 1, 1).normalize();
+            targetPosition.current.copy(targetCenter.current).add(currentDir.multiplyScalar(targetDistance.current));
+        }
+
+        // Dynamic Z-Clipping based on scene extents
+        const sceneBox = new THREE.Box3().setFromObject(scene);
+        if (!sceneBox.isEmpty()) {
+            const sceneSize = sceneBox.getSize(new THREE.Vector3());
+            const sceneMaxDim = Math.max(sceneSize.x, sceneSize.y, sceneSize.z);
+            const safeMax = sceneMaxDim === 0 ? 1000 : sceneMaxDim;
+            camera.near = Math.max(1, safeMax * 0.001);
+            camera.far = Math.max(safeMax * 100, targetDistance.current * 10);
+            camera.updateProjectionMatrix();
+        }
+
+    }, [selectedNodeId, selectedSegmentIds, nodes, scene, camera, cameraViewMode]);
+
+    useFrame((state, delta) => {
+        if (!controlsRef.current) return;
+
+        // Dampen the orbit target
+        THREE.MathUtils.damp3(controlsRef.current.target, targetCenter.current, 4, delta);
+
+        // Only dampen camera position if a view mode button was recently pressed or we selected something explicitly via datagrid
+        // For smooth orbit control usage, we only apply position damping if the distance between current and target is significant,
+        // or if we're explicitly in a forced camera mode.
+        if (cameraViewMode !== 'none') {
+            THREE.MathUtils.damp3(camera.position, targetPosition.current, 4, delta);
+
+            // If we are extremely close to the target, release the forced view mode to allow free orbit
+            if (camera.position.distanceTo(targetPosition.current) < 10) {
+                 useGC3DStore.getState().setCameraViewMode('none');
+            }
+        }
+
+        controlsRef.current.update();
+    });
+
+    return <OrbitControls ref={controlsRef} makeDefault enableDamping dampingFactor={0.1} />;
 };
 
 const InteractivePlane = () => {
@@ -124,6 +147,8 @@ const InteractivePlane = () => {
 };
 
 export const GC3DCanvas = () => {
+  const [isOrtho, setIsOrtho] = React.useState(false);
+
   const segments = useGC3DStore(s => s.segments);
   const nodes = useGC3DStore(s => s.nodes);
 
@@ -150,6 +175,12 @@ export const GC3DCanvas = () => {
         <button onClick={() => setCameraViewMode('top')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Top</button>
         <button onClick={() => setCameraViewMode('front')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Front</button>
         <button onClick={() => setCameraViewMode('iso')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Iso</button>
+        <button
+           onClick={() => setIsOrtho(!isOrtho)}
+           style={{ background: isOrtho ? '#10b981' : '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}
+        >
+          {isOrtho ? 'Ortho' : 'Persp'}
+        </button>
         <div style={{ width: '1px', background: '#475569', margin: '0 4px' }} />
         <button 
            onClick={() => setActiveTool(activeTool === 'anchor' ? 'select' : 'anchor')} 
@@ -163,8 +194,14 @@ export const GC3DCanvas = () => {
       <Canvas onPointerMissed={() => {
         if (activeTool === 'select') clearSelection();
       }}>
-        <PerspectiveCamera makeDefault position={[5000, 5000, 5000]} fov={50} />
-        <OrbitControls makeDefault enableDamping dampingFactor={0.1} />
+        {isOrtho ? (
+            <OrthographicCamera makeDefault position={[5000, 5000, 5000]} zoom={0.1} />
+        ) : (
+            <PerspectiveCamera makeDefault position={[5000, 5000, 5000]} fov={50} />
+        )}
+
+        <CameraController />
+
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
         <Grid position={[0, -500, 0]} args={[50000, 50000]} sectionSize={1000} cellColor="#1e293b" sectionColor="#334155" fadeDistance={30000} />
@@ -199,7 +236,6 @@ export const GC3DCanvas = () => {
               );
             })}
           </group>
-          <SceneBounds />
         </Suspense>
       </Canvas>
     </div>

@@ -36,11 +36,25 @@ export const GC3DSegmentMesh = ({ id, startPos, endPos, compType, length_in }) =
     diff.clone().normalize()
   );
 
+  const legResults = useGC3DStore(s => s.legResults);
+  const params = useGC3DStore(s => s.params);
+
   let baseColor = COLORS[compType] || COLORS.PIPE;
+
   if (colorMode === 'stress') {
-     // fallback if stress data missing
-     baseColor = COLORS[compType] || COLORS.PIPE;
+      const res = legResults.find(r => r.legId === id);
+      const SA = params.Sa_psi;
+      if (res && SA > 0) {
+          const ratio = res.Sb_psi / SA;
+          if (ratio <= 0.3) baseColor = '#1e3a8a'; // Deep Blue
+          else if (ratio <= 0.7) baseColor = '#10b981'; // Green
+          else if (ratio <= 0.9) baseColor = '#eab308'; // Yellow
+          else baseColor = '#ef4444'; // Red (Fail)
+      } else {
+          baseColor = '#475569'; // Grey out if no data
+      }
   }
+
   const color = isSelected ? '#ffa500' : (hovered ? '#ffffff' : baseColor);
 
   // Dynamic radius based on segment OD if available, otherwise fallback to 80

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
+import { sectionProperties, thermalDisplacement, gcBasic, gcWithFlexibility, intensifiedStress, combineStressAtNode, allowableStress, requiredLegLength, stressCheck } from './GC3DCalcEngine';
 import { getSIFData } from './GC3DSIFEngine';
 import { getMaterialProperties } from '../utils/materialUtils';
-import { solveGC3D } from './GC3DSolver';
 
 export const useGC3DStore = create((set, get) => ({
   nodes: {},
@@ -33,20 +33,6 @@ export const useGC3DStore = create((set, get) => ({
   setActiveTool: (tool) => set({ activeTool: tool, selectedSegmentIds: new Set(), selectedNodeId: null }),
   snapNodeId: null, // OSnap support for GC3D
   setSnapNodeId: (id) => set({ snapNodeId: id }),
-  convertNodeToAnchor: (id) => {
-    const { nodes } = get();
-    if (nodes[id]) {
-      set(s => ({
-         nodes: {
-            ...s.nodes,
-            [id]: { ...s.nodes[id], type: 'anchor' }
-         },
-         activeTool: 'select', // Auto-switch back to select mode
-         snapNodeId: null
-      }));
-      get().runAnalysis(); // Instantly trigger Pure Solver to recalculate constraints
-    }
-  },
   cameraViewMode: 'auto', // 'auto', 'top', 'iso', 'front', 'selected'
   setCameraViewMode: (mode) => set({ cameraViewMode: mode }),
   unitSystem: 'imperial',
@@ -89,17 +75,17 @@ export const useGC3DStore = create((set, get) => ({
     get().recalcSegmentLengths();
     get().runAnalysis();
   },
-  
+
   adjustSegmentDelta: (segId, dx, dy, dz) => {
     const { nodes, segments } = get();
     const seg = segments.find(s => s.id === segId);
     if (!seg) return;
-    
+
     // Simple approach: Adjust the endNode position based on startNode + new deltas
     // In a real FEA app, this would shift the entire downstream system.
     const startNode = nodes[seg.startNode];
     const endNodeId = seg.endNode;
-    
+
     if (startNode) {
        const newPos = [
           startNode.pos[0] + dx,
@@ -126,7 +112,7 @@ export const useGC3DStore = create((set, get) => ({
   updateSegmentProperty: (segIds, updates) => {
     const { segments, fittingData } = get();
     const ids = Array.isArray(segIds) ? segIds : [segIds];
-    
+
     let newSegments = [...segments];
     let newFittingData = { ...fittingData };
     let firstUpdatedSegIdx = -1;
@@ -134,7 +120,7 @@ export const useGC3DStore = create((set, get) => ({
     ids.forEach(segId => {
       const segIdx = newSegments.findIndex(s => s.id === segId);
       if (segIdx === -1) return;
-      
+
       if (firstUpdatedSegIdx === -1) firstUpdatedSegIdx = segIdx;
 
       const seg = newSegments[segIdx];
@@ -142,10 +128,10 @@ export const useGC3DStore = create((set, get) => ({
 
       if (updates.od_in !== undefined || updates.wt_in !== undefined) {
         newFittingData[segId] = getSIFData(
-          seg.compType, 
-          newSegments[segIdx].od_in, 
-          newSegments[segIdx].wt_in, 
-          true, 
+          seg.compType,
+          newSegments[segIdx].od_in,
+          newSegments[segIdx].wt_in,
+          true,
           'LR'
         );
       }
@@ -154,14 +140,14 @@ export const useGC3DStore = create((set, get) => ({
     if (firstUpdatedSegIdx === -1) return;
 
     set({ segments: newSegments, fittingData: newFittingData });
-    
+
     // If material changed, attempt to update global params (simplified assumption: system uses 1 material)
     if (updates.material) {
         const tempC = (get().params.designTemp_F - 32) * 5 / 9;
         const props = getMaterialProperties(
-            updates.material, 
-            tempC, 
-            newSegments[firstUpdatedSegIdx].od_in * 25.4, 
+            updates.material,
+            tempC,
+            newSegments[firstUpdatedSegIdx].od_in * 25.4,
             newSegments[firstUpdatedSegIdx].wt_in * 25.4
         );
         if (props && props.E) {
@@ -186,11 +172,11 @@ export const useGC3DStore = create((set, get) => ({
     const { nodes, segments, fittingData } = get();
     const segIdx = segments.findIndex(s => s.id === segId);
     if (segIdx === -1) return;
-    
+
     const origSeg = segments[segIdx];
     const startNode = nodes[origSeg.startNode];
     const endNode = nodes[origSeg.endNode];
-    
+
     if (!startNode || !endNode) return;
 
     // Create new node at point
@@ -232,7 +218,7 @@ export const useGC3DStore = create((set, get) => ({
 
     const newSegments = [...segments];
     newSegments.splice(segIdx, 1, seg1, seg2);
-    
+
     // Copy SIF data
     const newFittingData = { ...fittingData };
     if (newFittingData[origSeg.id]) {
@@ -251,25 +237,103 @@ export const useGC3DStore = create((set, get) => ({
   runAnalysis: () => {
     get().clearLog();
     const { nodes, segments, params, includeSIF, fittingData } = get();
+    get().log(0, "Starting GC 3D analysis...");
 
-    // Payload serialization for Pure Solver
-    const payload = JSON.parse(JSON.stringify({
-        nodes,
-        segments,
-        params,
-        fittingData,
-        includeSIF
-    }));
+    if (!nodes || Object.keys(nodes).length < 2 || !segments || segments.length === 0) {
+      get().log(1, "Validation failed: Need >=2 nodes and >=1 segment.");
+      return;
+    }
+    const E = params.E_psi;
+    const alpha = params.alpha_in_in_F;
+    const deltaT = params.deltaT_F;
 
-    const result = solveGC3D(payload);
+    get().log(1, `Validated: ${segments.length} segments, ${Object.keys(nodes).length} nodes`);
 
-    set({
-        legResults: result.legResults,
-        nodeResults: result.nodeResults,
-        criticalNode: result.criticalNode,
-        overallResult: result.overallResult,
-        debugLog: [...get().debugLog, ...result.debugLog]
+    // We assume uniform pipe for simplicity, take first segment's pipe
+    const mainSeg = segments[0];
+    const D_o = mainSeg.od_in;
+    const t_n = mainSeg.wt_in;
+    const { I, Z } = sectionProperties(D_o, t_n);
+    const unitSystem = get().unitSystem;
+    const isSI = unitSystem === 'si';
+
+    // Formatting helpers
+    const fIn = val => isSI ? `${(val * 25.4).toFixed(1)} mm` : `${val.toFixed(3)} in`;
+    const fStress = val => isSI ? `${(val * 0.00689476).toFixed(0)} MPa` : `${val.toFixed(0)} psi`;
+    const fForce = val => isSI ? `${(val * 4.44822).toFixed(0)} N` : `${val.toFixed(0)} lbf`;
+    const fMoment = val => isSI ? `${(val * 112.985 / 1000).toFixed(0)} N·m` : `${val.toFixed(0)} in·lbf`;
+
+    get().log(2, `Section: D_o=${fIn(D_o)}, t=${fIn(t_n)}, I=${I.toFixed(2)}in⁴, Z=${Z.toFixed(2)}in³`);
+
+    // Determine displacements per axis
+    const totalRuns = { X: 0, Y: 0, Z: 0 };
+    segments.forEach(seg => {
+      if (seg.axis === 'X') totalRuns.X += seg.length_in;
+      if (seg.axis === 'Y') totalRuns.Y += seg.length_in;
+      if (seg.axis === 'Z') totalRuns.Z += seg.length_in;
     });
+
+    const deltas = {
+      X: thermalDisplacement(alpha, totalRuns.X, deltaT),
+      Y: thermalDisplacement(alpha, totalRuns.Y, deltaT),
+      Z: thermalDisplacement(alpha, totalRuns.Z, deltaT)
+    };
+    get().log(4, `Thermal displacements: δ_X=${fIn(deltas.X)}, δ_Y=${fIn(deltas.Y)}, δ_Z=${fIn(deltas.Z)}`);
+
+    const legResults = [];
+    segments.forEach(seg => {
+       const perpAxes = ['X', 'Y', 'Z'].filter(a => a !== seg.axis);
+       let Sb_components = [];
+       const data = fittingData[seg.id] || { k: 1.0, i_i: 1.0, R_e: 0 };
+       const k = includeSIF ? data.k : 1.0;
+       const i_i = includeSIF ? data.i_i : 1.0;
+       const R_e = data.R_e;
+
+       let totalF = 0, totalM = 0;
+       perpAxes.forEach(p => {
+          const d = deltas[p];
+          if (d <= 0) return;
+          let F, M, Sb;
+          if (k > 1.0 && R_e > 0) {
+             const res = gcWithFlexibility(E, I, Z, D_o, d, seg.length_in, k, R_e);
+             F = res.F_lbf; M = res.M_inlbf; Sb = res.Sb_psi;
+          } else {
+             const res = gcBasic(E, I, Z, D_o, d, seg.length_in);
+             F = res.F_lbf; M = res.M_inlbf; Sb = res.Sb_psi;
+          }
+          const SE = i_i * Sb;
+          Sb_components.push(SE);
+          totalF += F; totalM += M;
+       });
+
+       const Sb_combined = combineStressAtNode(Sb_components);
+       legResults.push({
+           legId: seg.id, axis: seg.axis, L_in: seg.length_in,
+           F_lbf: totalF, M_inlbf: totalM, Sb_psi: Sb_combined
+       });
+       get().log(5, `Leg ${seg.id}: F=${fForce(totalF)}, M=${fMoment(totalM)}, Sb=${fStress(Sb_combined)}`);
+    });
+
+    const SA = allowableStress(params.f, params.Sc_psi, params.Sh_psi);
+    const nodeResults = [];
+    let critical = null; let maxRatio = 0; let overAll = 'PASS';
+
+    Object.keys(nodes).forEach(nId => {
+       const connectedLegs = legResults.filter(l =>
+          segments.find(s => s.id === l.legId)?.startNode === nId ||
+          segments.find(s => s.id === l.legId)?.endNode === nId
+       );
+       const combined = combineStressAtNode(connectedLegs.map(l => l.Sb_psi));
+       const { ratio, result } = stressCheck(combined, SA);
+       if (ratio > maxRatio) { maxRatio = ratio; critical = nId; }
+       if (result === 'FAIL') overAll = 'FAIL';
+       nodeResults.push({ nodeId: nId, SE_psi: combined, SA_psi: SA, ratio, result });
+       get().log(6, `Node ${nId}: SE=${fStress(combined)}`);
+    });
+
+    get().log(7, `RESULT: ${overAll}. Critical: ${critical} (ratio=${maxRatio.toFixed(3)})`);
+
+    set({ legResults, nodeResults, criticalNode: critical, overallResult: overAll });
   },
 
   importFromViewer: (selectedComps, globalParams) => {
