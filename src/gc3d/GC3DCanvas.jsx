@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useRef } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls, Grid, PerspectiveCamera, Environment, GizmoHelper, GizmoViewport } from '@react-three/drei';
+import { OrbitControls, Grid, PerspectiveCamera, Environment, GizmoHelper, GizmoViewport, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useGC3DStore } from './GC3DStore';
 import { GC3DNodeMesh } from './GC3DNodeMesh';
@@ -12,47 +12,54 @@ const SceneBounds = () => {
   const nodes = useGC3DStore(s => s.nodes);
 
   const selectedSegmentIds = useGC3DStore(s => s.selectedSegmentIds);
-  const cameraViewMode = useGC3DStore(s => s.cameraViewMode);
-
+  const cameraViewMode = useGC3DStore(s => s.cameraViewMode); // 'auto', 'top', 'iso', 'front'
+  
   useEffect(() => {
     if (segments.length === 0 || !nodes || Object.keys(nodes).length === 0) return;
 
     const timer = setTimeout(() => {
+      // Focus on selection if exists, else the whole scene
       const box = new THREE.Box3();
-
-      if (selectedSegmentIds && selectedSegmentIds.size > 0) {
-        scene.traverse((child) => {
-          if (child.isMesh && child.userData && child.userData.isSegment && selectedSegmentIds.has(child.userData.id)) {
-            box.expandByObject(child);
+      
+      if (selectedSegmentIds.size > 0) {
+          const selectedMeshes = [];
+          scene.traverse((child) => {
+              if (child.userData && child.userData.isSegment && selectedSegmentIds.has(child.userData.id)) {
+                  selectedMeshes.push(child);
+              }
+          });
+          if (selectedMeshes.length > 0) {
+             selectedMeshes.forEach(m => box.expandByObject(m));
+          } else {
+             box.setFromObject(scene);
           }
-        });
+      } else {
+          box.setFromObject(scene);
       }
-      if (box.isEmpty() || !isFinite(box.max.x)) {
-         box.setFromObject(scene);
-      }
+
       if (box.isEmpty()) return;
 
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
-
+      
       // The geometry might be a single point if imported weirdly
       const maxDim = Math.max(size.x, size.y, size.z);
-
+      
       // If maxDim is 0, default to 1000 to prevent division by zero
       const safeMaxDim = maxDim === 0 ? 1000 : maxDim;
 
       // Ensure we don't zoom out infinitely if the selection is a tiny single pipe
       const fov = camera.fov * (Math.PI / 180);
-
+      
       // Calculate distance to fit the bounding sphere
       // Radius of bounding sphere is roughly safeMaxDim / 2 * sqrt(3)
       const boundingSphereRadius = (safeMaxDim / 2) * Math.sqrt(3);
-
+      
       // We want the sphere to fit within the FOV, with some padding (e.g. 1.2)
       let targetDistance = (boundingSphereRadius * 1.2) / Math.sin(fov / 2);
-
+      
       // Enforce a sensible minimum zoom distance so a single 10mm pipe isn't microscopic or massive
-      targetDistance = Math.max(targetDistance, 2000);
+      targetDistance = Math.max(targetDistance, 2000); 
 
       // Update camera position based on view mode
       if (cameraViewMode === 'iso' || cameraViewMode === 'auto') {
@@ -66,22 +73,23 @@ const SceneBounds = () => {
       } else if (cameraViewMode === 'front') {
         camera.position.set(center.x, center.y, center.z + targetDistance);
       } else if (cameraViewMode === 'selected') {
-        // Keep current position relative to new target
+        // If 'selected' mode is active, we just point the camera and adjust distance without changing the angle
         const currentDir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
         if (currentDir.length() < 0.1) currentDir.set(1, 1, 1).normalize();
         camera.position.copy(center).add(currentDir.multiplyScalar(targetDistance));
       }
-
+      
       // Fix: Near/Far planes need to handle large coordinate offsets, not just object size
       camera.near = 1;
       camera.far = targetDistance * 100;
       camera.updateProjectionMatrix();
-
+      
       if (controls) {
+        // Always set the rotation target to the center of the bounding box (either scene or selection)
         controls.target.copy(center);
         controls.update();
       }
-
+      
       camera.lookAt(center);
     }, 100);
 
@@ -99,10 +107,10 @@ export const GC3DCanvas = () => {
   const activeTool = useGC3DStore(s => s.activeTool);
   const setActiveTool = useGC3DStore(s => s.setActiveTool);
   const setCameraViewMode = useGC3DStore(s => s.setCameraViewMode);
-
+  
   return (
     <div style={{ flex: 1, position: 'relative', background: '#0f172a' }}>
-
+      
       {/* Top Toolbar Overlay */}
       <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: '8px', background: 'rgba(30, 41, 59, 0.8)', padding: '8px', borderRadius: '8px', border: '1px solid #334155' }}>
         <button onClick={() => setCameraViewMode('auto')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>⛶ Auto Center</button>
@@ -113,8 +121,8 @@ export const GC3DCanvas = () => {
         <button onClick={() => setCameraViewMode('front')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Front</button>
         <button onClick={() => setCameraViewMode('iso')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Iso</button>
         <div style={{ width: '1px', background: '#475569', margin: '0 4px' }} />
-        <button
-           onClick={() => setActiveTool(activeTool === 'anchor' ? 'select' : 'anchor')}
+        <button 
+           onClick={() => setActiveTool(activeTool === 'anchor' ? 'select' : 'anchor')} 
            style={{ background: activeTool === 'anchor' ? '#ef4444' : '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}
         >
           <span style={{ display: 'inline-block', width: '10px', height: '10px', background: 'white', clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}></span>
