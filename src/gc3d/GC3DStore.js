@@ -261,7 +261,9 @@ export const useGC3DStore = create((set, get) => ({
         includeSIF
     }));
 
+    console.time('solveGC3D');
     const result = solveGC3D(payload);
+    console.timeEnd('solveGC3D');
 
     set({
         legResults: result.legResults,
