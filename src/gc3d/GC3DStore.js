@@ -51,6 +51,8 @@ export const useGC3DStore = create((set, get) => ({
   setCameraViewMode: (mode) => set({ cameraViewMode: mode }),
   unitSystem: 'imperial',
   consoleCollapsed: false,
+  dataGridCollapsed: false,
+  toggleDataGrid: () => set(s => ({ dataGridCollapsed: !s.dataGridCollapsed })),
   config: {
     gridSnap_mm: 100,
     displayPrecision: { stress: 0, sif: 3, length: 1, force: 0 },

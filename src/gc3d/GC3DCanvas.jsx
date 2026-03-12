@@ -107,14 +107,17 @@ const CameraController = () => {
     useFrame((state, delta) => {
         if (!controlsRef.current) return;
 
+        // Use standard lerp for guaranteed compatibility across Three.js versions instead of damp3
+        const lerpFactor = 1 - Math.exp(-4 * delta);
+
         // Dampen the orbit target
-        THREE.MathUtils.damp3(controlsRef.current.target, targetCenter.current, 4, delta);
+        controlsRef.current.target.lerp(targetCenter.current, lerpFactor);
 
         // Only dampen camera position if a view mode button was recently pressed or we selected something explicitly via datagrid
         // For smooth orbit control usage, we only apply position damping if the distance between current and target is significant,
         // or if we're explicitly in a forced camera mode.
         if (cameraViewMode !== 'none') {
-            THREE.MathUtils.damp3(camera.position, targetPosition.current, 4, delta);
+            camera.position.lerp(targetPosition.current, lerpFactor);
 
             // If we are extremely close to the target, release the forced view mode to allow free orbit
             if (camera.position.distanceTo(targetPosition.current) < 10) {
