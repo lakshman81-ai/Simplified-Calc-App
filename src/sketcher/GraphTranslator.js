@@ -13,6 +13,7 @@ export const buildGraphFromComponents = (components) => {
     const segments = [];
     const warnings = [];
     let nodeCounter = 1;
+    let segCounter = 1;
 
     if (!Array.isArray(components)) {
         console.warn("[GraphTranslator] Input components is not an array. Returning empty graph.");
@@ -40,7 +41,7 @@ export const buildGraphFromComponents = (components) => {
         }
 
         // Add new node
-        const newId = `N${nodeCounter++}`;
+        const newId = `N${String(nodeCounter++).padStart(3, '0')}`;
         nodes[newId] = { pos: [ptX, ptY, ptZ], type: 'free' };
         return newId;
     };
@@ -80,7 +81,7 @@ export const buildGraphFromComponents = (components) => {
 
         if (comp.type === 'PIPE') {
             segments.push({
-                id: comp.id || `S${Date.now()}_${Math.random()}`,
+                id: comp.id || `S${String(segCounter++).padStart(3, '0')}`,
                 startNode: startId,
                 endNode: endId,
                 properties: {

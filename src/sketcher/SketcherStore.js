@@ -45,13 +45,37 @@ export const useSketchStore = create((set, get) => ({
 
   // Geometric Actions
   createNode: (pos, type = 'free') => {
-      const id = `N${Date.now()}`;
+      const { nodes } = get();
+
+      let maxNum = 0;
+      Object.keys(nodes).forEach(key => {
+          if (key.startsWith('N')) {
+              const num = parseInt(key.slice(1), 10);
+              if (!isNaN(num) && num > maxNum) maxNum = num;
+          }
+      });
+
+      const nextNumStr = String(maxNum + 1).padStart(3, '0');
+      const id = `N${nextNumStr}`;
+
       set(s => ({ nodes: { ...s.nodes, [id]: { pos, type } } }));
       return id;
   },
 
   createSegment: (startNodeId, endNodeId, properties = {}) => {
-      const id = `S${Date.now()}`;
+      const { segments } = get();
+
+      let maxNum = 0;
+      segments.forEach(seg => {
+          if (seg.id.startsWith('S')) {
+              const num = parseInt(seg.id.slice(1), 10);
+              if (!isNaN(num) && num > maxNum) maxNum = num;
+          }
+      });
+
+      const nextNumStr = String(maxNum + 1).padStart(3, '0');
+      const id = `S${nextNumStr}`;
+
       set(s => ({ segments: [...s.segments, { id, startNode: startNodeId, endNode: endNodeId, ...properties }] }));
       return id;
   },
