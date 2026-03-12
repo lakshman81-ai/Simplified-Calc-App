@@ -21,6 +21,9 @@ export const useSketchStore = create((set, get) => ({
   importWarnings: [],
   clearWarnings: () => set({ importWarnings: [] }),
 
+  autoCenterTrigger: 0,
+  triggerAutoCenter: () => set(s => ({ autoCenterTrigger: s.autoCenterTrigger + 1 })),
+
   selectedNodeId: null,
   setSelectedNodeId: (id) => set({ selectedNodeId: id }),
   updateNode: (id, updates) => set((s) => ({
