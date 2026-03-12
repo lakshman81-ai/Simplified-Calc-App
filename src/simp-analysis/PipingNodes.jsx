@@ -44,8 +44,10 @@ const NodeDraggable = ({ id, node, plane }) => {
           finalY = Math.round(finalY / 100) * 100;
           finalZ = Math.round(finalZ / 100) * 100;
 
-          // Mutate the actual state coordinate
-          moveNode(id, [finalX, finalY, finalZ]);
+          // Only mutate state if the position actually changed to prevent infinite loops
+          if (finalX !== node.pos[0] || finalY !== node.pos[1] || finalZ !== node.pos[2]) {
+            moveNode(id, [finalX, finalY, finalZ]);
+          }
         }
       }}
     >
