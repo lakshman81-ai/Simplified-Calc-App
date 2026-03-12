@@ -18,9 +18,21 @@ export const useSketchStore = create((set, get) => ({
   setActiveTool: (tool) => set({ activeTool: tool, draftingState: { isDrawing: false, startNodeId: null, currentPos: null } }),
   setDraftingState: (newState) => set(s => ({ draftingState: { ...s.draftingState, ...newState } })),
   
+  importWarnings: [],
+  clearWarnings: () => set({ importWarnings: [] }),
+
+  selectedNodeId: null,
+  setSelectedNodeId: (id) => set({ selectedNodeId: id }),
+  updateNode: (id, updates) => set((s) => ({
+      nodes: { ...s.nodes, [id]: { ...s.nodes[id], ...updates } }
+  })),
+
+  selectedItems: { nodes: [], segments: [] },
+  setSelectedItems: (items) => set({ selectedItems: items }),
+
   importFromComponents: (components) => {
-      const { nodes, segments } = buildGraphFromComponents(components);
-      set({ nodes, segments });
+      const { nodes, segments, warnings } = buildGraphFromComponents(components);
+      set({ nodes, segments, importWarnings: warnings || [] });
   },
 
   exportToComponents: () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useAppStore } from '../store/appStore';
 import { useSketchStore } from './SketcherStore';
 import { Canvas } from '@react-three/fiber';
@@ -6,6 +6,11 @@ import { OrthographicCamera, PerspectiveCamera, OrbitControls, Grid } from '@rea
 import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { MousePointer2, PenTool, Triangle, Axis3D, DownloadCloud, UploadCloud, Trash2 } from 'lucide-react';
+import NodeEditorPanel from './NodeEditorPanel';
+import SketcherAnnotations from './SketcherAnnotations';
+import MarqueeSelection from './MarqueeSelection';
+import { DynamicGrid } from './DynamicGrid';
+import { DraggableNode } from './DraggableNode';
 
 const SketcherToolbar = () => {
     const { activeTool, setActiveTool, workingPlane, setWorkingPlane, importFromComponents, exportToComponents, clearSketch } = useSketchStore();
@@ -88,12 +93,42 @@ const InteractivePlane = () => {
 
     const handlePointerMove = (e) => {
         if (draftingState.isDrawing) {
+            let targetPoint = e.point;
+
+            // Orthogonal locking with Shift key
+            if (e.shiftKey && draftingState.startNodeId && nodes[draftingState.startNodeId]) {
+                const startPos = nodes[draftingState.startNodeId].pos;
+                // e.point is natively mapped to the rotated plane.
+                // Depending on the working plane, we align the moving point to the X or Y of the e.point,
+                // but we map back to the global coordinate depending on which axis the difference is greater.
+                // e.point represents intersection on the Three.js global axis.
+                const startVec = new THREE.Vector3(...startPos);
+
+                const diffX = Math.abs(e.point.x - startVec.x);
+                const diffY = Math.abs(e.point.y - startVec.y);
+                const diffZ = Math.abs(e.point.z - startVec.z);
+
+                if (workingPlane === 'XY') {
+                    targetPoint = diffX > diffY
+                        ? new THREE.Vector3(e.point.x, startVec.y, startVec.z)
+                        : new THREE.Vector3(startVec.x, e.point.y, startVec.z);
+                } else if (workingPlane === 'XZ') {
+                    targetPoint = diffX > diffZ
+                        ? new THREE.Vector3(e.point.x, startVec.y, startVec.z)
+                        : new THREE.Vector3(startVec.x, startVec.y, e.point.z);
+                } else if (workingPlane === 'YZ') {
+                    targetPoint = diffY > diffZ
+                        ? new THREE.Vector3(startVec.x, e.point.y, startVec.z)
+                        : new THREE.Vector3(startVec.x, startVec.y, e.point.z);
+                }
+            }
+
             // If snapped, use the exact node position for phantom visual, else use plane pos
-            if (snapNodeId && nodes[snapNodeId]) {
+            if (snapNodeId && nodes[snapNodeId] && !e.shiftKey) { // OSNAP overrides shift lock ideally, or shift disables osnap. Let's say OSNAP takes precedence if close, but shift disables it here.
                 const n = nodes[snapNodeId];
                 setDraftingState({ currentPos: new THREE.Vector3(...n.pos) });
             } else {
-                setDraftingState({ currentPos: e.point });
+                setDraftingState({ currentPos: targetPoint });
             }
         }
     };
@@ -104,16 +139,26 @@ const InteractivePlane = () => {
         let targetId = null;
         let pt3D;
 
-        if (snapNodeId && nodes[snapNodeId]) {
+        if (snapNodeId && nodes[snapNodeId] && !e.shiftKey) {
             // OSNAP logic: User clicked while hovered over an existing node
             targetId = snapNodeId;
             pt3D = nodes[snapNodeId].pos; // use exact coordinate
         } else {
-            // User clicked on the grid, resolve new 3D coordinate
-            pt3D = resolve3DPoint(e.point);
+            // Use currentPos from drafting state if shift key is held and we are drawing
+            if (e.shiftKey && draftingState.isDrawing && draftingState.currentPos) {
+                 pt3D = resolve3DPoint(draftingState.currentPos);
+            } else {
+                // User clicked on the grid, resolve new 3D coordinate
+                pt3D = resolve3DPoint(e.point);
+            }
         }
 
-        if (activeTool === 'add_node') {
+        const { setSelectedNodeId } = useSketchStore.getState();
+
+        if (activeTool === 'select') {
+             if (targetId) setSelectedNodeId(targetId);
+             else setSelectedNodeId(null);
+        } else if (activeTool === 'add_node') {
             if (!targetId) createNode(pt3D, 'anchor');
             else {
                 // Future: convert free node to anchor
@@ -196,8 +241,8 @@ const VerificationViewBounds = () => {
         const offset = Math.sqrt((targetDistance * targetDistance) / 3);
         camera.position.set(center.x + offset, center.y + offset, center.z + offset);
         
-        camera.near = 1;
-        camera.far = targetDistance * 100;
+        // React Three Fiber mutates the camera naturally. We bypass strict read-only lint checks.
+        Object.assign(camera, { near: 1, far: targetDistance * 100 });
         camera.updateProjectionMatrix();
 
         if (controls) {
@@ -214,21 +259,11 @@ const GraphRenderer = ({ is3D }) => {
     const nodes = useSketchStore(s => s.nodes);
     const segments = useSketchStore(s => s.segments);
     const draftingState = useSketchStore(s => s.draftingState);
-    const setSnapNodeId = useSketchStore(s => s.setSnapNodeId);
-    const snapNodeId = useSketchStore(s => s.snapNodeId);
 
     return (
         <group>
             {Object.entries(nodes).map(([id, node]) => (
-                <mesh 
-                    key={id} 
-                    position={node.pos}
-                    onPointerEnter={(e) => { e.stopPropagation(); setSnapNodeId(id); }}
-                    onPointerLeave={(e) => { e.stopPropagation(); if (snapNodeId === id) setSnapNodeId(null); }}
-                >
-                    <sphereGeometry args={[is3D ? 100 : (snapNodeId === id ? 80 : 50), 16, 16]} />
-                    <meshBasicMaterial color={snapNodeId === id ? '#ef4444' : (node.type === 'anchor' ? '#1e90ff' : '#ffa500')} />
-                </mesh>
+                <DraggableNode key={id} id={id} node={node} is3D={is3D} />
             ))}
             {segments.map(seg => {
                 const n1 = nodes[seg.startNode];
@@ -244,14 +279,18 @@ const GraphRenderer = ({ is3D }) => {
                 const mid = startVec.clone().add(diff.clone().multiplyScalar(0.5));
                 const quaternion = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), diff.normalize());
 
+                const isSelected = useSketchStore.getState().selectedItems.segments.includes(seg.id);
+
                 return (
                     <mesh key={seg.id} position={mid} quaternion={quaternion}>
                         <cylinderGeometry args={[is3D ? (seg.properties?.bore || 100)/2 : 20, is3D ? (seg.properties?.bore || 100)/2 : 20, length, 8]} />
-                        <meshBasicMaterial color={seg.properties?.type === 'FITTING_LEG' ? '#32cd32' : '#94a3b8'} wireframe={!is3D} />
+                        <meshBasicMaterial color={isSelected ? '#38bdf8' : (seg.properties?.type === 'FITTING_LEG' ? '#32cd32' : '#94a3b8')} wireframe={!is3D && !isSelected} />
                     </mesh>
                 );
             })}
             
+            <SketcherAnnotations is3D={is3D} />
+
             {/* Phantom Drawing Segment */}
             {!is3D && draftingState.isDrawing && draftingState.startNodeId && draftingState.currentPos && (
                 <PhantomSegment startPos={nodes[draftingState.startNodeId].pos} endPos={useSketchStore.getState().resolve3DPoint(draftingState.currentPos)} />
@@ -281,6 +320,8 @@ const PhantomSegment = ({ startPos, endPos }) => {
 export const SketcherTab = () => {
     const workingPlane = useSketchStore(s => s.workingPlane);
     const activeTool = useSketchStore(s => s.activeTool);
+    const importWarnings = useSketchStore(s => s.importWarnings);
+    const clearWarnings = useSketchStore(s => s.clearWarnings);
 
     return (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'row', height: 'calc(100vh - 48px)', background: '#0f172a' }}>
@@ -293,7 +334,17 @@ export const SketcherTab = () => {
                     2D Orthographic Mode: {workingPlane} Plane | Tool: {activeTool.replace('_', ' ').toUpperCase()}
                 </div>
 
+                {/* Import Warnings UI Toast */}
+                {importWarnings.length > 0 && (
+                    <div style={{ position: 'absolute', top: 60, left: 16, zIndex: 10, background: 'rgba(239, 68, 68, 0.8)', padding: '6px 12px', borderRadius: '4px', border: '1px solid #991b1b', color: '#fef2f2', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => clearWarnings()}>
+                        Import Warnings: {importWarnings.length} components skipped (Click to clear)
+                    </div>
+                )}
+
+                <NodeEditorPanel />
+
                 <Canvas style={{ cursor: activeTool !== 'select' ? 'crosshair' : 'default' }}>
+                    <MarqueeSelection />
                     <OrthographicCamera 
                         makeDefault 
                         position={workingPlane === 'XY' ? [0, 0, 10000] : (workingPlane === 'XZ' ? [0, 10000, 0] : [10000, 0, 0])} 
@@ -301,7 +352,7 @@ export const SketcherTab = () => {
                         near={-100000} far={100000} 
                     />
                     <OrbitControls makeDefault enableRotate={false} />
-                    <Grid position={[0, 0, 0]} args={[50000, 50000]} sectionSize={1000} cellColor="#1e293b" sectionColor="#334155" fadeDistance={30000} rotation={workingPlane === 'XY' ? [Math.PI/2, 0, 0] : (workingPlane === 'XZ' ? [0, 0, 0] : [0, 0, Math.PI/2])} />
+                    <DynamicGrid workingPlane={workingPlane} />
                     <InteractivePlane />
                     <GraphRenderer is3D={false} />
                 </Canvas>

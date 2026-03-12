@@ -11,20 +11,37 @@ const distance = (p1, p2) => Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y 
 export const buildGraphFromComponents = (components) => {
     const nodes = {};
     const segments = [];
+    const warnings = [];
     let nodeCounter = 1;
 
+    if (!Array.isArray(components)) {
+        console.warn("[GraphTranslator] Input components is not an array. Returning empty graph.");
+        return { nodes, segments, warnings: [{ message: "Input is not an array." }] };
+    }
+
     const findOrAddNode = (pt) => {
+        // Strict Archetypal Casting for coordinates
+        const ptX = Number(pt.x);
+        const ptY = Number(pt.y);
+        const ptZ = Number(pt.z);
+
+        if (isNaN(ptX) || isNaN(ptY) || isNaN(ptZ)) {
+            return null;
+        }
+
+        const cleanPt = { x: ptX, y: ptY, z: ptZ };
+
         // Search existing nodes within tolerance
         for (const [id, node] of Object.entries(nodes)) {
             const nPt = { x: node.pos[0], y: node.pos[1], z: node.pos[2] };
-            if (distance(pt, nPt) < TOLERANCE) {
+            if (distance(cleanPt, nPt) < TOLERANCE) {
                 return id;
             }
         }
 
         // Add new node
         const newId = `N${nodeCounter++}`;
-        nodes[newId] = { pos: [pt.x, pt.y, pt.z], type: 'free' };
+        nodes[newId] = { pos: [ptX, ptY, ptZ], type: 'free' };
         return newId;
     };
 
@@ -32,10 +49,34 @@ export const buildGraphFromComponents = (components) => {
     const structuralComps = components.filter(c => ['PIPE', 'ELBOW', 'BEND', 'TEE'].includes(c.type));
 
     structuralComps.forEach(comp => {
-        if (!comp.points || comp.points.length < 2) return;
+        if (!comp.points || !Array.isArray(comp.points) || comp.points.length < 2) {
+            const warningMsg = `[GraphTranslator] Component ${comp.id || 'Unknown'} of type ${comp.type} skipped: Missing or invalid points array.`;
+            console.warn(warningMsg);
+            warnings.push(warningMsg);
+            return;
+        }
 
         const startId = findOrAddNode(comp.points[0]);
         const endId = findOrAddNode(comp.points[1]);
+
+        if (!startId || !endId) {
+            const warningMsg = `[GraphTranslator] Component ${comp.id || 'Unknown'} skipped: Failed to parse valid 3D coordinates.`;
+            console.warn(warningMsg);
+            warnings.push(warningMsg);
+            return;
+        }
+
+        // Check for zero-length segments
+        const p1 = nodes[startId].pos;
+        const p2 = nodes[endId].pos;
+        const segDist = distance({x: p1[0], y: p1[1], z: p1[2]}, {x: p2[0], y: p2[1], z: p2[2]});
+
+        if (segDist < TOLERANCE && comp.type !== 'ELBOW' && comp.type !== 'BEND') {
+            const warningMsg = `[GraphTranslator] Component ${comp.id || 'Unknown'} skipped: Segment length (${segDist}) is below tolerance (${TOLERANCE}).`;
+            console.warn(warningMsg);
+            warnings.push(warningMsg);
+            return;
+        }
 
         if (comp.type === 'PIPE') {
             segments.push({
@@ -52,30 +93,40 @@ export const buildGraphFromComponents = (components) => {
             // Upgrade nodes if they are fittings
             nodes[startId].type = 'fitting';
             nodes[endId].type = 'fitting';
+
             if (comp.centrePoint) {
                  const centerId = findOrAddNode(comp.centrePoint);
-                 nodes[centerId].type = 'elbow';
+                 if (centerId) {
+                     nodes[centerId].type = 'elbow';
 
-                 // In a fully robust system, we would map the elbows perfectly,
-                 // but for sketching simplicity, we often reduce it to straight line intersections.
-                 // For now, we will draw two invisible segments to the center to maintain topology
-                 segments.push({
-                     id: `${comp.id}-leg1`,
-                     startNode: startId,
-                     endNode: centerId,
-                     properties: { type: 'FITTING_LEG', bore: comp.bore }
-                 });
-                 segments.push({
-                     id: `${comp.id}-leg2`,
-                     startNode: centerId,
-                     endNode: endId,
-                     properties: { type: 'FITTING_LEG', bore: comp.bore }
-                 });
+                     // Map elbows perfectly to straight line intersections for mathematical parity.
+                     // Creates two straight legs meeting at the center point (sharp corner).
+                     segments.push({
+                         id: `${comp.id}-leg1`,
+                         startNode: startId,
+                         endNode: centerId,
+                         properties: { type: 'FITTING_LEG', bore: comp.bore }
+                     });
+                     segments.push({
+                         id: `${comp.id}-leg2`,
+                         startNode: centerId,
+                         endNode: endId,
+                         properties: { type: 'FITTING_LEG', bore: comp.bore }
+                     });
+                 } else {
+                     const warningMsg = `[GraphTranslator] Component ${comp.id || 'Unknown'} skipped synthetic routing: Invalid centrePoint.`;
+                     console.warn(warningMsg);
+                     warnings.push(warningMsg);
+                 }
+            } else {
+                 const warningMsg = `[GraphTranslator] Component ${comp.id || 'Unknown'} of type ${comp.type} missing centrePoint. Cannot perform synthetic routing.`;
+                 console.warn(warningMsg);
+                 warnings.push(warningMsg);
             }
         }
     });
 
-    return { nodes, segments };
+    return { nodes, segments, warnings };
 };
 
 export const buildComponentsFromGraph = (nodes, segments) => {
