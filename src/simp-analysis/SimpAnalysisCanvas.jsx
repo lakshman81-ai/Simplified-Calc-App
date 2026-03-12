@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { ViewportControls } from './ViewportControls';
 import { PipingNodes } from './PipingNodes';
 import { PipingSegments } from './PipingSegments';
-import { OrbitControls } from '@react-three/drei';
+import { MapControls } from '@react-three/drei';
 import { useSimpStore } from './store';
 
 export const SimpAnalysisCanvas = () => {
@@ -19,7 +19,7 @@ export const SimpAnalysisCanvas = () => {
       
       <Suspense fallback={null}>
         <ViewportControls />
-        <OrbitControls enableRotate={false} enablePan={orbitEnabled} enableZoom={true} />
+        <MapControls enableRotate={false} enablePan={orbitEnabled} enableZoom={true} />
         <PipingSegments />
         <PipingNodes />
       </Suspense>

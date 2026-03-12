@@ -1,10 +1,8 @@
 import React from 'react';
 import { OrthographicCamera, Grid } from '@react-three/drei';
-import { useThree } from '@react-three/fiber';
 import { useSimpStore } from './store';
 
 export const ViewportControls = () => {
-  const { size } = useThree();
   const plane = useSimpStore(state => state.plane);
 
   // Set camera based on plane
@@ -25,10 +23,11 @@ export const ViewportControls = () => {
         infiniteGrid 
         fadeDistance={50000} 
         sectionSize={1000} 
+        cellSize={100}
         cellColor="#6f6f6f" 
         sectionColor="#9d4b4b" 
         position={[0,0,0]}
-        rotation={plane === 'XZ' ? [0, 0, 0] : plane === 'YZ' ? [0, 0, Math.PI/2] : [Math.PI/2, 0, 0]}
+        rotation={plane === 'XZ' ? [Math.PI/2, 0, 0] : plane === 'YZ' ? [0, 0, Math.PI/2] : [Math.PI/2, 0, 0]}
       />
     </>
   );

@@ -55,13 +55,13 @@ export const extractSubGraph = (components) => {
     if (segments.length === 0) {
         return {
           nodes: {
-            'A': { pos: [0, 0, 0], type: 'anchor' },
-            'B': { pos: [6000, 0, 0], type: 'elbow' },
-            'C': { pos: [6000, 4000, 0], type: 'anchor' }
+            'N0': { pos: [0, 0, 0], type: 'anchor' },
+            'N1': { pos: [6000, 0, 0], type: 'elbow' },
+            'N2': { pos: [6000, 4000, 0], type: 'anchor' }
           },
           segments: [
-            { start: 'A', end: 'B' },
-            { start: 'B', end: 'C' }
+            { start: 'N0', end: 'N1', type: 'PIPE' },
+            { start: 'N1', end: 'N2', type: 'PIPE' }
           ]
         };
     }
