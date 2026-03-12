@@ -1,64 +1,73 @@
-import React from 'react';
-import { useThree } from '@react-three/fiber';
-import { useDrag } from '@use-gesture/react';
+import React, { useRef, useState } from 'react';
 import { useSimpStore } from './store';
-import { Vector3 } from 'three';
-import { Html } from '@react-three/drei';
+import { Html, TransformControls } from '@react-three/drei';
+
+const NodeDraggable = ({ id, node, plane }) => {
+  const moveNode = useSimpStore(state => state.moveNode);
+  const setOrbitEnabled = useSimpStore(state => state.setOrbitEnabled);
+  const recalc = useSimpStore(state => state.recalc);
+
+  const meshRef = useRef();
+  const [active, setActive] = useState(false);
+
+  // Determine which axes to lock based on the current active plane
+  const showX = plane === 'XY' || plane === 'XZ';
+  const showY = plane === 'XY' || plane === 'YZ';
+  const showZ = plane === 'XZ' || plane === 'YZ';
+
+  return (
+    <TransformControls
+      object={meshRef}
+      mode="translate"
+      showX={showX}
+      showY={showY}
+      showZ={showZ}
+      onDraggingChanged={(e) => {
+        setOrbitEnabled(!e.value);
+        setActive(e.value);
+        if (!e.value && meshRef.current) {
+          // Explicitly recalculate at end of drag
+          recalc();
+        }
+      }}
+      onChange={() => {
+        if (meshRef.current) {
+          const { x, y, z } = meshRef.current.position;
+
+          // Apply active plane constraints
+          let finalX = showX ? x : node.pos[0];
+          let finalY = showY ? y : node.pos[1];
+          let finalZ = showZ ? z : node.pos[2];
+
+          // Snapping 100mm
+          finalX = Math.round(finalX / 100) * 100;
+          finalY = Math.round(finalY / 100) * 100;
+          finalZ = Math.round(finalZ / 100) * 100;
+
+          // Mutate the actual state coordinate
+          moveNode(id, [finalX, finalY, finalZ]);
+        }
+      }}
+    >
+      <mesh ref={meshRef} position={node.pos}>
+        <sphereGeometry args={[200, 32, 32]} />
+        <meshStandardMaterial color={node.type === 'anchor' ? 'blue' : (active ? 'yellow' : 'orange')} />
+        <Html position={[0, 300, 0]} center zIndexRange={[100, 0]}>
+          <div style={{color: 'white', background: 'black', padding: '2px 5px', fontSize: '10px'}}>{id}</div>
+        </Html>
+      </mesh>
+    </TransformControls>
+  );
+};
 
 export const PipingNodes = () => {
   const nodes = useSimpStore(state => state.nodes);
-  const moveNode = useSimpStore(state => state.moveNode);
   const plane = useSimpStore(state => state.plane);
-  const { size, camera } = useThree();
-
-  const setOrbitEnabled = useSimpStore(state => state.setOrbitEnabled);
-
-  const bind = useDrag(({ active, event, movement: [mx, my], args: [id], memo }) => {
-    if (event) event.stopPropagation();
-    
-    // Start of drag: remember initial node position
-    if (!memo) {
-      memo = [...nodes[id].pos];
-      if (setOrbitEnabled) setOrbitEnabled(false);
-    }
-    
-    // Calculate new position using accumulated movement
-    const worldDx = mx / camera.zoom;
-    const worldDy = -my / camera.zoom; // Invert Y because screen Y goes down, world Y goes up
-
-    let newPos = [...memo];
-    if (plane === 'XY') { newPos[0] += worldDx; newPos[1] += worldDy; }
-    if (plane === 'XZ') { newPos[0] += worldDx; newPos[2] -= worldDy; }
-    if (plane === 'YZ') { newPos[1] += worldDx; newPos[2] += worldDy; }
-    
-    // Grid snap to 100mm
-    newPos = newPos.map(v => Math.round(v / 100) * 100);
-    moveNode(id, newPos);
-    
-    if (!active) {
-      if (setOrbitEnabled) setOrbitEnabled(true);
-      return memo; // Final return
-    }
-    
-    return memo;
-  });
 
   return (
     <group>
       {Object.entries(nodes).map(([id, node]) => (
-        <mesh 
-          key={id} 
-          position={node.pos} 
-          {...bind(id)} 
-          onClick={(e) => e.stopPropagation()}
-          onPointerDown={(e) => e.stopPropagation()}
-        >
-          <sphereGeometry args={[200, 32, 32]} />
-          <meshStandardMaterial color={node.type === 'anchor' ? 'blue' : 'orange'} />
-          <Html position={[0, 300, 0]} center zIndexRange={[100, 0]}>
-            <div style={{color: 'white', background: 'black', padding: '2px 5px', fontSize: '10px'}}>{id}</div>
-          </Html>
-        </mesh>
+        <NodeDraggable key={id} id={id} node={node} plane={plane} />
       ))}
     </group>
   );

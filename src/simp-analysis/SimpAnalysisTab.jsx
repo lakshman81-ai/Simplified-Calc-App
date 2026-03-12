@@ -3,6 +3,7 @@ import { SimpAnalysisCanvas } from './SimpAnalysisCanvas';
 import { CalculationsPanel } from './CalculationsPanel';
 import { useSimpStore } from './store';
 import { extractSubGraph } from './smart2Dconverter';
+import { useAppStore } from '../store/appStore';
 
 export const SimpAnalysisTab = () => {
   const setNodes = useSimpStore(state => state.setNodes);
@@ -10,27 +11,22 @@ export const SimpAnalysisTab = () => {
   const setPlane = useSimpStore(state => state.setPlane);
   const plane = useSimpStore(state => state.plane);
 
-  // Load real geometry data
-  useEffect(() => {
-    // Read the current global state (populated by the vanilla parser)
-    // NOTE: In a full app, this might subscribe to state changes or a global event bus.
-    const tryExtract = () => {
-      let comps = [];
-      if (window._state && window._state.viewer3dComponents) {
-        comps = window._state.viewer3dComponents;
-      }
-      
-      const graph = extractSubGraph(comps);
-      setNodes(graph.nodes);
-      setSegments(graph.segments);
-    };
+  // Directly subscribe to the central Zustand store for viewer components
+  const components = useAppStore(state => state.components);
 
-    tryExtract();
+  // Load real geometry data reactively when components change
+  useEffect(() => {
+    let compsToProcess = components;
     
-    // Check periodically in case data arrives later (simple integration fallback)
-    const interval = setInterval(tryExtract, 2000);
-    return () => clearInterval(interval);
-  }, []);
+    // Fallback just in case they are still in window._state but not in Zustand
+    if ((!compsToProcess || compsToProcess.length === 0) && window._state && window._state.viewer3dComponents) {
+      compsToProcess = window._state.viewer3dComponents;
+    }
+
+    const graph = extractSubGraph(compsToProcess);
+    setNodes(graph.nodes);
+    setSegments(graph.segments);
+  }, [components, setNodes, setSegments]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'sans-serif' }}>
