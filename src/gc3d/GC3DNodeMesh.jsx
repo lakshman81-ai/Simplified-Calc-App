@@ -22,12 +22,34 @@ export const GC3DNodeMesh = ({ id, pos, type, label }) => {
     radius = 250;
   }
 
+  const activeTool = useGC3DStore(s => s.activeTool);
+  const convertNodeToAnchor = useGC3DStore(s => s.convertNodeToAnchor);
+
+  const handleClick = (e) => {
+      e.stopPropagation();
+      if (activeTool === 'anchor' && type !== 'anchor') {
+          convertNodeToAnchor(id);
+      } else {
+          setSelectedNode(id);
+      }
+  };
+
   return (
     <mesh
       position={pos}
-      onClick={(e) => { e.stopPropagation(); setSelectedNode(id); }}
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); setSnapNodeId(id); }}
-      onPointerOut={(e) => { e.stopPropagation(); setHovered(false); if (snapNodeId === id) setSnapNodeId(null); }}
+      onClick={handleClick}
+      onPointerOver={(e) => {
+          e.stopPropagation();
+          setHovered(true);
+          setSnapNodeId(id);
+          if (activeTool === 'anchor' && type !== 'anchor') document.body.style.cursor = 'crosshair';
+      }}
+      onPointerOut={(e) => {
+          e.stopPropagation();
+          setHovered(false);
+          if (snapNodeId === id) setSnapNodeId(null);
+          if (activeTool === 'anchor') document.body.style.cursor = 'default';
+      }}
     >
       <sphereGeometry args={[radius, 32, 32]} />
       <meshStandardMaterial
