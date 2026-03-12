@@ -32,18 +32,27 @@ const CameraController = () => {
             box.expandByPoint(new THREE.Vector3(pos[0], pos[1], pos[2]));
             hasSelection = true;
         } else if (selectedSegmentIds.size > 0) {
-            scene.traverse((child) => {
-                if (child.userData && child.userData.isSegment && selectedSegmentIds.has(child.userData.id)) {
-                    box.expandByObject(child);
-                    hasSelection = true;
+            // Strictly compute bounds mathematically from Zustand state, ignoring massive background Grids
+            selectedSegmentIds.forEach(id => {
+                const seg = useGC3DStore.getState().segments.find(s => s.id === id);
+                if (seg) {
+                    const n1 = nodes[seg.startNode];
+                    const n2 = nodes[seg.endNode];
+                    if (n1) box.expandByPoint(new THREE.Vector3(...n1.pos));
+                    if (n2) box.expandByPoint(new THREE.Vector3(...n2.pos));
                 }
             });
+            if (!box.isEmpty()) hasSelection = true;
         }
 
         if (!hasSelection || cameraViewMode === 'auto' || ['top', 'front', 'iso'].includes(cameraViewMode)) {
-            box.setFromObject(scene);
-            // If the scene is empty (e.g. at startup), provide a tiny default bounds
-            if (box.isEmpty()) {
+            // Safely iterate strictly over pipeline nodes to build bounding box.
+            // DO NOT use `box.setFromObject(scene)` because it includes the infinite Grid and Gizmos.
+            const nodeValues = Object.values(nodes);
+            if (nodeValues.length > 0) {
+                nodeValues.forEach(n => box.expandByPoint(new THREE.Vector3(...n.pos)));
+            } else {
+                // If the state is empty (e.g. at startup), provide a tiny default bounds
                 box.min.set(-100, -100, -100);
                 box.max.set(100, 100, 100);
             }
@@ -86,14 +95,10 @@ const CameraController = () => {
             targetPosition.current.copy(targetCenter.current).add(currentDir.multiplyScalar(targetDistance.current));
         }
 
-        // Dynamic Z-Clipping based on scene extents
-        const sceneBox = new THREE.Box3().setFromObject(scene);
-        if (!sceneBox.isEmpty()) {
-            const sceneSize = sceneBox.getSize(new THREE.Vector3());
-            const sceneMaxDim = Math.max(sceneSize.x, sceneSize.y, sceneSize.z);
-            const safeMax = sceneMaxDim === 0 ? 1000 : sceneMaxDim;
-            camera.near = Math.max(1, safeMax * 0.001);
-            camera.far = Math.max(safeMax * 100, targetDistance.current * 10);
+        // Dynamic Z-Clipping based strictly on the pipeline math bounds
+        if (!box.isEmpty()) {
+            camera.near = Math.max(1, safeMaxDim * 0.001);
+            camera.far = Math.max(safeMaxDim * 100, targetDistance.current * 10);
             camera.updateProjectionMatrix();
 
             // Constrain OrbitControls max distance so user cannot zoom past the far plane
@@ -102,7 +107,7 @@ const CameraController = () => {
             }
         }
 
-    }, [selectedNodeId, selectedSegmentIds, nodes, scene, camera, cameraViewMode]);
+    }, [selectedNodeId, selectedSegmentIds, nodes, camera, cameraViewMode]);
 
     useFrame((state, delta) => {
         if (!controlsRef.current) return;

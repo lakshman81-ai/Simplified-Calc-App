@@ -23,7 +23,10 @@ export const GC3DDebugConsole = () => {
 
   return (
     <div style={{ height, transition: 'height 0.3s ease', display: 'flex', flexDirection: 'column', background: '#0f172a', borderTop: '1px solid #1e293b' }}>
-      <div style={{ height: '48px', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1e293b', background: '#020617' }}>
+      <div
+         style={{ height: '48px', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1e293b', background: '#020617', cursor: 'pointer' }}
+         onClick={toggleConsole}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f8fafc', fontWeight: 'bold' }}>
           <Terminal size={18} /> Engine Debug Console
         </div>
@@ -33,14 +36,14 @@ export const GC3DDebugConsole = () => {
               <button onClick={() => navigator.clipboard.writeText(debugLog.map(l => `[Step ${l.step}] ${l.msg}`).join('\n'))} style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Copy size={14} /> Copy All
               </button>
-              <button onClick={clearLog} style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button onClick={(e) => { e.stopPropagation(); clearLog(); }} style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Trash2 size={14} /> Clear
               </button>
             </>
           )}
-          <button onClick={toggleConsole} style={{ background: 'transparent', border: 'none', color: '#f8fafc', cursor: 'pointer' }}>
+          <div style={{ color: '#f8fafc', display: 'flex', alignItems: 'center' }}>
             {consoleCollapsed ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-          </button>
+          </div>
         </div>
       </div>
       {!consoleCollapsed && (
