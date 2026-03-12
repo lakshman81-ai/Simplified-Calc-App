@@ -7,8 +7,10 @@ import { GC3DDebugTable } from './GC3DDebugTable';
 import { GC3DConfigPanel } from './GC3DConfigPanel';
 import { Activity } from 'lucide-react';
 
+import { ChevronDown, ChevronUp } from 'lucide-react';
+
 export const GC3DTab = () => {
-  const { includeSIF, setIncludeSIF, colorMode, setColorMode } = useGC3DStore();
+  const { includeSIF, setIncludeSIF, colorMode, setColorMode, dataGridCollapsed, toggleDataGrid } = useGC3DStore();
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: 'calc(100vh - 48px)', overflow: 'hidden' }}>
@@ -47,13 +49,19 @@ export const GC3DTab = () => {
         </div>
 
         {/* CAESAR II Paradigm: Permanently Docked DataGrid Panel */}
-        <div style={{ height: '30%', minHeight: '200px', borderTop: '2px solid #334155', background: '#0f172a', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ padding: '8px 16px', background: '#1e293b', borderBottom: '1px solid #334155', fontSize: '12px', fontWeight: 'bold', color: '#cbd5e1' }}>
+        <div style={{ height: dataGridCollapsed ? '40px' : '30%', minHeight: dataGridCollapsed ? '40px' : '200px', borderTop: '2px solid #334155', background: '#0f172a', display: 'flex', flexDirection: 'column', transition: 'height 0.3s, min-height 0.3s' }}>
+            <div
+               style={{ padding: '8px 16px', background: '#1e293b', borderBottom: '1px solid #334155', fontSize: '12px', fontWeight: 'bold', color: '#cbd5e1', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+               onClick={toggleDataGrid}
+            >
                 Results DataGrid
+                {dataGridCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </div>
-            <div style={{ flex: 1, overflow: 'auto' }}>
-                <GC3DDebugTable />
-            </div>
+            {!dataGridCollapsed && (
+              <div style={{ flex: 1, overflow: 'auto' }}>
+                  <GC3DDebugTable />
+              </div>
+            )}
         </div>
       </div>
 
