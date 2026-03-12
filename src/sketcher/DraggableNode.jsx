@@ -20,11 +20,17 @@ export const DraggableNode = ({ id, node, is3D }) => {
     const [isDragging, setIsDragging] = useState(false);
 
     const onPointerDown = (e) => {
-        if (activeTool !== 'select' || is3D) return;
+        if (is3D) return;
         e.stopPropagation();
-        setSelectedNodeId(id);
-        setIsDragging(true);
-        e.target.setPointerCapture(e.pointerId);
+
+        if (activeTool === 'select') {
+            setSelectedNodeId(id);
+            setIsDragging(true);
+            e.target.setPointerCapture(e.pointerId);
+        } else {
+            // Forward interaction click to store for drafting/anchor tools
+            useSketchStore.getState().handleInteractionClick(e.point, id, e.shiftKey);
+        }
     };
 
     const onPointerUp = (e) => {

@@ -5,7 +5,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrthographicCamera, PerspectiveCamera, OrbitControls, Grid } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import { MousePointer2, PenTool, Triangle, Axis3D, DownloadCloud, UploadCloud, Trash2, Focus } from 'lucide-react';
+import { MousePointer2, PenTool, Triangle, Axis3D, DownloadCloud, UploadCloud, Trash2, Focus, EyeOff, Eye, Type, ZoomIn, ZoomOut } from 'lucide-react';
 import NodeEditorPanel from './NodeEditorPanel';
 import SketcherAnnotations from './SketcherAnnotations';
 import MarqueeSelection from './MarqueeSelection';
@@ -71,6 +71,32 @@ const SketcherToolbar = () => {
             <button title="Working Plane" style={btnStyle(false)} onClick={() => setWorkingPlane(workingPlane === 'XY' ? 'XZ' : 'XY')}>
                 <span style={{ fontSize: '12px', fontWeight: 'bold' }}>Plane: {workingPlane}</span>
             </button>
+
+            <div style={{ height: '1px', background: '#334155', width: '100%', margin: '4px 0' }} />
+
+            {/* View & Annotation Toggles */}
+            <div style={{ display: 'flex', gap: '4px', width: '100%', flexDirection: 'column' }}>
+                <span style={{ fontSize: '10px', color: '#94a3b8', textTransform: 'uppercase' }}>Annotations</span>
+
+                <button title="Toggle Node Labels" style={btnStyle(useSketchStore(s => s.showNodeLabels))} onClick={() => useSketchStore.getState().toggleNodeLabels()}>
+                    {useSketchStore(s => s.showNodeLabels) ? <Eye size={14} /> : <EyeOff size={14} color="#94a3b8" />}
+                    <span style={{ fontSize: '10px' }}>Nodes</span>
+                </button>
+
+                <button title="Toggle Length Labels" style={btnStyle(useSketchStore(s => s.showLengthLabels))} onClick={() => useSketchStore.getState().toggleLengthLabels()}>
+                    {useSketchStore(s => s.showLengthLabels) ? <Eye size={14} /> : <EyeOff size={14} color="#94a3b8" />}
+                    <span style={{ fontSize: '10px' }}>Lengths</span>
+                </button>
+
+                <div style={{ display: 'flex', gap: '4px', marginTop: '4px' }}>
+                    <button title="Increase Font Size" style={{ ...btnStyle(false), flex: 1, padding: '4px', justifyContent: 'center' }} onClick={() => useSketchStore.getState().setAnnotationScale(useSketchStore.getState().annotationScale * 1.2)}>
+                        <Type size={14} /> <ZoomIn size={12} />
+                    </button>
+                    <button title="Decrease Font Size" style={{ ...btnStyle(false), flex: 1, padding: '4px', justifyContent: 'center' }} onClick={() => useSketchStore.getState().setAnnotationScale(useSketchStore.getState().annotationScale / 1.2)}>
+                        <Type size={14} /> <ZoomOut size={12} />
+                    </button>
+                </div>
+            </div>
 
             <div style={{ flex: 1 }} />
 
@@ -150,55 +176,7 @@ const InteractivePlane = () => {
 
     const handleClick = (e) => {
         e.stopPropagation();
-        
-        let targetId = null;
-        let pt3D;
-
-        if (snapNodeId && nodes[snapNodeId] && !e.shiftKey) {
-            // OSNAP logic: User clicked while hovered over an existing node
-            targetId = snapNodeId;
-            pt3D = nodes[snapNodeId].pos; // use exact coordinate
-        } else {
-            // Use currentPos from drafting state if shift key is held and we are drawing
-            if (e.shiftKey && draftingState.isDrawing && draftingState.currentPos) {
-                 pt3D = resolve3DPoint(draftingState.currentPos);
-            } else {
-                // User clicked on the grid, resolve new 3D coordinate
-                pt3D = resolve3DPoint(e.point);
-            }
-        }
-
-        const { setSelectedNodeId } = useSketchStore.getState();
-
-        if (activeTool === 'select') {
-             if (targetId) setSelectedNodeId(targetId);
-             else setSelectedNodeId(null);
-        } else if (activeTool === 'add_node') {
-            if (!targetId) {
-                createNode(pt3D, 'anchor');
-            } else {
-                // Convert existing node to anchor
-                useSketchStore.getState().updateNode(targetId, { type: 'anchor' });
-            }
-        } 
-        else if (activeTool === 'draw_pipe') {
-            if (!draftingState.isDrawing) {
-                // First click: start drawing
-                const startId = targetId || createNode(pt3D, 'free');
-                setDraftingState({ isDrawing: true, startNodeId: startId, currentPos: new THREE.Vector3(...(targetId ? pt3D : resolve3DPoint(e.point))) });
-            } else {
-                // Second click: end drawing, create segment, continue from new node
-                // Do not allow zero length segments (clicking on start node)
-                if (targetId && targetId === draftingState.startNodeId) return;
-
-                const endId = targetId || createNode(pt3D, 'free');
-                createSegment(draftingState.startNodeId, endId, { type: 'PIPE', bore: 100, material: 'CARBON STEEL' });
-                
-                // Continue drawing from the new end node
-                const nextPos = targetId ? new THREE.Vector3(...pt3D) : new THREE.Vector3(...resolve3DPoint(e.point));
-                setDraftingState({ startNodeId: endId, currentPos: nextPos });
-            }
-        }
+        useSketchStore.getState().handleInteractionClick(e.point, snapNodeId, e.shiftKey);
     };
 
     // Right click or Escape to cancel drawing
