@@ -95,6 +95,11 @@ const CameraController = () => {
             camera.near = Math.max(1, safeMax * 0.001);
             camera.far = Math.max(safeMax * 100, targetDistance.current * 10);
             camera.updateProjectionMatrix();
+
+            // Constrain OrbitControls max distance so user cannot zoom past the far plane
+            if (controlsRef.current) {
+                controlsRef.current.maxDistance = camera.far * 0.9;
+            }
         }
 
     }, [selectedNodeId, selectedSegmentIds, nodes, scene, camera, cameraViewMode]);
