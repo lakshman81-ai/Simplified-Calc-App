@@ -24,6 +24,14 @@ export const useSketchStore = create((set, get) => ({
   autoCenterTrigger: 0,
   triggerAutoCenter: () => set(s => ({ autoCenterTrigger: s.autoCenterTrigger + 1 })),
 
+  // Annotation Settings
+  annotationScale: 1.0,
+  showNodeLabels: true,
+  showLengthLabels: true,
+  setAnnotationScale: (scale) => set({ annotationScale: scale }),
+  toggleNodeLabels: () => set(s => ({ showNodeLabels: !s.showNodeLabels })),
+  toggleLengthLabels: () => set(s => ({ showLengthLabels: !s.showLengthLabels })),
+
   selectedNodeId: null,
   setSelectedNodeId: (id) => set({ selectedNodeId: id }),
   updateNode: (id, updates) => set((s) => ({
@@ -98,5 +106,57 @@ export const useSketchStore = create((set, get) => ({
       return [x, y, z];
   },
   
-  clearSketch: () => set({ nodes: {}, segments: [] })
+  clearSketch: () => set({ nodes: {}, segments: [] }),
+
+  // Centralized interaction handler for the canvas
+  handleInteractionClick: (ePoint, targetNodeId, isShiftHeld) => {
+      const state = get();
+      const { activeTool, draftingState, resolve3DPoint, createNode, createSegment, setSelectedNodeId, updateNode, nodes } = state;
+
+      let targetId = null;
+      let pt3D;
+
+      if (targetNodeId && nodes[targetNodeId] && !isShiftHeld) {
+          // Snapped to an existing node
+          targetId = targetNodeId;
+          pt3D = nodes[targetNodeId].pos;
+      } else {
+          // Free space click
+          if (isShiftHeld && draftingState.isDrawing && draftingState.currentPos) {
+              pt3D = resolve3DPoint(draftingState.currentPos);
+          } else {
+              pt3D = resolve3DPoint(ePoint);
+          }
+      }
+
+      if (activeTool === 'select') {
+           if (targetId) setSelectedNodeId(targetId);
+           else setSelectedNodeId(null);
+      } else if (activeTool === 'add_node') {
+          if (!targetId) {
+              createNode(pt3D, 'anchor');
+          } else {
+              // Convert existing node to anchor
+              updateNode(targetId, { type: 'anchor' });
+          }
+      }
+      else if (activeTool === 'draw_pipe') {
+          if (!draftingState.isDrawing) {
+              // First click: start drawing
+              const startId = targetId || createNode(pt3D, 'free');
+              set(s => ({ draftingState: { ...s.draftingState, isDrawing: true, startNodeId: startId, currentPos: new THREE.Vector3(...(targetId ? pt3D : resolve3DPoint(ePoint))) } }));
+          } else {
+              // Second click: end drawing, create segment, continue from new node
+              // Do not allow zero length segments (clicking on start node)
+              if (targetId && targetId === draftingState.startNodeId) return;
+
+              const endId = targetId || createNode(pt3D, 'free');
+              createSegment(draftingState.startNodeId, endId, { type: 'PIPE', bore: 100, material: 'CARBON STEEL' });
+
+              // Continue drawing from the new end node
+              const nextPos = targetId ? new THREE.Vector3(...pt3D) : new THREE.Vector3(...resolve3DPoint(ePoint));
+              set(s => ({ draftingState: { ...s.draftingState, startNodeId: endId, currentPos: nextPos } }));
+          }
+      }
+  }
 }));

@@ -9,6 +9,10 @@ import { useState } from 'react';
 export const SketcherAnnotations = ({ is3D }) => {
     const nodes = useSketchStore(s => s.nodes);
     const segments = useSketchStore(s => s.segments);
+    const annotationScale = useSketchStore(s => s.annotationScale);
+    const showNodeLabels = useSketchStore(s => s.showNodeLabels);
+    const showLengthLabels = useSketchStore(s => s.showLengthLabels);
+
     const { camera } = useThree();
     const [zoom, setZoom] = useState(camera.zoom || 0.2);
 
@@ -21,19 +25,22 @@ export const SketcherAnnotations = ({ is3D }) => {
     // Font configuration - scale dynamically in 2D
     // Limit font size explosion on deep zoom-out (when zoom is very small)
     const effectiveZoom = Math.max(zoom, 0.05);
-    const fontSize = is3D ? 100 : (40 / effectiveZoom);
+
+    // Reduce baseline font size substantially, and apply user scaling modifier
+    const baselineSize = is3D ? 60 : (20 / effectiveZoom);
+    const fontSize = baselineSize * annotationScale;
     const color = '#f8fafc';
 
     return (
         <group>
             {/* Node Annotations */}
-            {Object.entries(nodes).map(([id, node]) => {
+            {showNodeLabels && Object.entries(nodes).map(([id, node]) => {
                 const labelStr = `${id} (${Math.round(node.pos[0])}, ${Math.round(node.pos[1])}, ${Math.round(node.pos[2])})`;
                 return (
                     <Text
                         key={`label-${id}`}
-                        position={[node.pos[0] + (is3D ? 150 : (50 / effectiveZoom)), node.pos[1] + (is3D ? 150 : (50 / effectiveZoom)), node.pos[2]]}
-                        fontSize={fontSize * 0.6}
+                        position={[node.pos[0] + (is3D ? 100 : (30 / effectiveZoom)), node.pos[1] + (is3D ? 100 : (30 / effectiveZoom)), node.pos[2]]}
+                        fontSize={fontSize * 0.5}
                         color="#94a3b8"
                         anchorX="left"
                         anchorY="bottom"
@@ -46,7 +53,7 @@ export const SketcherAnnotations = ({ is3D }) => {
             })}
 
             {/* Segment Length Annotations */}
-            {segments.map(seg => {
+            {showLengthLabels && segments.map(seg => {
                 const n1 = nodes[seg.startNode];
                 const n2 = nodes[seg.endNode];
                 if (!n1 || !n2) return null;
