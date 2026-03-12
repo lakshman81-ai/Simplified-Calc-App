@@ -68,7 +68,12 @@ const SketcherToolbar = () => {
             
             <div style={{ height: '1px', background: '#334155', width: '100%', margin: '4px 0' }} />
             
-            <button title="Working Plane" style={btnStyle(false)} onClick={() => setWorkingPlane(workingPlane === 'XY' ? 'XZ' : 'XY')}>
+            <button title="Working Plane" style={btnStyle(false)} onClick={() => {
+                let next = 'XY';
+                if (workingPlane === 'XY') next = 'XZ';
+                else if (workingPlane === 'XZ') next = 'YZ';
+                setWorkingPlane(next);
+            }}>
                 <span style={{ fontSize: '12px', fontWeight: 'bold' }}>Plane: {workingPlane}</span>
             </button>
 
@@ -124,20 +129,58 @@ const SketcherToolbar = () => {
 };
 
 // Interactive Plane for catching clicks in 2D View
-const InteractivePlane = () => {
+const InteractivePlane = ({ isAltHeld }) => {
     const { activeTool, workingPlane, setDraftingState, draftingState, createNode, createSegment, resolve3DPoint, snapNodeId, nodes } = useSketchStore();
     
-    // Rotate the invisible plane to match the working plane
+    // Adjust invisible plane rotation and position based on working plane and Alt state
     let rotation = [0, 0, 0];
-    if (workingPlane === 'XZ') rotation = [-Math.PI/2, 0, 0];
-    if (workingPlane === 'YZ') rotation = [0, Math.PI/2, 0];
+    let position = [0, 0, 0];
+    const isDrawingAndAlt = draftingState.isDrawing && isAltHeld && draftingState.startNodeId && nodes[draftingState.startNodeId];
+
+    if (isDrawingAndAlt) {
+        // If Alt is held while drawing, rotate the intersection plane to be perpendicular
+        // to the current working plane, allowing the user's mouse to intersect the "depth" axis.
+        const startPos = nodes[draftingState.startNodeId].pos;
+        position = startPos; // Move plane strictly to the active node to catch the Z axis
+
+        if (workingPlane === 'XY') {
+             // Working in XY, so out-of-plane is Z. Rotate plane to YZ.
+             rotation = [0, Math.PI/2, 0];
+        } else if (workingPlane === 'XZ') {
+             // Working in XZ, so out-of-plane is Y. Rotate plane to XY.
+             rotation = [0, 0, 0];
+        } else if (workingPlane === 'YZ') {
+             // Working in YZ, so out-of-plane is X. Rotate plane to XZ.
+             rotation = [-Math.PI/2, 0, 0];
+        }
+    } else {
+        // Standard in-plane rotations
+        if (workingPlane === 'XZ') rotation = [-Math.PI/2, 0, 0];
+        if (workingPlane === 'YZ') rotation = [0, Math.PI/2, 0];
+    }
 
     const handlePointerMove = (e) => {
         if (draftingState.isDrawing) {
             let targetPoint = e.point;
 
-            // Orthogonal locking with Shift key
-            if (e.shiftKey && draftingState.startNodeId && nodes[draftingState.startNodeId]) {
+            if (isDrawingAndAlt) {
+                 // Alt Key Out-of-Plane Locking
+                 // Lock the current in-plane coordinates to the start node strictly,
+                 // and only allow the e.point to dictate the depth axis based on the rotated intersection plane.
+                 const startVec = new THREE.Vector3(...nodes[draftingState.startNodeId].pos);
+
+                 if (workingPlane === 'XY') {
+                     // e.point maps to the YZ plane we rotated to
+                     targetPoint = new THREE.Vector3(startVec.x, startVec.y, e.point.z);
+                 } else if (workingPlane === 'XZ') {
+                     // e.point maps to the XY plane we rotated to
+                     targetPoint = new THREE.Vector3(startVec.x, e.point.y, startVec.z);
+                 } else if (workingPlane === 'YZ') {
+                     // e.point maps to the XZ plane we rotated to
+                     targetPoint = new THREE.Vector3(e.point.x, startVec.y, startVec.z);
+                 }
+            } else if (e.shiftKey && draftingState.startNodeId && nodes[draftingState.startNodeId]) {
+                 // Orthogonal locking with Shift key
                 const startPos = nodes[draftingState.startNodeId].pos;
                 // e.point is natively mapped to the rotated plane.
                 // Depending on the working plane, we align the moving point to the X or Y of the e.point,
@@ -176,7 +219,7 @@ const InteractivePlane = () => {
 
     const handleClick = (e) => {
         e.stopPropagation();
-        useSketchStore.getState().handleInteractionClick(e.point, snapNodeId, e.shiftKey);
+        useSketchStore.getState().handleInteractionClick(e.point, snapNodeId, e.shiftKey, isAltHeld);
     };
 
     // Right click or Escape to cancel drawing
@@ -192,6 +235,7 @@ const InteractivePlane = () => {
 
     return (
         <mesh 
+            position={position}
             rotation={rotation} 
             visible={false} 
             onPointerMove={handlePointerMove}
@@ -211,7 +255,7 @@ const InteractivePlane = () => {
 
 // AutoCenter bounds for the 3D Verification View
 // AutoCenter bounds for the 2D View
-const MainViewAutoCenter = () => {
+const MainViewAutoCenter = ({ isAltHeld }) => {
     const { camera, controls } = useThree();
     const nodes = useSketchStore(s => s.nodes);
     const autoCenterTrigger = useSketchStore(s => s.autoCenterTrigger);
@@ -245,12 +289,25 @@ const MainViewAutoCenter = () => {
 
         // Keep camera orientation based on working plane
         const { workingPlane } = useSketchStore.getState();
-        if (workingPlane === 'XY') {
-            camera.position.set(center.x, center.y, 10000);
-        } else if (workingPlane === 'XZ') {
-            camera.position.set(center.x, 10000, center.z);
+
+        if (isAltHeld) {
+            // Skew the camera to an isometric angle to view depth
+            if (workingPlane === 'XY') {
+                camera.position.set(center.x + 5000, center.y - 5000, 10000);
+            } else if (workingPlane === 'XZ') {
+                camera.position.set(center.x + 5000, 10000, center.z + 5000);
+            } else {
+                camera.position.set(10000, center.y + 5000, center.z + 5000);
+            }
         } else {
-            camera.position.set(10000, center.y, center.z);
+            // Standard orthographic views
+            if (workingPlane === 'XY') {
+                camera.position.set(center.x, center.y, 10000);
+            } else if (workingPlane === 'XZ') {
+                camera.position.set(center.x, 10000, center.z);
+            } else {
+                camera.position.set(10000, center.y, center.z);
+            }
         }
 
         // Orthographic camera view size adjustment
@@ -265,7 +322,7 @@ const MainViewAutoCenter = () => {
             controls.update();
         }
 
-    }, [autoCenterTrigger, nodes, camera, controls]);
+    }, [autoCenterTrigger, nodes, camera, controls, isAltHeld]);
 
     return null;
 };
@@ -340,7 +397,7 @@ const GraphRenderer = ({ is3D }) => {
                 return (
                     <mesh key={seg.id} position={mid} quaternion={quaternion}>
                         <cylinderGeometry args={[is3D ? (seg.properties?.bore || 100)/2 : 20, is3D ? (seg.properties?.bore || 100)/2 : 20, length, 8]} />
-                        <meshBasicMaterial color={isSelected ? '#38bdf8' : (seg.properties?.type === 'FITTING_LEG' ? '#32cd32' : '#94a3b8')} wireframe={!is3D && !isSelected} />
+                        <meshBasicMaterial color={isSelected ? '#38bdf8' : (seg.properties?.type === 'FITTING_LEG' ? '#32cd32' : '#94a3b8')} />
                     </mesh>
                 );
             })}
@@ -379,6 +436,36 @@ export const SketcherTab = () => {
     const importWarnings = useSketchStore(s => s.importWarnings);
     const clearWarnings = useSketchStore(s => s.clearWarnings);
 
+    const [isAltHeld, setIsAltHeld] = React.useState(false);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Alt') {
+                e.preventDefault(); // prevent browser menu stealing
+                setIsAltHeld(true);
+            }
+        };
+        const handleKeyUp = (e) => {
+            if (e.key === 'Alt') {
+                e.preventDefault();
+                setIsAltHeld(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+
+        // Also clear if window loses focus
+        const handleBlur = () => setIsAltHeld(false);
+        window.addEventListener('blur', handleBlur);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+            window.removeEventListener('blur', handleBlur);
+        };
+    }, []);
+
     return (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'row', height: 'calc(100vh - 48px)', background: '#0f172a' }}>
             <SketcherToolbar />
@@ -408,9 +495,9 @@ export const SketcherTab = () => {
                         near={-100000} far={100000} 
                     />
                     <OrbitControls makeDefault enableRotate={false} />
-                    <MainViewAutoCenter />
+                    <MainViewAutoCenter isAltHeld={isAltHeld} />
                     <DynamicGrid workingPlane={workingPlane} />
-                    <InteractivePlane />
+                    <InteractivePlane isAltHeld={isAltHeld} />
                     <GraphRenderer is3D={false} />
                 </Canvas>
 

@@ -109,7 +109,7 @@ export const useSketchStore = create((set, get) => ({
   clearSketch: () => set({ nodes: {}, segments: [] }),
 
   // Centralized interaction handler for the canvas
-  handleInteractionClick: (ePoint, targetNodeId, isShiftHeld) => {
+  handleInteractionClick: (ePoint, targetNodeId, isShiftHeld, isAltHeld) => {
       const state = get();
       const { activeTool, draftingState, resolve3DPoint, createNode, createSegment, setSelectedNodeId, updateNode, nodes } = state;
 
@@ -122,8 +122,16 @@ export const useSketchStore = create((set, get) => ({
           pt3D = nodes[targetNodeId].pos;
       } else {
           // Free space click
-          if (isShiftHeld && draftingState.isDrawing && draftingState.currentPos) {
-              pt3D = resolve3DPoint(draftingState.currentPos);
+          if ((isShiftHeld || isAltHeld) && draftingState.isDrawing && draftingState.currentPos) {
+              if (isAltHeld) {
+                  pt3D = [
+                      state.snapCoordinate(draftingState.currentPos.x),
+                      state.snapCoordinate(draftingState.currentPos.y),
+                      state.snapCoordinate(draftingState.currentPos.z)
+                  ];
+              } else {
+                  pt3D = resolve3DPoint(draftingState.currentPos);
+              }
           } else {
               pt3D = resolve3DPoint(ePoint);
           }
@@ -144,7 +152,8 @@ export const useSketchStore = create((set, get) => ({
           if (!draftingState.isDrawing) {
               // First click: start drawing
               const startId = targetId || createNode(pt3D, 'free');
-              set(s => ({ draftingState: { ...s.draftingState, isDrawing: true, startNodeId: startId, currentPos: new THREE.Vector3(...(targetId ? pt3D : resolve3DPoint(ePoint))) } }));
+              const nextPos = targetId ? new THREE.Vector3(...pt3D) : new THREE.Vector3(...pt3D);
+              set(s => ({ draftingState: { ...s.draftingState, isDrawing: true, startNodeId: startId, currentPos: nextPos } }));
           } else {
               // Second click: end drawing, create segment, continue from new node
               // Do not allow zero length segments (clicking on start node)
@@ -154,7 +163,7 @@ export const useSketchStore = create((set, get) => ({
               createSegment(draftingState.startNodeId, endId, { type: 'PIPE', bore: 100, material: 'CARBON STEEL' });
 
               // Continue drawing from the new end node
-              const nextPos = targetId ? new THREE.Vector3(...pt3D) : new THREE.Vector3(...resolve3DPoint(ePoint));
+              const nextPos = targetId ? new THREE.Vector3(...pt3D) : new THREE.Vector3(...pt3D);
               set(s => ({ draftingState: { ...s.draftingState, startNodeId: endId, currentPos: nextPos } }));
           }
       }
