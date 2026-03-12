@@ -27,20 +27,23 @@ export const SketcherAnnotations = ({ is3D }) => {
     return (
         <group>
             {/* Node Annotations */}
-            {Object.entries(nodes).map(([id, node]) => (
-                <Text
-                    key={`label-${id}`}
-                    position={[node.pos[0] + (is3D ? 150 : (50 / effectiveZoom)), node.pos[1] + (is3D ? 150 : (50 / effectiveZoom)), node.pos[2]]}
-                    fontSize={fontSize * 0.8}
-                    color="#94a3b8"
-                    anchorX="left"
-                    anchorY="bottom"
-                    renderOrder={100}
-                    depthTest={false}
-                >
-                    {id}
-                </Text>
-            ))}
+            {Object.entries(nodes).map(([id, node]) => {
+                const labelStr = `${id} (${Math.round(node.pos[0])}, ${Math.round(node.pos[1])}, ${Math.round(node.pos[2])})`;
+                return (
+                    <Text
+                        key={`label-${id}`}
+                        position={[node.pos[0] + (is3D ? 150 : (50 / effectiveZoom)), node.pos[1] + (is3D ? 150 : (50 / effectiveZoom)), node.pos[2]]}
+                        fontSize={fontSize * 0.6}
+                        color="#94a3b8"
+                        anchorX="left"
+                        anchorY="bottom"
+                        renderOrder={100}
+                        depthTest={false}
+                    >
+                        {labelStr}
+                    </Text>
+                );
+            })}
 
             {/* Segment Length Annotations */}
             {segments.map(seg => {

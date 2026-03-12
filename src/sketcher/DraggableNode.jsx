@@ -52,19 +52,34 @@ export const DraggableNode = ({ id, node, is3D }) => {
 
         // Constrain movement strictly to the active working plane
         // E.g., if workingPlane is XY, map Z back to original node.pos[2]
+        // Since we are unprojecting from a camera that looks directly down the missing axis,
+        // the unprojected vector coordinates natively map to the world axes.
         if (workingPlane === 'XY') {
             newPos[0] = vec.x;
             newPos[1] = vec.y;
         } else if (workingPlane === 'XZ') {
             newPos[0] = vec.x;
-            newPos[2] = vec.y; // orthographic mapping
+            newPos[2] = vec.z;
         } else if (workingPlane === 'YZ') {
-            newPos[1] = vec.x;
-            newPos[2] = vec.y; // orthographic mapping
+            newPos[1] = vec.y;
+            newPos[2] = vec.z;
         }
 
         updateNode(id, { pos: newPos });
     };
+
+    const isAnchor = node.type === 'anchor';
+    const isBend = node.type === 'elbow' || node.type === 'fitting'; // GraphTranslator uses 'elbow' and 'fitting'
+
+    // Determine color
+    let color = '#ffa500'; // default orange for free node
+    if (isAnchor) color = '#ef4444'; // Red for anchor
+    if (isBend) color = '#3b82f6'; // Blue for bends
+    if (snapNodeId === id) color = '#facc15'; // yellow snap highlight
+    if (isSelected) color = '#38bdf8'; // light blue selection
+
+    // Determine geometry scale
+    const scale = is3D ? 100 : (snapNodeId === id ? 80 : 50);
 
     return (
         <mesh
@@ -74,9 +89,15 @@ export const DraggableNode = ({ id, node, is3D }) => {
             onPointerMove={onPointerMove}
             onPointerEnter={(e) => { e.stopPropagation(); setSnapNodeId(id); }}
             onPointerLeave={(e) => { e.stopPropagation(); if (snapNodeId === id) setSnapNodeId(null); }}
+            userData={{ type: 'node', id: id }} // Ensure it can be targeted by Marquee if needed later
         >
-            <sphereGeometry args={[is3D ? 100 : (snapNodeId === id ? 80 : 50), 16, 16]} />
-            <meshBasicMaterial color={isSelected ? '#38bdf8' : (snapNodeId === id ? '#ef4444' : (node.type === 'anchor' ? '#1e90ff' : '#ffa500'))} />
+            {isAnchor ? (
+                // Tetrahedron resembles a Triangle/Pyramid
+                <tetrahedronGeometry args={[scale * 1.5, 0]} />
+            ) : (
+                <sphereGeometry args={[scale, 16, 16]} />
+            )}
+            <meshBasicMaterial color={color} />
         </mesh>
     );
 };

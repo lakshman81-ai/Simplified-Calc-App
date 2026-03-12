@@ -5,7 +5,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrthographicCamera, PerspectiveCamera, OrbitControls, Grid } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import { MousePointer2, PenTool, Triangle, Axis3D, DownloadCloud, UploadCloud, Trash2 } from 'lucide-react';
+import { MousePointer2, PenTool, Triangle, Axis3D, DownloadCloud, UploadCloud, Trash2, Focus } from 'lucide-react';
 import NodeEditorPanel from './NodeEditorPanel';
 import SketcherAnnotations from './SketcherAnnotations';
 import MarqueeSelection from './MarqueeSelection';
@@ -38,7 +38,7 @@ const SketcherToolbar = () => {
     };
 
     const btnStyle = (active) => ({
-        padding: '8px',
+        padding: '8px 12px',
         background: active ? '#3b82f6' : '#1e293b',
         color: active ? '#fff' : '#cbd5e1',
         border: '1px solid #334155',
@@ -46,37 +46,52 @@ const SketcherToolbar = () => {
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-start',
+        gap: '8px',
+        width: '100%'
     });
 
     return (
-        <div style={{ width: '50px', background: '#0f172a', borderRight: '1px solid #334155', display: 'flex', flexDirection: 'column', padding: '8px', gap: '8px', alignItems: 'center' }}>
-            <button title="Select" style={btnStyle(activeTool === 'select')} onClick={() => setActiveTool('select')}>
+        <div style={{ width: '160px', background: '#0f172a', borderRight: '1px solid #334155', display: 'flex', flexDirection: 'column', padding: '8px', gap: '8px', alignItems: 'flex-start' }}>
+            <button title="Select / Edit" style={btnStyle(activeTool === 'select')} onClick={() => setActiveTool('select')}>
                 <MousePointer2 size={18} />
+                <span style={{ fontSize: '12px' }}>Select / Edit</span>
             </button>
             <button title="Draw Pipe" style={btnStyle(activeTool === 'draw_pipe')} onClick={() => setActiveTool('draw_pipe')}>
                 <PenTool size={18} />
+                <span style={{ fontSize: '12px' }}>Draw Pipe</span>
             </button>
-            <button title="Add Node/Anchor" style={btnStyle(activeTool === 'add_node')} onClick={() => setActiveTool('add_node')}>
+            <button title="Place Anchor" style={btnStyle(activeTool === 'add_node')} onClick={() => setActiveTool('add_node')}>
                 <Triangle size={18} />
+                <span style={{ fontSize: '12px' }}>Place Anchor</span>
             </button>
             
             <div style={{ height: '1px', background: '#334155', width: '100%', margin: '4px 0' }} />
             
             <button title="Working Plane" style={btnStyle(false)} onClick={() => setWorkingPlane(workingPlane === 'XY' ? 'XZ' : 'XY')}>
-                <span style={{ fontSize: '10px', fontWeight: 'bold' }}>{workingPlane}</span>
+                <span style={{ fontSize: '12px', fontWeight: 'bold' }}>Plane: {workingPlane}</span>
             </button>
 
             <div style={{ flex: 1 }} />
 
+            <button title="Auto Center" style={btnStyle(false)} onClick={() => {
+                useSketchStore.getState().triggerAutoCenter();
+            }}>
+                <Focus size={18} color="#f59e0b" />
+                <span style={{ fontSize: '12px' }}>Auto Center</span>
+            </button>
+
             <button title="Clear Sketch" style={btnStyle(false)} onClick={() => { if(window.confirm('Clear sketch?')) clearSketch(); }}>
                 <Trash2 size={18} color="#ef4444" />
+                <span style={{ fontSize: '12px' }}>Clear</span>
             </button>
             <button title="Pull from 3D Viewer" style={btnStyle(false)} onClick={handleImport}>
                 <DownloadCloud size={18} color="#10b981" />
+                <span style={{ fontSize: '12px' }}>Import 3D</span>
             </button>
             <button title="Sync to 3D Viewer" style={btnStyle(false)} onClick={handleSync}>
                 <UploadCloud size={18} color="#3b82f6" />
+                <span style={{ fontSize: '12px' }}>Sync 3D</span>
             </button>
         </div>
     );
@@ -159,9 +174,11 @@ const InteractivePlane = () => {
              if (targetId) setSelectedNodeId(targetId);
              else setSelectedNodeId(null);
         } else if (activeTool === 'add_node') {
-            if (!targetId) createNode(pt3D, 'anchor');
-            else {
-                // Future: convert free node to anchor
+            if (!targetId) {
+                createNode(pt3D, 'anchor');
+            } else {
+                // Convert existing node to anchor
+                useSketchStore.getState().updateNode(targetId, { type: 'anchor' });
             }
         } 
         else if (activeTool === 'draw_pipe') {
@@ -215,6 +232,67 @@ const InteractivePlane = () => {
 };
 
 // AutoCenter bounds for the 3D Verification View
+// AutoCenter bounds for the 2D View
+const MainViewAutoCenter = () => {
+    const { camera, controls } = useThree();
+    const nodes = useSketchStore(s => s.nodes);
+    const autoCenterTrigger = useSketchStore(s => s.autoCenterTrigger);
+
+    useEffect(() => {
+        if (autoCenterTrigger === 0) return;
+
+        const nodeValues = Object.values(nodes);
+        if (nodeValues.length === 0) {
+            camera.position.set(0, 0, 10000);
+            Object.assign(camera, { zoom: 0.2 });
+            camera.updateProjectionMatrix();
+            if (controls) {
+                controls.target.set(0,0,0);
+                controls.update();
+            }
+            return;
+        }
+
+        const box = new THREE.Box3();
+        nodeValues.forEach(n => {
+            box.expandByPoint(new THREE.Vector3(...n.pos));
+        });
+
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+
+        // Find maximum dimension
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const safeMaxDim = maxDim === 0 ? 1000 : maxDim;
+
+        // Keep camera orientation based on working plane
+        const { workingPlane } = useSketchStore.getState();
+        if (workingPlane === 'XY') {
+            camera.position.set(center.x, center.y, 10000);
+        } else if (workingPlane === 'XZ') {
+            camera.position.set(center.x, 10000, center.z);
+        } else {
+            camera.position.set(10000, center.y, center.z);
+        }
+
+        // Orthographic camera view size adjustment
+        // zoom = pixels / unit. We want safeMaxDim * 1.5 units to fit in min(width, height)
+        const targetZoom = Math.min(window.innerWidth, window.innerHeight) / (safeMaxDim * 1.5);
+
+        Object.assign(camera, { zoom: targetZoom });
+        camera.updateProjectionMatrix();
+
+        if (controls) {
+            controls.target.copy(center);
+            controls.update();
+        }
+
+    }, [autoCenterTrigger, nodes, camera, controls]);
+
+    return null;
+};
+
+
 const VerificationViewBounds = () => {
     const { camera, controls } = useThree();
     const nodes = useSketchStore(s => s.nodes);
@@ -352,6 +430,7 @@ export const SketcherTab = () => {
                         near={-100000} far={100000} 
                     />
                     <OrbitControls makeDefault enableRotate={false} />
+                    <MainViewAutoCenter />
                     <DynamicGrid workingPlane={workingPlane} />
                     <InteractivePlane />
                     <GraphRenderer is3D={false} />
