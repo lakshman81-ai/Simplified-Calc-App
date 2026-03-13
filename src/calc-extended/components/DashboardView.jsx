@@ -3,9 +3,9 @@ import { useExtendedStore } from '../store/useExtendedStore';
 import { runExtendedSolver } from '../solver/ExtendedSolver';
 
 const styles = {
-  layout: { display: 'flex', width: '100%', height: '100%' },
+  layout: { display: 'flex', width: '100%', height: '100%', overflow: 'hidden' },
   leftDock: { width: '280px', background: '#0f172a', borderRight: '1px solid #1e293b', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto' },
-  mainContent: { flex: 1, padding: '24px', display: 'flex', flexDirection: 'column' },
+  mainContent: { flex: 1, padding: '24px', display: 'flex', flexDirection: 'column', overflowY: 'auto' },
   section: { background: '#1e293b', padding: '12px', borderRadius: '8px', border: '1px solid #334155' },
   header: { fontSize: '12px', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 'bold' },
   row: { display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '14px' },
