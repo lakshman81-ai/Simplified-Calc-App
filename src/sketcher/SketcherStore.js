@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import * as THREE from 'three';
 import { buildGraphFromComponents, buildComponentsFromGraph } from './GraphTranslator';
 
 export const useSketchStore = create((set, get) => ({
@@ -101,8 +102,8 @@ export const useSketchStore = create((set, get) => ({
       const z = snapCoordinate(point2D.z);
       
       if (workingPlane === 'XY') return [x, y, workingElevation];
-      if (workingPlane === 'XZ') return [x, workingElevation, -y]; // In XZ plane, screen Y maps to world -Z
-      if (workingPlane === 'YZ') return [workingElevation, x, -y]; // In YZ plane, screen X maps to world Y, and screen Y maps to world -Z
+      if (workingPlane === 'XZ') return [x, workingElevation, z];
+      if (workingPlane === 'YZ') return [workingElevation, y, z];
       return [x, y, z];
   },
   

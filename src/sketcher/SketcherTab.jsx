@@ -137,27 +137,14 @@ const InteractivePlane = ({ isAltHeld }) => {
     let position = [0, 0, 0];
     const isDrawingAndAlt = draftingState.isDrawing && isAltHeld && draftingState.startNodeId && nodes[draftingState.startNodeId];
 
-    if (isDrawingAndAlt) {
-        // If Alt is held while drawing, rotate the intersection plane to be perpendicular
-        // to the current working plane, allowing the user's mouse to intersect the "depth" axis.
-        const startPos = nodes[draftingState.startNodeId].pos;
-        position = startPos; // Move plane strictly to the active node to catch the Z axis
+    // DO NOT rotate the plane when Alt is held.
+    // The OrthographicCamera rays are parallel to the depth axis.
+    // Rotating the plane 90 degrees makes it edge-on, meaning the rays never intersect it.
+    // We must keep the plane facing the camera, and map the mouse's in-plane movement to the depth axis instead.
 
-        if (workingPlane === 'XY') {
-             // Working in XY, so out-of-plane is Z. Rotate plane to YZ.
-             rotation = [0, Math.PI/2, 0];
-        } else if (workingPlane === 'XZ') {
-             // Working in XZ, so out-of-plane is Y. Rotate plane to XY.
-             rotation = [0, 0, 0];
-        } else if (workingPlane === 'YZ') {
-             // Working in YZ, so out-of-plane is X. Rotate plane to XZ.
-             rotation = [-Math.PI/2, 0, 0];
-        }
-    } else {
-        // Standard in-plane rotations
-        if (workingPlane === 'XZ') rotation = [-Math.PI/2, 0, 0];
-        if (workingPlane === 'YZ') rotation = [0, Math.PI/2, 0];
-    }
+    // Standard in-plane rotations
+    if (workingPlane === 'XZ') rotation = [-Math.PI/2, 0, 0];
+    if (workingPlane === 'YZ') rotation = [0, Math.PI/2, 0];
 
     const handlePointerMove = (e) => {
         if (draftingState.isDrawing) {
@@ -165,19 +152,21 @@ const InteractivePlane = ({ isAltHeld }) => {
 
             if (isDrawingAndAlt) {
                  // Alt Key Out-of-Plane Locking
-                 // Lock the current in-plane coordinates to the start node strictly,
-                 // and only allow the e.point to dictate the depth axis based on the rotated intersection plane.
+                 // Since the plane is NOT rotated, e.point gives us movement in the current viewing plane.
+                 // We take the cursor's movement in the screen Y axis (or X axis depending on the view)
+                 // and apply that exact distance to the depth axis instead.
                  const startVec = new THREE.Vector3(...nodes[draftingState.startNodeId].pos);
 
                  if (workingPlane === 'XY') {
-                     // e.point maps to the YZ plane we rotated to
-                     targetPoint = new THREE.Vector3(startVec.x, startVec.y, e.point.z);
+                     // Use the cursor's Y position in the XY plane to dictate Z depth
+                     // e.point.y - startVec.y gives us the drag distance.
+                     targetPoint = new THREE.Vector3(startVec.x, startVec.y, startVec.z + (e.point.y - startVec.y));
                  } else if (workingPlane === 'XZ') {
-                     // e.point maps to the XY plane we rotated to
-                     targetPoint = new THREE.Vector3(startVec.x, e.point.y, startVec.z);
+                     // Cursor's Z position (which maps to screen Y in the top-down XZ view) dictates Y height
+                     targetPoint = new THREE.Vector3(startVec.x, startVec.y + (e.point.z - startVec.z), startVec.z);
                  } else if (workingPlane === 'YZ') {
-                     // e.point maps to the XZ plane we rotated to
-                     targetPoint = new THREE.Vector3(e.point.x, startVec.y, startVec.z);
+                     // Cursor's Z position dictates X depth
+                     targetPoint = new THREE.Vector3(startVec.x + (e.point.z - startVec.z), startVec.y, startVec.z);
                  }
             } else if (e.shiftKey && draftingState.startNodeId && nodes[draftingState.startNodeId]) {
                  // Orthogonal locking with Shift key
@@ -259,7 +248,9 @@ const MainViewAutoCenter = ({ isAltHeld }) => {
     const { camera, controls } = useThree();
     const nodes = useSketchStore(s => s.nodes);
     const autoCenterTrigger = useSketchStore(s => s.autoCenterTrigger);
+    const workingPlane = useSketchStore(s => s.workingPlane);
 
+    // Auto-centering effect
     useEffect(() => {
         if (autoCenterTrigger === 0) return;
 
@@ -288,7 +279,6 @@ const MainViewAutoCenter = ({ isAltHeld }) => {
         const safeMaxDim = maxDim === 0 ? 1000 : maxDim;
 
         // Base orthographic alignment
-        const { workingPlane } = useSketchStore.getState();
         if (workingPlane === 'XY') {
             camera.position.set(center.x, center.y, 10000);
             if (controls) controls.target.copy(center);
@@ -298,36 +288,6 @@ const MainViewAutoCenter = ({ isAltHeld }) => {
         } else {
             camera.position.set(10000, center.y, center.z);
             if (controls) controls.target.copy(center);
-        }
-
-        // Use OrbitControls to strictly apply a slight skew/tilt for depth visualization
-        // rather than manually translating the camera which breaks the frustum origin.
-        if (controls) {
-            if (isAltHeld) {
-                // Apply a ~15 degree skew based on the active plane
-                if (workingPlane === 'XY') {
-                    controls.setAzimuthalAngle(Math.PI / 8);
-                    controls.setPolarAngle((Math.PI / 2) - Math.PI / 8);
-                } else if (workingPlane === 'XZ') {
-                    controls.setAzimuthalAngle(Math.PI / 8);
-                    controls.setPolarAngle(Math.PI / 8); // looking down Y
-                } else if (workingPlane === 'YZ') {
-                    controls.setAzimuthalAngle((Math.PI / 2) - Math.PI / 8); // looking down X
-                    controls.setPolarAngle((Math.PI / 2) - Math.PI / 8);
-                }
-            } else {
-                // Snap back to flat planes
-                if (workingPlane === 'XY') {
-                    controls.setAzimuthalAngle(0);
-                    controls.setPolarAngle(Math.PI / 2); // flat against Z
-                } else if (workingPlane === 'XZ') {
-                    controls.setAzimuthalAngle(0);
-                    controls.setPolarAngle(0); // directly overhead Y
-                } else if (workingPlane === 'YZ') {
-                    controls.setAzimuthalAngle(Math.PI / 2); // looking along X
-                    controls.setPolarAngle(Math.PI / 2);
-                }
-            }
         }
 
         // Orthographic camera view size adjustment
