@@ -9,6 +9,7 @@ import { Spl2BundleTab } from './spl2-bundle';
 import { ConfigTab } from './config/ConfigTab';
 import SketcherTab from './sketcher/SketcherTab';
 import { GC3DTab } from './gc3d';
+import CalcExtendedTab from './calc-extended/components/CalcExtendedTab';
 import './App.css';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
       {activeTab === 'spl2bundle' && <Spl2BundleTab />}
       {activeTab === 'config' && <ConfigTab />}
       {activeTab === 'gc3d' && <GC3DTab />}
+      {activeTab === 'calcExtended' && <CalcExtendedTab />}
     </div>
   );
 }

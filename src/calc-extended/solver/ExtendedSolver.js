@@ -41,7 +41,7 @@ export const solveStressAndForce = (rawPayload) => {
   const e = e_per_100ft / 100; // in/ft
 
   const E_ksi = lookupValue(modulusDB, material, tempOperate, 'modulus_ksi');
-  const E = E_ksi * 1000000; // PSI (ksi is thousands of psi, but actually manual uses 10^6, so 28.3 ksi is 28,300,000 psi)
+  const E = E_ksi * 1000000; // PSI
 
   const pipe = pipePropsDB.find(p => p.nominal_size === nominalSize && p.schedule === schedule);
   const D = pipe.OD, I = pipe.I;

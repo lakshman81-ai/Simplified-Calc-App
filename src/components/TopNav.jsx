@@ -52,10 +52,11 @@ export const TopNav = () => {
         <TabItem id="simpAnalysis" name="Simp. Analysis" icon={Activity} />
         <TabItem id="gc3d" name="GC 3D Analyzer" icon={Activity} />
         <TabItem id="spl2bundle" name="Simpl. Analysis 2D bundle" icon={Calculator} />
+        <TabItem id="calcExtended" name="Calc Extended" icon={Calculator} />
         <TabItem id="config" name="Config" icon={Settings} />
       </div>
       <div style={{ padding: '0 24px', fontSize: '11px', color: '#64748b', fontFamily: 'monospace' }}>
-        Ver 07-03-2026 (1)
+        Ver 09-03-2026 13.00 (2)
       </div>
     </div>
   );
