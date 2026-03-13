@@ -51,6 +51,16 @@ export default function DashboardView() {
           <div style={styles.row}><span>Eq Mat:</span> <select style={styles.input} value={constraints.equipmentMaterial} onChange={e => useExtendedStore.getState().updateConstraint('equipmentMaterial', e.target.value)}><option>Steel</option><option>Cast Iron</option></select></div>
         </div>
 
+        <div style={styles.section}>
+          <div style={styles.header}>Import Geometry</div>
+          <button style={{...styles.button, background: '#1e293b', color: '#38bdf8', padding: '8px', marginBottom: '8px', fontSize: '12px', border: '1px solid #38bdf8'}} onClick={() => useExtendedStore.getState().importFrom3DViewer()}>
+            ↓ Pull from 3D Viewer
+          </button>
+          <button style={{...styles.button, background: '#1e293b', color: '#a78bfa', padding: '8px', fontSize: '12px', border: '1px solid #a78bfa'}} onClick={() => useExtendedStore.getState().importFrom2DSketcher()}>
+            ↓ Pull from 2D Sketcher
+          </button>
+        </div>
+
         <button style={{...styles.button, background: '#10b981'}} onClick={() => setActiveView('3d-solver')}>
           OPEN 3D SOLVER [↗]
         </button>
