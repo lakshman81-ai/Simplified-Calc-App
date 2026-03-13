@@ -47,14 +47,14 @@ export const ConfigSelector = () => {
       </button>
 
       {results && (
-        <div style={{ marginTop: '20px', backgroundColor: '#f9f9f9', padding: '10px' }}>
-          <h3>Solver Results</h3>
+        <div style={{ marginTop: '20px', backgroundColor: '#f9f9f9', padding: '10px', color: '#000' }}>
+          <h3 style={{ color: '#000' }}>Solver Results</h3>
           {results.error ? (
             <p style={{ color: 'red' }}>Error: {results.error}</p>
           ) : (
             <>
-              <p><strong>Max Stress:</strong> {results.maxStress.toFixed(2)} MPa</p>
-              <h4>Logs:</h4>
+              <p style={{ color: '#000' }}><strong>Max Stress:</strong> {results.maxStress.toFixed(2)} MPa</p>
+              <h4 style={{ color: '#000' }}>Logs:</h4>
               <ul style={{ fontSize: '12px', color: '#555' }}>
                 {results.logs && results.logs.map((log, idx) => <li key={idx}>{log}</li>)}
               </ul>
