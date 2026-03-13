@@ -3,7 +3,9 @@ export const L_Bend_GM = {
     material: "Carbon Steel",
     pipeSize: 8.0,
     schedule: "40",
-    tOperate: 300
+    tOperate: 300,
+    corrosionAllowance: 0,
+    millTolerance: 0
   },
   vessel: {
     vesselOD: 47.24,
@@ -32,7 +34,9 @@ export const MultiPlane_10Leg_GM = {
     material: "Carbon Steel",
     pipeSize: 8.0,
     schedule: "40",
-    tOperate: 300
+    tOperate: 300,
+    corrosionAllowance: 0,
+    millTolerance: 0
   },
   vessel: {
     vesselOD: 47.24,

@@ -13,7 +13,7 @@ describe('ExtendedSolver Math Engine', () => {
     expect(results.meta.e).toBeCloseTo(0.0182, 3);
     expect(results.meta.E).toBeCloseTo(28300000, 0); // 28.3 million PSI
     expect(results.meta.OD).toBe(8.625);
-    expect(results.meta.I).toBe(72.5);
+    expect(results.meta.I_eff).toBeCloseTo(72.5, 0); // Should equal nominal if corrosion/mill is 0
 
     // Verify X Axis
     const xRes = results.axes.X;
@@ -49,6 +49,23 @@ describe('ExtendedSolver Math Engine', () => {
     expect(zRes.force).toBeLessThan(5); // ~1 lb
     expect(zRes.stress).toBeLessThan(20); // ~11 PSI
     expect(zRes.status).toBe('PASS');
+  });
+
+  it('calculates 10-leg GM correctly with Corrosion and Mill Tolerance reducing I_eff', () => {
+    // Clone GM and apply manufacturing constraints
+    const gm_with_corrosion = JSON.parse(JSON.stringify(MultiPlane_10Leg_GM));
+    gm_with_corrosion.inputs.corrosionAllowance = 0.125;
+    gm_with_corrosion.inputs.millTolerance = 12.5;
+
+    const results = runExtendedSolver(gm_with_corrosion);
+
+    // I_eff should be significantly lower than nominal 72.5
+    expect(results.meta.I_eff).toBeLessThan(72.5);
+
+    // Lower I_eff means less stiffness, which means less force exerted on equipment
+    // Nominal force was ~129 lbs.
+    const xRes = results.axes.X;
+    expect(xRes.force).toBeLessThan(129);
   });
 
 });

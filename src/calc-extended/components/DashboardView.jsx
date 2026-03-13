@@ -51,6 +51,20 @@ export default function DashboardView() {
         </div>
 
         <div style={styles.section}>
+          <div style={styles.header}>Mechanical & Mfg</div>
+          <div style={styles.row}>
+            <span>Friction (μ):</span>
+            <input type="number" step="0.01"
+                   style={{...styles.input, opacity: methodology === 'FLUOR' ? 0.5 : 1}}
+                   disabled={methodology === 'FLUOR'}
+                   title={methodology === 'FLUOR' ? "Only applicable in 2D Bundle Method" : ""}
+                   value={inputs.frictionFactor} onChange={e => useExtendedStore.getState().updateInput('frictionFactor', Number(e.target.value))} />
+          </div>
+          <div style={styles.row}><span>Corr. Allow (in):</span> <input type="number" step="0.01" style={styles.input} value={inputs.corrosionAllowance} onChange={e => useExtendedStore.getState().updateInput('corrosionAllowance', Number(e.target.value))} /></div>
+          <div style={styles.row}><span>Mill Tol (%):</span> <input type="number" step="0.1" style={styles.input} value={inputs.millTolerance} onChange={e => useExtendedStore.getState().updateInput('millTolerance', Number(e.target.value))} /></div>
+        </div>
+
+        <div style={styles.section}>
           <div style={styles.header}>Boundary Movement (Anchor 1)</div>
           <div style={styles.row}><span>X (in):</span> <input type="number" step="0.1" style={styles.input} value={boundaryMovement.x} onChange={e => useExtendedStore.getState().updateBoundaryMovement('x', Number(e.target.value))} /></div>
           <div style={styles.row}><span>Y (in):</span> <input type="number" step="0.1" style={styles.input} value={boundaryMovement.y} onChange={e => useExtendedStore.getState().updateBoundaryMovement('y', Number(e.target.value))} /></div>

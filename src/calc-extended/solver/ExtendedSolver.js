@@ -95,18 +95,30 @@ const getDesignStress = (material) => {
 // Guided Cantilever Approximation Solver
 export const runExtendedSolver = (payload) => {
   const { nodes, segments, anchors, inputs, vessel, boundaryMovement, constraints } = payload;
-  const { material, pipeSize, schedule, tOperate } = inputs;
+  const { material, pipeSize, schedule, tOperate, corrosionAllowance, millTolerance } = inputs;
 
   const { e, E } = getMaterialProps(material, tOperate);
   const pipe = getPipeProps(pipeSize, schedule);
-  const { I, OD } = pipe;
+  const { I, OD, t: nom_t } = pipe;
+
+  // Apply Manufacturing Constraints (Corrosion & Mill Tolerance)
+  let I_eff = I;
+  if (corrosionAllowance !== undefined && millTolerance !== undefined && nom_t !== undefined) {
+    // 1. Subtract Mill Tolerance (%)
+    const t_m = nom_t * (1 - millTolerance / 100);
+    // 2. Subtract Corrosion Allowance
+    const t_eff = Math.max(t_m - corrosionAllowance, 0.001); // Prevent <= 0
+    // 3. Recalculate I: I = (pi/64) * (OD^4 - ID^4)
+    const ID_eff = OD - (2 * t_eff);
+    I_eff = (Math.PI / 64) * (Math.pow(OD, 4) - Math.pow(ID_eff, 4));
+  }
 
   const { netDiff, bendingLegs, shortDropsIgnored } = parseGeometry(nodes, segments, anchors.anchor1, anchors.anchor2);
 
   // Phase 1: Global Piping Reactions (Fluor)
   const calcAxis = (axis, net, bendLeg, boundMovement) => {
     const delta = (Math.abs(net) * e) + (boundMovement || 0);
-    const force = bendLeg > 0 ? (3 * E * I * delta) / (144 * Math.pow(bendLeg, 3)) : 0;
+    const force = bendLeg > 0 ? (3 * E * I_eff * delta) / (144 * Math.pow(bendLeg, 3)) : 0;
     const stress = bendLeg > 0 ? (3 * E * OD * delta) / (144 * Math.pow(bendLeg, 2)) : 0;
     const maxStress = constraints.maxStress;
     const status = stress <= maxStress ? 'PASS' : 'FAIL';
@@ -158,6 +170,6 @@ export const runExtendedSolver = (payload) => {
     axes: { X: xRes, Y: yRes, Z: zRes },
     mist: { K, interactionRatio, status: mistStatus },
     flange: { equivalentLoad, allowableCapacity, status: flangeStatus },
-    meta: { shortDropsIgnored, e, E, I, OD, pipeSize }
+    meta: { shortDropsIgnored, e, E, I_eff, OD, pipeSize }
   };
 };

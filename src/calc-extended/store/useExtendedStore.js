@@ -22,8 +22,11 @@ const initialState = {
     material: 'Carbon Steel',
     pipeSize: 8.0,
     schedule: '40',
-    tInstall: 70,
+    tInstall: 70, // Locked environmental param
     tOperate: 300,
+    frictionFactor: 0.3, // Mechanical, 2D Bundle only
+    corrosionAllowance: 0.125, // Mfg constraint (in)
+    millTolerance: 12.5, // Mfg constraint (%)
   },
 
   // Vessel & Nozzle (MIST)
