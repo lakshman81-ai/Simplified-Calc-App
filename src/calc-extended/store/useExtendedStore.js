@@ -5,7 +5,8 @@ import { useSketchStore } from '../../sketcher/SketcherStore';
 const initialState = {
   // Global Settings
   methodology: 'FLUOR', // 'FLUOR' | '2D_BUNDLE'
-  activeSubTab: '3d', // '2d' | '3d' | 'piperack'
+  activeSubTab: '3d', // '2d' | '3d' | 'piperack' | 'config'
+  unitSystem: 'Imperial', // 'Imperial' | 'Metric'
 
   // UI State
   activeView: 'dashboard', // 'dashboard' | '3d-solver'
@@ -60,6 +61,7 @@ export const useExtendedStore = create((set) => ({
 
   setMethodology: (method) => set({ methodology: method }),
   setActiveSubTab: (tab) => set({ activeSubTab: tab }),
+  toggleUnitSystem: (unit) => set({ unitSystem: unit }),
   setActiveView: (view) => set({ activeView: view }),
   setHeatmapMode: (mode) => set({ heatmapMode: mode }),
 
@@ -192,6 +194,19 @@ export const useExtendedStore = create((set) => ({
   setResults: (results) => set({
     results,
     calculationStatus: 'CALCULATED'
+  }),
+
+  // Inject Golden Master mock data
+  loadMockData: (mockObj) => set({
+    inputs: mockObj.inputs,
+    vessel: mockObj.vessel,
+    boundaryMovement: mockObj.boundaryMovement,
+    constraints: mockObj.constraints,
+    nodes: mockObj.nodes,
+    segments: mockObj.segments,
+    anchors: mockObj.anchors,
+    calculationStatus: 'READY',
+    results: null
   }),
 
   // Reset module

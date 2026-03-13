@@ -5,6 +5,7 @@ import DashboardView from './DashboardView';
 import Viewport3DView from './Viewport3DView';
 import PipeRackTab from '../../piperack/components/PipeRackTab';
 import Bundle2DSolverView from './Bundle2DSolverView';
+import ConfigDatabaseTab from './ConfigDatabaseTab';
 
 const styles = {
   container: {
@@ -72,6 +73,7 @@ export default function CalcExtendedTab() {
         <div style={styles.subTab(activeSubTab === '2d')} onClick={() => setActiveSubTab('2d')}>2D Solver</div>
         <div style={styles.subTab(activeSubTab === '3d')} onClick={() => setActiveSubTab('3d')}>3D Solver</div>
         <div style={styles.subTab(activeSubTab === 'piperack')} onClick={() => setActiveSubTab('piperack')}>Pipe Rack Calc</div>
+        <div style={styles.subTab(activeSubTab === 'config')} onClick={() => setActiveSubTab('config')}>Config & DB</div>
 
         <div style={styles.toggleWrapper}>
           Methodology:
@@ -86,6 +88,7 @@ export default function CalcExtendedTab() {
         {activeSubTab === '2d' && <Bundle2DSolverView />}
         {activeSubTab === '3d' && (activeView === 'dashboard' ? <DashboardView /> : <Viewport3DView />)}
         {activeSubTab === 'piperack' && <PipeRackTab />}
+        {activeSubTab === 'config' && <ConfigDatabaseTab />}
       </div>
     </div>
   );

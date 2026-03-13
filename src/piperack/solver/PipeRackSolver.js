@@ -41,9 +41,10 @@ const getPipeProps = (size, schedule) => {
   return pipeProps[0];
 };
 
-export const solvePipeRack = (lines, globalSettings) => {
+export const solvePipeRack = (lines, globalSettings, methodology = 'FLUOR', globalInputs = {}) => {
   const { anchorDistanceFt, defaultSpacingFt, allowableStressPsi } = globalSettings;
   const expansionLengthFt = anchorDistanceFt / 2; // Assuming symmetric loop in the middle
+  const frictionFactor = globalInputs.frictionFactor || 0.3;
 
   // Step 1: Extract Line Properties & Expansion
   let processedLines = lines.map(line => {
@@ -78,7 +79,15 @@ export const solvePipeRack = (lines, globalSettings) => {
 
     // Required Loop Leg (Kellogg)
     // L_req = sqrt(3*E*OD*Delta / (144*S_A))
-    const L_req_ft = Math.sqrt((3 * line.props.E * line.props.OD * line.deltaIn) / (144 * allowableStressPsi));
+    let L_req_ft = Math.sqrt((3 * line.props.E * line.props.OD * line.deltaIn) / (144 * allowableStressPsi));
+
+    // METHODOLOGY DIVERGENCE: If 2D Bundle (Simplified Method) is active,
+    // apply frictional resistance. Friction opposes thermal expansion, meaning
+    // the system is slightly more rigid, requiring a physically larger loop to
+    // absorb the same expansion without overstressing the anchor points.
+    if (methodology === '2D_BUNDLE') {
+      L_req_ft = L_req_ft * (1 + frictionFactor);
+    }
 
     // Loop Height H (2H = L_req - W)
     let H_ft = 0;

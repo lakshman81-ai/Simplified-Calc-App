@@ -13,9 +13,10 @@ import { useExtendedStore } from '../../calc-extended/store/useExtendedStore';
 export default function RackInputsDock() {
   const { globalSettings, lines, updateGlobalSetting, updateLine, addLine, removeLine, setResults } = usePipeRackStore();
   const methodology = useExtendedStore(state => state.methodology);
+  const globalInputs = useExtendedStore(state => state.inputs);
 
   const handleRun = () => {
-    const res = solvePipeRack(lines, globalSettings);
+    const res = solvePipeRack(lines, globalSettings, methodology, globalInputs);
     res.methodologyUsed = methodology === '2D_BUNDLE' ? 'SIMPLIFIED_RACK_METHOD' : 'KELLOGG_MIST';
     setResults(res);
   };

@@ -10,42 +10,65 @@ const styles = {
   statusBadge: (pass) => ({ background: pass ? '#064e3b' : '#7f1d1d', color: pass ? '#34d399' : '#fca5a5', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold' })
 };
 
+// Interactive foreignObject input component overlaying the SVG
+const EditableText = ({ x, y, valueKey, label, inputs, onUpdate, align="middle", width=40 }) => {
+  // shift foreignObject up/left to center the HTML input exactly where the SVG text would be
+  const xOffset = align === 'middle' ? width/2 : (align === 'end' ? width : 0);
+  return (
+    <foreignObject x={x - xOffset} y={y - 6} width={width} height="16" style={{ overflow: 'visible' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: align === 'middle' ? 'center' : (align==='end' ? 'flex-end' : 'flex-start') }}>
+        <span style={{ fontSize: '8px', color: '#94a3b8', marginRight: '2px' }}>{label}</span>
+        <input
+          type="number"
+          value={inputs[valueKey]}
+          onChange={(e) => onUpdate(valueKey, e.target.value)}
+          style={{
+            width: '24px', background: 'rgba(15,23,42,0.8)', border: '1px solid #3b82f6',
+            color: '#fff', fontSize: '8px', padding: '1px 2px', borderRadius: '2px', textAlign: 'center',
+            outline: 'none'
+          }}
+        />
+      </div>
+    </foreignObject>
+  );
+};
+
 // 2D SVG Schematic Renderer
-const Schematic2D = ({ shape, inputs }) => {
+const Schematic2D = ({ shape, inputs, onUpdate }) => {
   const c = '#38bdf8'; // pipe color
 
   if (shape === 'L-Shape') {
     return (
-      <svg width="200" height="200" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
+      <svg width="300" height="300" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
         <path d="M 20,80 L 20,20 L 80,20" />
         <circle cx="20" cy="80" r="4" fill="#ef4444" stroke="none" /> {/* Anchor */}
         <circle cx="80" cy="20" r="4" fill="#f59e0b" stroke="none" /> {/* Anchor */}
-        <text x="50" y="15" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="middle">Vx ({inputs.Vx}')</text>
-        <text x="15" y="50" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="end">Vy ({inputs.Vy}')</text>
+        <EditableText x="50" y="15" valueKey="Vx" label="Vx" inputs={inputs} onUpdate={onUpdate} />
+        <EditableText x="15" y="50" valueKey="Vy" label="Vy" align="end" inputs={inputs} onUpdate={onUpdate} />
       </svg>
     );
   }
   if (shape === 'Z-Shape') {
     return (
-      <svg width="200" height="200" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
+      <svg width="300" height="300" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
         <path d="M 10,80 L 50,80 L 50,20 L 90,20" />
         <circle cx="10" cy="80" r="4" fill="#ef4444" stroke="none" />
         <circle cx="90" cy="20" r="4" fill="#f59e0b" stroke="none" />
-        <text x="30" y="90" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="middle">Vx1 ({inputs.Vx1}')</text>
-        <text x="45" y="50" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="end">Vy ({inputs.Vy}')</text>
-        <text x="70" y="15" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="middle">Vx2 ({inputs.Vx2}')</text>
+        <EditableText x="30" y="90" valueKey="Vx1" label="Vx1" inputs={inputs} onUpdate={onUpdate} />
+        <EditableText x="45" y="50" valueKey="Vy" label="Vy" align="end" inputs={inputs} onUpdate={onUpdate} />
+        <EditableText x="70" y="15" valueKey="Vx2" label="Vx2" inputs={inputs} onUpdate={onUpdate} />
       </svg>
     );
   }
   if (shape === 'U-Loop') {
     return (
-      <svg width="200" height="200" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
+      <svg width="300" height="300" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
         <path d="M 10,80 L 30,80 L 30,20 L 70,20 L 70,80 L 90,80" />
         <circle cx="10" cy="80" r="4" fill="#ef4444" stroke="none" />
         <circle cx="90" cy="80" r="4" fill="#f59e0b" stroke="none" />
-        <text x="50" y="90" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="middle">L ({inputs.L}')</text>
-        <text x="50" y="15" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="middle">W ({inputs.W}')</text>
-        <text x="25" y="50" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="end">H ({inputs.H}')</text>
+        <EditableText x="50" y="90" valueKey="L" label="L" inputs={inputs} onUpdate={onUpdate} />
+        <EditableText x="50" y="15" valueKey="W" label="W" inputs={inputs} onUpdate={onUpdate} />
+        <EditableText x="25" y="50" valueKey="H" label="H" align="end" inputs={inputs} onUpdate={onUpdate} />
       </svg>
     );
   }
@@ -180,7 +203,7 @@ export default function Bundle2DSolverView() {
            {/* Right viewport */}
            <div style={{ flex: 1, background: '#020617', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
               <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid #1e293b' }}>
-                 <Schematic2D shape={shape} inputs={geom} />
+                 <Schematic2D shape={shape} inputs={geom} onUpdate={updateGeom} />
               </div>
 
               {results && (
