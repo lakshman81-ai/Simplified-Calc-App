@@ -287,38 +287,55 @@ const MainViewAutoCenter = ({ isAltHeld }) => {
         const maxDim = Math.max(size.x, size.y, size.z);
         const safeMaxDim = maxDim === 0 ? 1000 : maxDim;
 
-        // Keep camera orientation based on working plane
+        // Base orthographic alignment
         const { workingPlane } = useSketchStore.getState();
-
-        if (isAltHeld) {
-            // Skew the camera to an isometric angle to view depth
-            if (workingPlane === 'XY') {
-                camera.position.set(center.x + 5000, center.y - 5000, 10000);
-            } else if (workingPlane === 'XZ') {
-                camera.position.set(center.x + 5000, 10000, center.z + 5000);
-            } else {
-                camera.position.set(10000, center.y + 5000, center.z + 5000);
-            }
+        if (workingPlane === 'XY') {
+            camera.position.set(center.x, center.y, 10000);
+            if (controls) controls.target.copy(center);
+        } else if (workingPlane === 'XZ') {
+            camera.position.set(center.x, 10000, center.z);
+            if (controls) controls.target.copy(center);
         } else {
-            // Standard orthographic views
-            if (workingPlane === 'XY') {
-                camera.position.set(center.x, center.y, 10000);
-            } else if (workingPlane === 'XZ') {
-                camera.position.set(center.x, 10000, center.z);
+            camera.position.set(10000, center.y, center.z);
+            if (controls) controls.target.copy(center);
+        }
+
+        // Use OrbitControls to strictly apply a slight skew/tilt for depth visualization
+        // rather than manually translating the camera which breaks the frustum origin.
+        if (controls) {
+            if (isAltHeld) {
+                // Apply a ~15 degree skew based on the active plane
+                if (workingPlane === 'XY') {
+                    controls.setAzimuthalAngle(Math.PI / 8);
+                    controls.setPolarAngle((Math.PI / 2) - Math.PI / 8);
+                } else if (workingPlane === 'XZ') {
+                    controls.setAzimuthalAngle(Math.PI / 8);
+                    controls.setPolarAngle(Math.PI / 8); // looking down Y
+                } else if (workingPlane === 'YZ') {
+                    controls.setAzimuthalAngle((Math.PI / 2) - Math.PI / 8); // looking down X
+                    controls.setPolarAngle((Math.PI / 2) - Math.PI / 8);
+                }
             } else {
-                camera.position.set(10000, center.y, center.z);
+                // Snap back to flat planes
+                if (workingPlane === 'XY') {
+                    controls.setAzimuthalAngle(0);
+                    controls.setPolarAngle(Math.PI / 2); // flat against Z
+                } else if (workingPlane === 'XZ') {
+                    controls.setAzimuthalAngle(0);
+                    controls.setPolarAngle(0); // directly overhead Y
+                } else if (workingPlane === 'YZ') {
+                    controls.setAzimuthalAngle(Math.PI / 2); // looking along X
+                    controls.setPolarAngle(Math.PI / 2);
+                }
             }
         }
 
         // Orthographic camera view size adjustment
-        // zoom = pixels / unit. We want safeMaxDim * 1.5 units to fit in min(width, height)
         const targetZoom = Math.min(window.innerWidth, window.innerHeight) / (safeMaxDim * 1.5);
-
         Object.assign(camera, { zoom: targetZoom });
         camera.updateProjectionMatrix();
 
         if (controls) {
-            controls.target.copy(center);
             controls.update();
         }
 
@@ -396,7 +413,7 @@ const GraphRenderer = ({ is3D }) => {
 
                 return (
                     <mesh key={seg.id} position={mid} quaternion={quaternion}>
-                        <cylinderGeometry args={[is3D ? (seg.properties?.bore || 100)/2 : 20, is3D ? (seg.properties?.bore || 100)/2 : 20, length, 8]} />
+                        <cylinderGeometry args={[is3D ? (seg.properties?.bore || 100)/2 : 40, is3D ? (seg.properties?.bore || 100)/2 : 40, length, 8]} />
                         <meshBasicMaterial color={isSelected ? '#38bdf8' : (seg.properties?.type === 'FITTING_LEG' ? '#32cd32' : '#94a3b8')} />
                     </mesh>
                 );
@@ -424,7 +441,7 @@ const PhantomSegment = ({ startPos, endPos }) => {
 
     return (
         <mesh position={mid} quaternion={quaternion}>
-            <cylinderGeometry args={[20, 20, length, 8]} />
+            <cylinderGeometry args={[40, 40, length, 8]} />
             <meshBasicMaterial color="#3b82f6" transparent opacity={0.5} />
         </mesh>
     );

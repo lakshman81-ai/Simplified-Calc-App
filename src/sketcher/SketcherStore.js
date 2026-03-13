@@ -101,8 +101,8 @@ export const useSketchStore = create((set, get) => ({
       const z = snapCoordinate(point2D.z);
       
       if (workingPlane === 'XY') return [x, y, workingElevation];
-      if (workingPlane === 'XZ') return [x, workingElevation, -z]; // R3F Z maps to -Z for standard elevation view
-      if (workingPlane === 'YZ') return [workingElevation, y, -z];
+      if (workingPlane === 'XZ') return [x, workingElevation, -y]; // In XZ plane, screen Y maps to world -Z
+      if (workingPlane === 'YZ') return [workingElevation, x, -y]; // In YZ plane, screen X maps to world Y, and screen Y maps to world -Z
       return [x, y, z];
   },
   
