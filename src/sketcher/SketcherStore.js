@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import * as THREE from 'three';
 import { buildGraphFromComponents, buildComponentsFromGraph } from './GraphTranslator';
 
 export const useSketchStore = create((set, get) => ({
@@ -153,7 +152,7 @@ export const useSketchStore = create((set, get) => ({
           if (!draftingState.isDrawing) {
               // First click: start drawing
               const startId = targetId || createNode(pt3D, 'free');
-              const nextPos = targetId ? new THREE.Vector3(...pt3D) : new THREE.Vector3(...pt3D);
+              const nextPos = { x: pt3D[0], y: pt3D[1], z: pt3D[2] };
               set(s => ({ draftingState: { ...s.draftingState, isDrawing: true, startNodeId: startId, currentPos: nextPos } }));
           } else {
               // Second click: end drawing, create segment, continue from new node
@@ -164,7 +163,7 @@ export const useSketchStore = create((set, get) => ({
               createSegment(draftingState.startNodeId, endId, { type: 'PIPE', bore: 100, material: 'CARBON STEEL' });
 
               // Continue drawing from the new end node
-              const nextPos = targetId ? new THREE.Vector3(...pt3D) : new THREE.Vector3(...pt3D);
+              const nextPos = { x: pt3D[0], y: pt3D[1], z: pt3D[2] };
               set(s => ({ draftingState: { ...s.draftingState, startNodeId: endId, currentPos: nextPos } }));
           }
       }
