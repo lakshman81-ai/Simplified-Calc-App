@@ -1,0 +1,816 @@
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 1 of 95
+15/11/2002    Rev. 0
+1 PIPE STRESS
+1.1 PREFACE
+This lesson will cover the procedures for simple stress analysis required when doing a layout study.
+Two things to keep in mind; first, use Fluor standards as a guide, and second, the guidelines mentioned
+in this lesson may be different than jobs you may have worked on in the past.  Most clients have their
+own engineering standards.
+1.1.1 Lesson Objectives
+Lessons provide self-directed piping layout training to designers who have basic piping design skills.
+Training material can be applied to manual or electronic applications.  Lesson objectives are:
+ To familiarize you with the stress requirements when making a layout.
+ To know the different materials and terminology used when making a stress analysis (i.e.
+nomograph).
+ To know the common stress considerations when laying out pipeways, pumps, vertical vessels,
+etc., avoiding major mistakes and costly changes, and to show you some of the pitfalls that causes
+them.
+ To familiarize you with Fluor standards on stress analysis.  (Fluor standards are a guide; the
+standards used on your contract may differ.)
+1.1.2 Lesson Study Plan
+Take the time to familiarize yourself with the lesson sections.
+The following information will be required to support your self-study:
+Fluor Technical Practices.  The following Fluor Technical practices/resources are included in this lesson
+guide:
+000.250.2041 , Plant Arrangement. Pipeway Layout - Allowable Pipe Spans
+000.250.2600 , Exchangers - TEMA Nomenclature
+000.250.2601 , Exchangers - Equipment Location and Piping Layout - Shell and Tube
+Heat Exchangers
+000.250.9823 , Co-efficient of Expansion Tables
+000.250.2220 , Stress Design - Sketch Procedure
+000.250.2221 , Stress Design - Sketch Information
+It should take you approximately 30 hours to read the lesson plan and be prepared to take the test.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 2 of 95
+15/11/2002    Rev. 0
+If you have layout questions concerning this lesson your immediate supervisor is available to assist
+you.  If you have general questions about the lesson, contact Piping Staff - Stress Group.
+1.1.3 Study Aid
+Videos on Process Plant Layout & Piping Design (SPED) supplement your layout training.  It is
+suggested that you view these videos prior to starting the layout training.  You may check-out a copy ofthe videos from the Knowledge Centre (Library).
+1.1.4 Proficiency Testing
+There is a  self-test and a  test-grading master included en abling  the designer to evaluate their
+comprehension of this lesson.
+Testing
+Questions are true-false, stress calculating and manual fill-in.
+You are encouraged to use your lesson plan and any reference data during the self-testing.
+1.2 THERMAL EXPANSION
+Piping Designer Responsibilities
+The Piping Designer is responsible for the layout, design, and support of all piping systems and is also
+responsible for the following items, obtained by using the applicable sections of the Piping technical
+practices:
+Locating supports, guides, anchors, compressor hold-downs, and hanger rods.
+Providing prespring, cold spring, clearance required for line expansion, and additional line flexibility.Transmitting and handling stress sketches in complete compliance with procedures outlined in
+Piping Engineering Practices.
+Piping Designer is not responsible for the flexibility calculations or the validity of such calculations madeby the Stress Engineer.  Designer is responsible for any calculations or flexibility analysis that wasundertaken and resolved without Stress Supervisor's approval.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 3 of 95
+15/11/2002    Rev. 0
+1.2.1 How to find pipe expansion
+Figure #1-01
+In order to check the line spacing on the right, one thing we need to know is the thermal expansion.
+Clearance must be allowed for expansion so that lines will not grow into and damage each other.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 4 of 95
+15/11/2002    Rev. 0
+Solution Steps
+1.2.1.1.1  Write the formula for thermal expansion    eL=
+e - is called the linear co-efficient of thermal expansion.  It's value
+changes with the type of material and the change in temperature.  The
+values of "e" we use are given in tables in the Refinery Piping Code andreproduced in this section, page 7. Refer to resource 000.250.9823
+The units of "e" are inches per foot.
+L - is the original length of pipe at installation.  In most cases this is at 70o
+F, approximately.  This is the installation temperature used in the codeexpansion tables.  The units of L are in feet.
+ is the Greek letter "Delta" used to represent the change in length; i.e.
+the expansion.
+1.2.1.1.2 From the Piping Code tables, since "A" spec. Pipe is A53-B (this is carbon steel) and the
+temperature is 600oF, e = .0460 inches/foot (per coefficient of expansion tables).
+1.2.1.1.3 From the piping layout, L - 110 feet.
+1.2.1.1.4 Substitute e and L into the formula.  Your calculation will look like this:
+ = eL c.s. @600oF
+ = .046 X 110
+ = 5.06 inches
+For OSIP information refer to 000 250 9822   Properties of Pipe, Attachment 01, Attachment 02 and
+Attachment 03
+1.2.2 Anchors
+Definition:
+An anchor is a mechanical connection (welded and/or bolted between a pipe (or exchanger, etc.) and a
+structure.  The structure must be strong enough so that it cannot bend excessively under large forces.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 5 of 95
+15/11/2002    Rev. 0
+1.2.2.1 Full Anchors
+Definition:  A full anchor will not permit the pipe to move or twist in any direction at the point it is
+anchored.
+Figure #1-02
+Types of Full Anchors 5A1, 5A2 for 2" and smaller pipe.  5DA1
+5DA2 or 5DA3 will be used with a guide for
+larger sizes. Bolted end of a shell and tube
+exchanger.
+1.2.2.2 Directional Anchors
+Definition:  A directional anchor stops movement parallel to the centerline of the pipe, but permits
+sideways pipe motion.
+Figure #1-03
+Types of Directional Anchors
+5DA1, 5DA2, and 5DA3.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 6 of 95
+15/11/2002    Rev. 0
+1.2.3 Guides
+Definition:  A guide stops sideways movement of a pipe, but permits movement
+parallel to the pipe's centerline.
+Figure #1-04
+Supports
+A pipe support prevents downward motion of a pipe.  If the weight of the pipeacting down on the support is great enough, upward motion of the pipe may not
+be possible.
+Equipment
+Most equipment is anchored to a foundation.  Therefore equipment nozzles are
+also anchors.  Generally they are full anchors.  The anchors are mechanically
+rigid but may have additional expansion when the equipment is hot.  Even if the
+equipment is not bolted down, the weight may be great enough to make theequipment an anchor point.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 7 of 95
+15/11/2002    Rev. 0
+Problem
+Figure #1-05
+Find the thermal expansion of each unit header into the interconnecting pipeway on the right.
+LINE  = eL ANSWER
+FH - 4" = 68' X .088 =   5.98"R - 8" = 81.5 X .0362 =   2.95"
+S - 6" = 83' X .0617 =   5.12"
+L -10" = 80' X .0061 =    .49"These expansions are used with general note #2 on 000 250 9815  line spacing pipe for checking line
+spacing.  Line spacing problems will be covered in more detail when pipeway layout is discussed.
+Definition:  Flexibility of a piping system is a measure of the amount of thermal expansion it can safely
+absorb.  Points to remember:
+1. The amount of expansion to be absorbed must be known before the flexibility can be checked.
+2. The amount of expansion that is considered safe is dependent on the situation.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 8 of 95
+15/11/2002    Rev. 0
+How pipes flex when absorbing thermal expansion
+Figure #1-06
+Solid line is the cold position of the pipe.Dashed line is the hot position of the pipe.Expansion to be absorbed is given by the line movement.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 9 of 95
+15/11/2002    Rev. 0
+1.2.4 Concepts of Free Thermal Expansion
+1. Free thermal expansion is not generally the same as line movement.  (It is in this simple case.)
+2.This method has its greatest advantage in complex piping arrangements.
+3. When "imagining" movement, weight and friction do not exist.4. This concept is the most useful tool to prevent piping flexibility problems, especially at plot
+development and for locating solid supports.
+Calculating free thermal expansionTo find the "free thermal expansion" pretend only one end is anchored, find the movement at the other
+end, assuming there is no friction and there are no guides.
+Figure #1-07
+The actual motion at a corner is not easily found if there is no anchor.  The stress engineer should be
+consulted to determine line expansion in critical cases.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 10 of 95
+15/11/2002    Rev. 0
+Figure #1-08
+*  The actual expansion in this direction can only be determined by the stress engineer.  Free
+expansion is found by adding lengths in the direction being computed.
+When piping reverses directions the pipe lengths subtract.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 11 of 95
+15/11/2002    Rev. 0
+Figure #1-09
+* The actual expansion in this direction can only be determined by the stress engineer.
+Using Coordinates to find free expansion:
+The algebraic combination of lengths in any direction is the same as the difference in anchor
+coordinates.  (In all three dimensions, i.e., north, south and elevation).
+The fastest way to find the free thermal expansion is to multiply the difference between the anchor
+coordinates times the coefficient of expansion.  This is where the method has its greatest advantage.
+(Carbon Steel @ 300oF
+ e =.0182)PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 12 of 95
+15/11/2002    Rev. 0
+Figure #1-10
+North = 190' X .0182 = 3.46"
+East = 65' X .0182 = 1.18"
+Expansion can be radially from the centerline or axially along the centerline from some "anchor point".
+Short vertical drops have little effect on horizontal movement.  Ignore it in this problem.
+Figure #1-11PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 13 of 95
+15/11/2002    Rev. 0
+Answer
+In the N-S direction the expansion to be absorbed is:
+= eL (Coefficient of expansion X Length)
+= .046 x 30'
+= 1.38"
+In the E-W Direction:
+=e L
+= .046 x 20'
+= .92"
+The location of the anchor needs to be considered in relation to the major piping systems (large
+diameter pipe, pipe coming from underground, etc.)  When finalizing the layout and plot plan.
+Relationship of expansion and flexibility requirements are set by the plot plan, since only the difference
+is used to find expansion.
+The Stress Engineer should be consulted in critical cases.
+Now take about five minutes to calculate as before, except change the anchor end of the drum:
+Figure #1-12PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 14 of 95
+15/11/2002    Rev. 0
+Answer
+In the N-S direction the expansion to be absorbed is:
+=e L
+= .046 x 10'
+= .46"
+In the E-W Direction:
+=e L
+= .046 x 20'
+= .92"
+The E-W expansion did not change from the previous example.  The N-S expansion was reduced
+considerably by just shifting the anchor end of the drum.
+Notice also that the free thermal expansion does not depend on the piping arrangement.
+The free thermal expansion depends only on the relative locations of the anchor points.  This is the
+greatest value of learning the free thermal expansion concept, especially for the layout man who is
+locating equipment.
+The second arrangement requires less flexibility (since there is less expansion to be absorbed) and
+has the potential of saving pipe and fittings.
+Review of Expansion
+All thermal expansions are found using the same formula:
+ eL=
+Actual expansions are measured from a full anchor or directional anchor to the point where it is
+necessary to know the expansion.
+When finding free thermal expansion, the lengths to use in the expansion formula are the
+differences between anchor coordinates.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 15 of 95
+15/11/2002    Rev. 0
+1.3  FORCE AND STRESS NOMOGRAPHS
+Pipe routed in straight lines cost the least.  Normally, pipe cannot be routed straight because of thermal
+expansion.
+Stretching a pipe even a small amount takes a very large force.  Preventing pipe from expanding
+thermally takes an equally large force.
+(Note:  You will not be held responsible for knowing the following formulas).
+Stress = AreaLoad = AP
+Allowable stress varies with material and temperature, but, are on an order of magnitude of:
+(a) Pressure = 1,000 to 10,000 psi
+(b) Deadload  = 1,000 to 10,000 psi
+(c) Thermal = to 20,000 psi
+The material engineer checks pressure stresses when calculating wall thicknesses.
+Dead load stresses are controlled by proper use of the pipe span charts and checked by the stress
+engineer when required.
+Thermal expansion stresses are roughly determined by piping during the pipe study and finally checked
+by the stress engineer.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 16 of 95
+15/11/2002    Rev. 0
+Tensile and Compressive Stress
+Figure #1-13
+Experiments on different materials at different temperatures determine safe stresses.  These values are
+given in the piping code.
+Strain (Stretching)
+is the "unit strain" and is found by dividing the total stretching by the total length being stretched.
+Example:
+Figure#1-14
+inchesinch
+100*1.*=  = .001 * Must use same units of lengthPIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 17 of 95
+15/11/2002    Rev. 0
+1.3.1 Young's Modulus
+E (Young's Modulus) relates the amount of strain (stretching) to the amount of stress (loading).  It is
+defined as:
+E  =  S
+The value of E changes with material and temperature.  The stress and strain are measured
+experimentally.  E is calculated and is tabulated in the piping code.
+E = 30,000,000 P.S.I. for Cold Steel
+Normally designed anchors cannot stand large forces because the structure would bend first, and the
+anchor would not be effective Equipment shells would dimple before they would act as anchors.
+Expansions are absorbed by bending the piping system rather than compressing it.
+1.3.2 Thermal Force Between Two Anchors
+Figure #1-15PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 18 of 95
+15/11/2002    Rev. 0
+Free Expansion eL=
+The force required to prevent the pipe from expanding is the same as the force required to stretch it an
+equal amount.
+Since   S = AP
+   and   E = S
+and =
+) (12 inchesto convertedfeetL=
+To find P (the Force),
+P = SA   =   E A   =  E L12
+A   = E LeL
+12A
+P =12eAE
+Example:
+For a 6" Sch. 40 Pipe at 300oF
+P = 12000,000,30.. 58.5 0182. psi xinsq x
+P = 253,890#
+Nomograph A:
+See Figure #1-16 , Nomograph A
+This Chart is based on formula (modified)312
+LEIP=
+This formula will not be used in the lesson.
+Moment of inertia is the stiffness of object being bent based on its cross-sectional shape.  This formula
+shows force is directly proportional to the deflection.  Force is inversely proportional to the bending leg
+cubed.
+Size and schedule relates to moment of inertia.   Lengths to be added are approximate.  The force
+found in this way can differ greatly from a computer output, but is good enough for piping study
+purposes.
+The total free expansion between the two restraints (guide and anchor) is trying to grow outwards in
+either direction simultaneously since it can't actually move at either end.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 19 of 95
+15/11/2002    Rev. 0
+1.3.3 Using the Force Nomograph
+See 000.250.2230  Stress Design - Layout
+Aids for Rotating Equipment  for examples
+Examples
+Figure #1-17
+Steps:
+1. Align straight edge with  nominal pipe size (6 in), pipe length in bending (20 ft) and mark point on
+pivot line.
+2. Align point on pivot line with total thermal expansion (3.62 in) and read off thermal force (1500#).The force against the anchor (indicated by the dotted arrow) is equal to but is pushing in the opposite
+direction.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 20 of 95
+15/11/2002    Rev. 0
+Figure #1-18
+Direction Expansion Leg Force
+A 35 x .046 = 1.61 25.00 About 380#
+B 25 x .046 = 1.15 35.00 Less than 200#
+Bending leg for T.F. (Thermal Force) B is the sum of lengths at right angles to the expansion in the
+direction of B.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 21 of 95
+15/11/2002    Rev. 0
+Figure #1-19
+FREE THERMAL EXPANSION
+A = 15 x .0182 = .27 L = 15 T.F.A = 700#
+B = 20 x .0182 = .36 L = 27 T.F.B = Less than 200#
+Vertical force is not required in this example.  Both vessel and pipe C.S. at 300oF 8" SCH. 40.
+Radial expansion must be added for vertical vessel.
+Anchor end of horizontal vessel must be taken into account.  If the anchor end and slotted end
+were reversed, then T.F.A. would be: A = (12 + 15) X .0182 = .49
+Reversal of anchor end of horizontal vessel causes an increase in anchor force.Anchor movements are okay to incorporate this way since shell material and temperature are the
+same as the pipe.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 22 of 95
+15/11/2002    Rev. 0
+Figure #1-20
+A = 70 x .0321 = 2.25 L = 25 T.F.A = 2100#
+B = 25 x .0321 = .80 L = 45 T.F.B = Less than 200#
+The guide acts as an anchor for forces in "B" direction, but not in "A" direction.
+If the bending leg is longer than those listed on the chart, a flexibility problem does not exist.
+Figure #1-21
+8" SCH. 40 A = 5      L = 60      T.F.A = 200#PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 23 of 95
+15/11/2002    Rev. 0
+Find the Horizontal and Vertical T.F.
+Figure #1-22
+Force and expansion calculations are the same in plan or elevation.1. Pump nozzle is not used for flexibility.
+2. Pump expansion is included in total expansion.
+3. Moving the anchor end is mandatory.
+4. Nozzle projections are not used for flexibility here.  The stress engineer may include them.
+5. The piping in the example was dimensioned by roughly following 000 250 2040 .
+6. Clearances for access maintenance and insurance regulations generally set piping dimensions.
+The stress and force are checked afterwards, and flexibility is increased only if necessary.
+7. Following the Fluor Standards is usually a good guide for stress problems because the stress group
+has already reviewed the standards.
+Answer:
+Horizontal  = .0182 x 25 = .46 L = 16.5
+T.F. = 350#
+Vertical  = .0182 x 19 = .35 L = 13
+T.F. = 540#PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 24 of 95
+15/11/2002    Rev. 0
+If the anchor end was toward the pipeway:
+Horizontal    = 15 x .0182 = .27 L = 16.5
+T.F. = 220#
+Obviously it is better for the pump if the anchor is moved.1.3.3.1.1 Add ALL bending legs at right angles to the expansion.1.3.3.1.2 Thermal force will be calculated in only one direction, since the bending legs in the other
+directions are so much larger these calculations are unnecessary.
+12" SCH. 30 S.S. @ 400 Degrees F.
+Figure #1-23
+Answer:
+= 55     x .038 = 2.09 L = 30
+I - 249 T.F. = 2100#
+Although forces parallel to the exchanger were not calculated, it should be noted, if a guide is added on
+the long pipe run calculations might then be required.  (Calculations by stress might be required
+because of limited forces at equipment nozzles.)PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 25 of 95
+15/11/2002    Rev. 0
+1.3.4 Anchor Movement
+Taking the difference between anchor coordinates does not work when portions of the system are
+different temperatures and/or of materials with different expansion coefficients.  Actual temperature
+conditions are determined by the stress engineer using the line list, mechanical flow diagram and
+special conditions noted on the stress sketch.
+When the equipment a pipe is anchored to is of a different material or at a different temperature, the
+free thermal expansion is found by adding or subtracting "anchor movement" to the free expansion of
+the piping.
+Example:
+Figure #1-24
+E-W Free Expansion
+Free Expansion of Pipe = .0624 x 20 = 1.248"
+Vessel Anchor Movement - .0617 x 10 =   .617"
+= 1.865"
+N-S Free Expansion
+Free Expansion of Pipe = .0624 x 30 = 1.872"
+Vessel Anchor Movement = ZeroPIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 26 of 95
+15/11/2002    Rev. 0
+Anchor Movement Problem:
+Find the N-S and E-W thermal force.
+Short pipeway drops (generally about 2'-6") have very little affect on flexibility and are ignored safely.
+In tight situations (pump calculations) they may be considered.  The vertical force is not to becalculated.
+Figure #1-25
+Answer:
+N-S Expansion = 20 x .0182 = .364"L = 20 + 25 + 5 = 50
+T.F. = Less than 200#
+E-W Expansion = 70 x .0182   = 1.274"
+Boiler Anchor Movement = .0362x15  =   .543"
+Difference   =   .731"
+L = 20 + 5 = 25
+T.F. = Less than 200#PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 27 of 95
+15/11/2002    Rev. 0
+Explanation of Bending Stress
+Diagram of Tensile Stress
+Figure #1-26
+Diagram of Bending Stress
+Figure #1-27
+Strain increases From the Center Outwards.  Therefore the Stress is Proportional to the Pipe O.D. for a
+Given Amount of CurvaturePIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 28 of 95
+15/11/2002    Rev. 0
+ Example
+Figure #1-28
+The formula for calculating stress is:23
+LDES=
+Where:
+S = Stress in PSI
+E = Modulus of Elasticity
+ = Thermal Growth
+D = Pipe Diameter
+L = Length of Bending Leg
+Guides and anchors have the same effect as in the force calculations.  Small diameter piping becomes
+over stressed before large forces are developed.  Large diameter piping creates excessive forces
+before the piping becomes overstressed.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 29 of 95
+15/11/2002    Rev. 0
+1.4 PIPEWAY STUDY
+1.4.1 Basic Pipeway Layout
+Basic Pipeway Layout Requirements
+1. Positive control of thermal expansion for establishing line spacing and for appearance.
+2. Minimizing structural forces for economy of steel design and making the anchors more effective.
+3. Conservation of berthing space by the use of expansion loops, when required.
+Figure #1-29PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 30 of 95
+15/11/2002    Rev. 0
+Figure #1-30
+Figure #1-31PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 31 of 95
+15/11/2002    Rev. 0
+Pipeway Layout Steps
+1. Determine approximate length of pipeway from plot plan.
+2. Establish line sizes and temperatures.3. Establish preliminary berthing.4. Anchor all lines near the center of the pipeway.
+5. Calculate line spacing at the corners.
+6. If the line spacing is wasting berthing room at the turns, determine which lines are giving the most
+trouble.
+7. Move the anchors of these lines (one line at a time) closer to the corners.  (The line will now have
+two anchors).
+8. Place one or more loops between these two anchors.9. Size the loops to fit the available space.
+10. Finalize berthing.
+11. Check the anchor forces.12. Send finished layout to stress for calculations of exact forces to be transmitted to structural, and
+check of loop design.
+Lines that will require the biggest loops should be grouped near the outside, with lines requiring smaller
+loops progressing toward the center.  Consideration should be given to placement of small diameter
+lines where they can get additional support from larger, cooler lines.
+If a relief header needs a loop, it must be berthed so as not to interfere with other lines, since the relief
+header can not be pocketed and must slope.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 32 of 95
+15/11/2002    Rev. 0
+Line Spacing with no Flanges near the Corners
+Figure #1-32
+When there are no flanges between the corner and first guide or anchor on two adjacent lines, line
+spacing may be based on O.D. of pipe or insulation to O.D. of insulation plus expansion plus 1"
+clearance.
+Where flanges are near pipe intersections the spacing is based on flange diameter rather than O.D. of
+pipe.  Usually spacing is calculated with one line hot (operating) and one line cold (not operating).PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 33 of 95
+15/11/2002    Rev. 0
+Bowing of "L" Shapes
+Figure #1-33
+Bowing:
+The bowing can be much greater than the actual movement ( ) at the corner.
+Distances between guides and anchors around corners will limit the bowing to no more than the  at
+the turn, eliminating calculations.
+For critical lines see the stress engineer for movements and bowing calculated by the computer.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 34 of 95
+15/11/2002    Rev. 0
+Problem
+Assuming no extra space is available for thermal expansion, determine which lines require loops,
+based on the line spacing at the east end of the pipeway under consideration.
+Figure #1-34
+1. Set standard spacing.2. Check clearance for expansion.
+3. Decide which lines require lops.
+Do not make any scale drawings!
+Make a freehand sketch of the section.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 35 of 95
+15/11/2002    Rev. 0
+1.  Set Standard Spacing:
+Figure #1-35
+A   = 412" + 2" + 1" +  2110 " =  4315 "  16" or  214" + 1" + 3" +  7" =  2115 "  16"
+B   = 7" + 3" + 1" +  214" =  2115 "  16" or  2110 " + 1" + 412" =  4313 "  14"
+C = per 000.250.9815  12" Note: always use the larger dimension
+D = per 000.250.9815  19"
+Total      63"
+See 000.250.9815 , Dimensional Chart Line Spacing - Pipe
+2.  Check Clearance for Expansion (Check Flg. Location)
+ 4" IH  = .0501 x 375' = 18.79" WAS
+A   = 412" + 2" + 18.79" + 1" +3" +7" = 34.04"  35" 16"
+ 8" IH  = .0362 x 350' = 12.67"
+B   = 7" + 3" + 12.67" + 1"  +412 =25.92"  26" 16"
+4" = .0362 x 350' = 12.67"
+C   = 412" + 5.29" + 1" + 1835"  =13.92"  14" 12"
+10" = .0061 x 350' = 2.135"
+D   = 835" + 2.135" + 1" + 4311=20.26"  31" 19"
+Total     96" 63"
+All four lines on the left will require loops, if 33" additional berthing space is uneconomical to obtain.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 36 of 95
+15/11/2002    Rev. 0
+1.4.2 Locating Loop Anchors
+ (After the Need for a Loop Has Been Established)
+4" S.S. @ 500OF - 2" IH
+Figure #1-36
+Allowable expansion at the right end, without increasing line spacing =
+"75.0"412"2"1"3"7"16 =
+The maximum distance the anchor may be from the corner is found by dividing the allowable movement
+by the coefficient of expansion.
+Left End L = 6  .0501 = 120 Ft.
+Right End L = 0.75  .0501 = 15 Ft.
+The loop(s) will have to absorb at least 565 Ft. x .0501 = 28.31" of expansion.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 37 of 95
+15/11/2002    Rev. 0
+Locating Pipeway Loops
+Ideally loops shall be located centered between anchors with equal legs on either side of anchor.
+Figure #1-37
+When this isn't practical make legs on either side of anchor as equal as possible.
+Figure #1-38
+Friction Forces are determined by the number of pipe supports a line crosses.  By making these legs
+equal, the forces at the anchor should remain nearly balanced.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 38 of 95
+15/11/2002    Rev. 0
+1.4.3 Multiple Loops
+More than one loop may be required when:
+(a) It is impossible to make branch connections flexible enough.
+(b) Spacing between branches and neighboring lines or steel is limited.(c) When loop becomes too large to support or fit into space available.
+(d) Anchor forces become too unbalanced and steel cannot be economically braced.
+Figure #1-39
+If this situation is encountered, check with your supervisor.  He will check with stress and structural and
+together a solution will be found.  If it is multiple loops instead of added bracing, then:
+Figure #1-40
+Smaller loops required, but more fittings and welds are used.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 39 of 95
+15/11/2002    Rev. 0
+ Multiple Loops
+More than one loop may be required when:
+The forces required to bend the loop are too great, and the anchors cannot be economically reinforced.
+Figure #1-41
+Figure #1-42PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 40 of 95
+15/11/2002    Rev. 0
+Maximum unbalanced loads should be no more than 2000 lbs.
+Figure #1-43
+(TF1+FF1)
+     - (TF2+FF2)
+     = Total Unbalanced Load less than 2000 lbs
+To insure a thermal force is not balancing a friction force, check separately that friction and thermal
+forces balance to within 2000 lbs.
+Placing Loops
+1. Loop width should always be based on utilizing existing supports.
+2. Thermal expansion must be allowed for when spacing adjacent loops.3. Loop width does not have to be near 20 feet just because the loop nomographs happen to use that
+number.  Loop width has only secondary effect on results.
+4. Minimum loop height depends on the berthing of the line with respect to the location of the loop
+support.
+5. Loops cannot extend too far beyond an existing support or the overhang will cause the loop to
+"loose its balance."  This sets the maximum allowable loop height.
+6. The first two points have more influence on loop design than stress formulas, from the piping point
+of view.
+7. The practical problem of sizing loops at a particular bay is finding which has to be the biggest and
+second biggest, etc.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 41 of 95
+15/11/2002    Rev. 0
+Method for Sizing Pipeway Loops
+1.4.3.1.1 Anchor lines near their center. Determine which lines require loops by checking the allowable
+expansion at each end of the run.  If each end will absorb the resulting expansion, no loop is
+required, usually.  If the line spacing cannot be adjusted to take the movement, a loop isrequired.
+1.4.3.1.2 Determine which of the lines requiring loops need the largest loop, second largest, etc., by
+the following:
+1.4.3.1.2.1 Multiply the total expansion of each line between its proposed anchors by the pipe's
+moment of inertia (E).  (The stiffness of a line is measured by its "Moment of inertia.")
+1.4.3.1.2.2 The line with the largest of these calculated numbers will require the largest loop, the next
+smaller number, the next smaller loop, etc.
+1.4.3.1.2.3 The above rule does not check stress.  This is checked after the loops are roughly
+dimensioned.
+1.4.3.1.3 Check the space available for the loops.  Make sure that the lines requiring the biggest loops
+are berthed near the edge of the pipeway opposite the top of the loop.  Fit the loops between
+two pipe supports using minimum spacing plus allowance for line expansion and bowing.
+Make the loops as wide as possible, but keep the height to a minimum.  If stress or force is
+extremely high, check with stress engineer for height of loop.
+Note: Usually the lines with the most expansion are
+berthed on the edge of the pipeway so that the
+thermal expansion grows away from the other pipes
+at the corners, even if the line doesn't require the
+largest loop.
+1.4.3.1.4 Send finished pipeway to stress for accurate calculation of anchor forces for transmittal to
+Structural and accurate evaluation of stresses in the piping.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 42 of 95
+15/11/2002    Rev. 0
+Loop Sizing Example
+Note:  All Pipe is Standard Wall
+Figure #1-44
+Calculations:
+Pipe   Ip   X  Loop Order
+10" 161.0   X  5   =    805 2
+ 4" 7.23   X 11  =      80 4
+ 2" .666   X 15  =      10 5
+16" 562   X  4   =  2248 1
+ 6" 28.1   X  6   =    169 3
+This calculation also shows that the 16" line should be berthed where the 6" line is, the 10" line should
+be where the 16" is, and the 6" line should be where the 2" line is.  Notice that this is also the best
+arrangement for the beam to carry the weight.
+Pipe bridges may be used to absorb thermal expansion, reducing the number of loops required.
+Place anchors the same way as normal loop anchors are placed.
+On longer than normal span, loop bowing may cause the pipe to lift off intermediate support causing
+overspan.  Check with stress during layout.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 43 of 95
+15/11/2002    Rev. 0
+Pipeway Drops
+Short drops are very rigid and can be ignored (depending on pipe size).
+Longer drops are flexible and must be anchored to control the amount of expansion they absorb, to
+prevent overstress.
+These requirements vary with pipe size and the location of the drop and anchors, so check with stress
+during layout.
+1.4.4 Locating Friction Balance
+Locating the Friction Balance
+Of Liquid Headers That Change Size
+Figure #1-45
+The anchor is placed at the lines "center of gravity".  Find the total pipe weight and divide by two.
+6" STD = 31.5#/ft. X 100 ft. = 3,150 lbs.
+          10" STD = 74.6#/ft. X 100 ft. = 7,460 lbs.
+      16" STD = 141.7#/ft. X 100 ft. = 14,170 lbs.
+      TOTAL = 24,780 lbs. divided by 2 = 12,390 lbs.
+This is the weight of 12,390 lbs. = 87.4 ft.  of 16" STD pipe + water.
+141.7#/ftPIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 44 of 95
+15/11/2002    Rev. 0
+Locating the Friction Balance of Vapor Headers That Change Size
+Steam headers and flare headers should have their anchors located without considering water in the
+line.  Include insulation, however, if present.  Using the last example:
+Figure #1-46
+6" STD = (19.0#/ft. + 3.28#/ft.) X 100 ft. = 2,228 lbs.
+         10" STD = (40.5#/ft. + 7.07#/ft.) X 100 ft. = 4,757 lbs.
+         16" STD = (62.6#/ft. + 14.6#/ft.) X 100 ft. = 7,720 lbs.
+    TOTAL = 14,705 lbs. divided by 2 = 7,353 lbs.
+This is the weight of 7,353 lbs. = 95.2 ft. of 16" STD pipe + 3" IH.
+       (62.6 + 14.6)PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 45 of 95
+15/11/2002    Rev. 0
+Offsite Pipeway Arrangements
+Figure #1-47
+Alternate routing shortens each individual run so that the number of loops can be minimized if line
+spacing is increased a little.  Loops for offsite flare headers can be avoided in the same way.
+Flare Headers in Unit Pipeways
+Due to the no - pocketing requirement of flare header design, berthing locations and other layout
+difficulties, flare headers should not be looped in unit pipeways.
+Figure #1-48
+If expansion is too great, the anchor may have to be moved back.  If too great, the unbalanced friction
+may be reduced by using Teflon shoes on the heavier sidePIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 46 of 95
+15/11/2002    Rev. 0
+1.5 SUPPORT AND PIPE SPANS
+1.5.1 Allowable Pipe Spans
+The allowable pipe span depends on the following:
+1. Stiffness of the Pipe2. Weight of the Pipe3. Weight of the Contents4. Weight of the Insulation
+5. Allowable Stress of Pipe Material at Design Temperature.
+6. Allowable Sag for Appearance, and Adequate Drainage.
+When using the pipe span chart, allowance must be made for deviations from the conditions given on
+the chart.  In special case (such as plastic pipe), see stress engineer for allowable span information.
+Problem
+Figure #1-49
+Using the pipe span chart 000.250.2041 , find the maximum support spacing if pick-ups cannot be used.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 47 of 95
+15/11/2002    Rev. 0
+Answer:
+4" SCH 40 @ 600oF = 27'-0"
+3" SCH 40 @ 200oF = 25'-0"
+2" SCH 40 @ 200oF = 19'-0"
+1" SCH 80 @ 150oF = 17'-0"
+Answer = 17'-0"
+Figure #1-50PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 48 of 95
+15/11/2002    Rev. 0
+1.5.2 Dead Load Calculations
+DEAD LOAD CALCULATIONS (Approximate)
+Uniform Loads:
+Figure #1-51
+W = Total weight between supports (pounds)
+w = Weight per foot of pipe (include water for test loads) (include commodity and insulation
+for operating loads)
+l = Distance between supports (in feet)
+For weight of pipe and water per foot see 000.250.9822 Attachment 1.
+Various other charts can be used for weight of insulation, valves and fittings.
+Weights at each support are calculated using half the weight from either side of the support.  Generally,
+fittings can be calculated as straight pipe unless they are especially heavy.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 49 of 95
+15/11/2002    Rev. 0
+Dead Load Calculations (Approximate)
+Concentrated Loads:
+Figure #1-52
+W = Total weight of in-line item (pounds)
+Such as: Valves, flanges, specialty in-line items, and strainers, weight of branch resting on
+header.
+Weights of control valves, PSV's, other instruments and specialty items can, often, be obtained from
+vendor drawings.  The loads should be added to stress sketches when available.PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+ PIPE STRESS
+Page 50 of 95
+15/11/2002    Rev. 0
+Example Problem: Dead Load Calculation
+Estimate the load on the platform:
+Figure #1-53
+Header = 6" Sch. 40
+Commodity = oil
+Specific gravity = .8
+Insulation = 2" thick calcium silicate (4.57#/ft)
+Branch = 4" Sch. 40
+Commodity = oil
+Specific gravity = .8
+Insulation = 1.5" thick calcium silicate (2.55#/ft)
+4"-300# flange = 29#
+Problems on dead load are worked from the top downwards.  Loads estimated should have 20% safety
+factor added.

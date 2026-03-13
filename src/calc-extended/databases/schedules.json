@@ -1,0 +1,33 @@
+{
+  "4": {
+    "STD": {
+      "nps": "4",
+      "schedule": "STD",
+      "outerDiameter_in": 4.5,
+      "wallThickness_in": 0.237,
+      "momentOfInertia_in4": 7.23,
+      "sectionModulus_in3": 3.21,
+      "meanRadius_in": 2.1315
+    },
+    "XS": {
+      "nps": "4",
+      "schedule": "XS",
+      "outerDiameter_in": 4.5,
+      "wallThickness_in": 0.337,
+      "momentOfInertia_in4": 9.61,
+      "sectionModulus_in3": 4.27,
+      "meanRadius_in": 2.0815
+    }
+  },
+  "6": {
+    "STD": {
+      "nps": "6",
+      "schedule": "STD",
+      "outerDiameter_in": 6.625,
+      "wallThickness_in": 0.280,
+      "momentOfInertia_in4": 28.14,
+      "sectionModulus_in3": 8.50,
+      "meanRadius_in": 3.1725
+    }
+  }
+}

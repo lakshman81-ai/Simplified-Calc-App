@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 export const useAppStore = create((set, get) => ({
-  activeTab: 'viewer', // 'viewer', 'datatable', 'transform', 'simpAnalysis', 'spl2bundle', 'config'
+  activeTab: 'viewer', // 'viewer', 'datatable', 'transform', 'simpAnalysis', 'spl2bundle', 'config', 'calcExtended'
   setActiveTab: (tab) => set({ activeTab: tab }),
 
   components: [],

@@ -1,0 +1,18 @@
+{
+  "A106-B": {
+    "id": "A106-B",
+    "name": "Carbon Steel A106 Gr B",
+    "elasticModulus_psi": 29500000,
+    "expansion_in_per_100ft_degF": 0.0065,
+    "allowableCold_psi": 20000,
+    "allowableHot_psi": 20000
+  },
+  "A312-TP304": {
+    "id": "A312-TP304",
+    "name": "Stainless Steel A312 TP304",
+    "elasticModulus_psi": 28300000,
+    "expansion_in_per_100ft_degF": 0.0096,
+    "allowableCold_psi": 20000,
+    "allowableHot_psi": 16700
+  }
+}
