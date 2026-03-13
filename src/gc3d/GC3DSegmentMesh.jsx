@@ -4,14 +4,14 @@ import { Html } from '@react-three/drei';
 import { useGC3DStore } from './GC3DStore';
 
 const COLORS = {
-  PIPE: '#1e90ff',
-  ELBOW: '#32cd32',
-  BEND: '#32cd32',
-  TEE: '#ff69b4',
-  VALVE: '#8B4513',
-  FLANGE: '#8B4513',
-  REDUCER: '#DAA520',
-  SUPPORT: '#808080'
+  PIPE: '#60a5fa', // Light Blue (better contrast against dark background)
+  ELBOW: '#4ade80', // Light Green
+  BEND: '#4ade80',
+  TEE: '#f472b6', // Light Pink
+  VALVE: '#fb923c', // Light Orange
+  FLANGE: '#c084fc', // Light Purple
+  REDUCER: '#fcd34d', // Light Yellow
+  SUPPORT: '#94a3b8' // Light Slate
 };
 
 export const GC3DSegmentMesh = ({ id, startPos, endPos, compType, length_in }) => {
@@ -84,12 +84,12 @@ export const GC3DSegmentMesh = ({ id, startPos, endPos, compType, length_in }) =
         }}
       >
         <cylinderGeometry args={[radius, radius, length, 16]} />
-        <meshStandardMaterial color={color} />
+        <meshStandardMaterial color={color} roughness={0.3} metalness={0.2} />
       </mesh>
       {isSelected && (
         <Html position={[0, 0, radius + 50]} center zIndexRange={[100, 0]}>
           <div style={{ color: '#fff', background: 'rgba(0,0,0,0.8)', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', pointerEvents: 'none', whiteSpace: 'nowrap' }}>
-            L={(length_in * 25.4).toFixed(0)}mm ({length_in.toFixed(1)}in)
+            L={((length_in || 0) * 25.4).toFixed(0)}mm ({(length_in || 0).toFixed(1)}in)
           </div>
         </Html>
       )}

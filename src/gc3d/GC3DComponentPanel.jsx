@@ -48,7 +48,7 @@ export const GC3DComponentPanel = () => {
              <>
                 <p style={{ marginBottom: '8px' }}>ID: <span style={{ color: '#38bdf8' }}>{firstSeg.id}</span></p>
                 <p style={{ marginBottom: '8px' }}>Type: {firstSeg.compType}</p>
-                <p style={{ marginBottom: '8px' }}>Length: {firstSeg.length_in.toFixed(2)} in</p>
+                <p style={{ marginBottom: '8px' }}>Length: {(firstSeg.length_in || 0).toFixed(2)} in</p>
                 <p style={{ marginBottom: '16px' }}>Axis: {firstSeg.axis}</p>
 
                 {/* Editable Deltas */}
@@ -57,13 +57,13 @@ export const GC3DComponentPanel = () => {
                   {['x', 'y', 'z'].map((axis, i) => {
                      const startNode = nodes[firstSeg.startNode];
                      const endNode = nodes[firstSeg.endNode];
-                     const val = startNode && endNode ? (endNode.pos[i] - startNode.pos[i]) : 0;
+                     const val = startNode && endNode && startNode.pos && endNode.pos ? (endNode.pos[i] - startNode.pos[i]) : 0;
                      return (
                        <div key={axis} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                          <label style={{ width: '20px', color: '#cbd5e1', fontSize: '12px' }}>d{axis.toUpperCase()}</label>
                          <input
                            type="number"
-                           value={val.toFixed(1)}
+                           value={(val || 0).toFixed(1)}
                            onChange={(e) => {
                              const newVal = parseFloat(e.target.value);
                              if (isNaN(newVal)) return;
@@ -124,15 +124,15 @@ export const GC3DComponentPanel = () => {
         <div style={{ padding: '16px', flex: 1, overflowY: 'auto' }}>
           <p>ID: <span style={{ color: '#38bdf8' }}>{selectedNodeId}</span></p>
           <p>Type: {n.type}</p>
-          <p>Pos: [{n.pos.map(p => p.toFixed(1)).join(', ')}] mm</p>
+          <p>Pos: [{n.pos.map(p => (p || 0).toFixed(1)).join(', ')}] mm</p>
 
           {res && (
             <>
               <div style={{ marginTop: '16px', borderTop: '1px solid #334155', paddingTop: '16px', fontWeight: 'bold' }}>Analysis Result</div>
-              <p>Combined Stress SE: {res.SE_psi.toFixed(0)} psi</p>
-              <p>Allowable SA: {res.SA_psi.toFixed(0)} psi</p>
-              <p>Ratio: {res.ratio.toFixed(3)}</p>
-              <p>Status: <span style={{ color: res.result === 'PASS' ? '#10b981' : '#ef4444', fontWeight: 'bold' }}>{res.result}</span></p>
+              <p>Combined Stress SE: {(res.SE_psi || 0).toFixed(0)} psi</p>
+              <p>Allowable SA: {(res.SA_psi || 0).toFixed(0)} psi</p>
+              <p>Ratio: {(res.ratio || 0).toFixed(3)}</p>
+              <p>Status: <span style={{ color: res.result === 'PASS' ? '#10b981' : '#ef4444', fontWeight: 'bold' }}>{res.result || 'UNKNOWN'}</span></p>
             </>
           )}
         </div>

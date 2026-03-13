@@ -74,7 +74,7 @@ export const GC3DDebugTable = () => {
                     {displayValue(r.SA_psi, 'stress', unitSystem, 0).split(' ')[0]}
                 </td>
                 <td style={{ padding: '8px 16px', color: isFail ? '#ef4444' : (r.ratio > 0.7 ? '#eab308' : '#10b981') }}>
-                    {(r.ratio * 100).toFixed(1)}%
+                    {((r.ratio || 0) * 100).toFixed(1)}%
                 </td>
                 <td style={{ padding: '8px 16px', fontWeight: 'bold', color: isFail ? '#ef4444' : '#10b981' }}>
                     {r.result}
