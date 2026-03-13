@@ -41,9 +41,9 @@ export const getUnitLabel = (unitSystem, type) => {
 
 // UI Helper to format output display values
 export const formatUnit = (unitSystem, type, value, decimals = 2) => {
-  if (value == null || isNaN(value)) return '-';
+  if (value === undefined || value === null || isNaN(value)) return '-';
   if (unitSystem === 'Imperial') {
-    return value.toFixed(decimals); // Backend is natively Imperial
+    return Number(value).toFixed(decimals); // Backend is natively Imperial
   }
 
   // Convert to Metric for display

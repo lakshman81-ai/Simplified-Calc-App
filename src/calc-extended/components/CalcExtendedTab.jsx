@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useExtendedStore } from '../store/useExtendedStore';
 import { useAppStore } from '../../store/appStore';
 import DashboardView from './DashboardView';
-import Viewport3DView from './Viewport3DView';
 import PipeRackTab from '../../piperack/components/PipeRackTab';
 import Bundle2DSolverView from './Bundle2DSolverView';
 import ConfigDatabaseTab from './ConfigDatabaseTab';
@@ -57,7 +56,7 @@ const styles = {
 };
 
 export default function CalcExtendedTab() {
-  const { activeView, activeSubTab, setActiveSubTab, methodology, setMethodology, importFromGlobal } = useExtendedStore();
+  const { activeSubTab, setActiveSubTab, methodology, setMethodology, importFromGlobal } = useExtendedStore();
   const globalNodes = useAppStore(state => state.nodes);
   const globalSegments = useAppStore(state => state.segments);
 
@@ -86,7 +85,7 @@ export default function CalcExtendedTab() {
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         {activeSubTab === '2d' && <Bundle2DSolverView />}
-        {activeSubTab === '3d' && (activeView === 'dashboard' ? <DashboardView /> : <Viewport3DView />)}
+        {activeSubTab === '3d' && <DashboardView />}
         {activeSubTab === 'piperack' && <PipeRackTab />}
         {activeSubTab === 'config' && <ConfigDatabaseTab />}
       </div>

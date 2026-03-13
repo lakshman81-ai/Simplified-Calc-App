@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useExtendedStore } from '../store/useExtendedStore';
 import { runExtendedSolver } from '../solver/ExtendedSolver'; // Reuse the pure function by mocking an equivalent 3D payload
+import { getUnitLabel, formatUnit, MetricToImperial } from '../utils/units';
 
 const styles = {
   container: { display: 'flex', flexDirection: 'column', height: '100%', width: '100%', backgroundColor: '#020617', color: '#e2e8f0', overflow: 'hidden' },
@@ -18,13 +19,20 @@ const EditableText = ({ x, y, valueKey, label, inputs, onUpdate, align="middle",
     <foreignObject x={x - xOffset} y={y - 6} width={width} height="16" style={{ overflow: 'visible' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: align === 'middle' ? 'center' : (align==='end' ? 'flex-end' : 'flex-start') }}>
         <span style={{ fontSize: '8px', color: '#94a3b8', marginRight: '2px' }}>{label}</span>
+        <style>{`
+          .hide-spinners::-webkit-inner-spin-button, .hide-spinners::-webkit-outer-spin-button {
+            -webkit-appearance: none; margin: 0;
+          }
+          .hide-spinners { -moz-appearance: textfield; }
+        `}</style>
         <input
           type="number"
+          className="hide-spinners"
           value={inputs[valueKey]}
           onChange={(e) => onUpdate(valueKey, e.target.value)}
           style={{
-            width: '24px', background: 'rgba(15,23,42,0.8)', border: '1px solid #3b82f6',
-            color: '#fff', fontSize: '8px', padding: '1px 2px', borderRadius: '2px', textAlign: 'center',
+            width: '28px', background: 'rgba(15,23,42,0.8)', border: '1px solid #3b82f6',
+            color: '#fff', fontSize: '8px', padding: '1px', borderRadius: '2px', textAlign: 'center',
             outline: 'none'
           }}
         />
@@ -38,37 +46,61 @@ const Schematic2D = ({ shape, inputs, onUpdate }) => {
   const c = '#38bdf8'; // pipe color
 
   if (shape === 'L-Shape') {
+    // Dynamic scaling logic
+    const totalW = Math.max(inputs.Vx, 1);
+    const totalH = Math.max(inputs.Vy, 1);
+    const maxDim = Math.max(totalW, totalH);
+    const scale = 80 / maxDim;
+    const w = totalW * scale;
+    const h = totalH * scale;
+
     return (
       <svg width="300" height="300" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
-        <path d="M 20,80 L 20,20 L 80,20" />
-        <circle cx="20" cy="80" r="4" fill="#ef4444" stroke="none" /> {/* Anchor */}
-        <circle cx="80" cy="20" r="4" fill="#f59e0b" stroke="none" /> {/* Anchor */}
-        <EditableText x="50" y="15" valueKey="Vx" label="Vx" inputs={inputs} onUpdate={onUpdate} />
-        <EditableText x="15" y="50" valueKey="Vy" label="Vy" align="end" inputs={inputs} onUpdate={onUpdate} />
+        <path d={`M 20,80 L 20,${80 - h} L ${20 + w},${80 - h}`} />
+        <circle cx="20" cy="80" r="4" fill="#ef4444" stroke="none" />
+        <circle cx={20 + w} cy={80 - h} r="4" fill="#f59e0b" stroke="none" />
+        <EditableText x={20 + w/2} y={80 - h - 5} valueKey="Vx" label="Vx" inputs={inputs} onUpdate={onUpdate} />
+        <EditableText x={15} y={80 - h/2} valueKey="Vy" label="Vy" align="end" inputs={inputs} onUpdate={onUpdate} />
       </svg>
     );
   }
   if (shape === 'Z-Shape') {
+    const totalW = Math.max(inputs.Vx1 + inputs.Vx2, 1);
+    const totalH = Math.max(inputs.Vy, 1);
+    const maxDim = Math.max(totalW, totalH);
+    const scale = 80 / maxDim;
+    const w1 = inputs.Vx1 * scale;
+    const w2 = inputs.Vx2 * scale;
+    const h = totalH * scale;
+
     return (
       <svg width="300" height="300" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
-        <path d="M 10,80 L 50,80 L 50,20 L 90,20" />
+        <path d={`M 10,80 L ${10 + w1},80 L ${10 + w1},${80 - h} L ${10 + w1 + w2},${80 - h}`} />
         <circle cx="10" cy="80" r="4" fill="#ef4444" stroke="none" />
-        <circle cx="90" cy="20" r="4" fill="#f59e0b" stroke="none" />
-        <EditableText x="30" y="90" valueKey="Vx1" label="Vx1" inputs={inputs} onUpdate={onUpdate} />
-        <EditableText x="45" y="50" valueKey="Vy" label="Vy" align="end" inputs={inputs} onUpdate={onUpdate} />
-        <EditableText x="70" y="15" valueKey="Vx2" label="Vx2" inputs={inputs} onUpdate={onUpdate} />
+        <circle cx={10 + w1 + w2} cy={80 - h} r="4" fill="#f59e0b" stroke="none" />
+        <EditableText x={10 + w1/2} y={85} valueKey="Vx1" label="Vx1" inputs={inputs} onUpdate={onUpdate} />
+        <EditableText x={5 + w1} y={80 - h/2} valueKey="Vy" label="Vy" align="end" inputs={inputs} onUpdate={onUpdate} />
+        <EditableText x={10 + w1 + w2/2} y={80 - h - 5} valueKey="Vx2" label="Vx2" inputs={inputs} onUpdate={onUpdate} />
       </svg>
     );
   }
   if (shape === 'U-Loop') {
+    const totalW = Math.max(inputs.L + inputs.W, 1);
+    const totalH = Math.max(inputs.H, 1);
+    const maxDim = Math.max(totalW, totalH);
+    const scale = 80 / maxDim;
+    const l1 = (inputs.L / 2) * scale;
+    const w = inputs.W * scale;
+    const h = totalH * scale;
+
     return (
       <svg width="300" height="300" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
-        <path d="M 10,80 L 30,80 L 30,20 L 70,20 L 70,80 L 90,80" />
+        <path d={`M 10,80 L ${10 + l1},80 L ${10 + l1},${80 - h} L ${10 + l1 + w},${80 - h} L ${10 + l1 + w},80 L ${10 + l1 * 2 + w},80`} />
         <circle cx="10" cy="80" r="4" fill="#ef4444" stroke="none" />
-        <circle cx="90" cy="80" r="4" fill="#f59e0b" stroke="none" />
-        <EditableText x="50" y="90" valueKey="L" label="L" inputs={inputs} onUpdate={onUpdate} />
-        <EditableText x="50" y="15" valueKey="W" label="W" inputs={inputs} onUpdate={onUpdate} />
-        <EditableText x="25" y="50" valueKey="H" label="H" align="end" inputs={inputs} onUpdate={onUpdate} />
+        <circle cx={10 + l1 * 2 + w} cy="80" r="4" fill="#f59e0b" stroke="none" />
+        <EditableText x={10 + l1 + w/2} y={85} valueKey="L" label="L" inputs={inputs} onUpdate={onUpdate} />
+        <EditableText x={10 + l1 + w/2} y={80 - h - 5} valueKey="W" label="W" inputs={inputs} onUpdate={onUpdate} />
+        <EditableText x={5 + l1} y={80 - h/2} valueKey="H" label="H" align="end" inputs={inputs} onUpdate={onUpdate} />
       </svg>
     );
   }
@@ -76,14 +108,25 @@ const Schematic2D = ({ shape, inputs, onUpdate }) => {
 };
 
 export default function Bundle2DSolverView() {
-  const { methodology, inputs: globalInputs } = useExtendedStore();
+  const { unitSystem, methodology, inputs: globalInputs } = useExtendedStore();
   const [shape, setShape] = useState('L-Shape');
+  // Default values assumed in Imperial (ft). We'll treat UI values as current unit system.
   const [geom, setGeom] = useState({ Vx: 25, Vy: 16.5, Vx1: 15, Vx2: 10, L: 100, W: 10, H: 10 });
   const [results, setResults] = useState(null);
 
   const updateGeom = (k, v) => setGeom(s => ({...s, [k]: Number(v)}));
 
   const handleRun = () => {
+    // PRE-PROCESSOR: Convert UI geometric values down to engine Imperial if currently Metric
+    const engineGeom = { ...geom };
+    if (unitSystem === 'Metric') {
+      // 2D UI operates in meters if metric, ft if imperial.
+      // Our existing pre-processor `MetricToImperial.m_to_ft` does this.
+      Object.keys(engineGeom).forEach(k => {
+        engineGeom[k] = MetricToImperial.m_to_ft(geom[k]);
+      });
+    }
+
     // Translate the 2D geometric inputs into the standard nodes/segments payload for ExtendedSolver
     let nodes = [];
     let segments = [];
@@ -92,8 +135,8 @@ export default function Bundle2DSolverView() {
     if (shape === 'L-Shape') {
       nodes = [
         { id: 'n1', x: 0, y: 0, z: 0 },
-        { id: 'n2', x: geom.Vx, y: 0, z: 0 },
-        { id: 'n3', x: geom.Vx, y: geom.Vy, z: 0 }
+        { id: 'n2', x: engineGeom.Vx, y: 0, z: 0 },
+        { id: 'n3', x: engineGeom.Vx, y: engineGeom.Vy, z: 0 }
       ];
       segments = [
         { id: 's1', startNodeId: 'n1', endNodeId: 'n2' },
@@ -103,9 +146,9 @@ export default function Bundle2DSolverView() {
     } else if (shape === 'Z-Shape') {
       nodes = [
         { id: 'n1', x: 0, y: 0, z: 0 },
-        { id: 'n2', x: geom.Vx1, y: 0, z: 0 },
-        { id: 'n3', x: geom.Vx1, y: geom.Vy, z: 0 },
-        { id: 'n4', x: geom.Vx1 + geom.Vx2, y: geom.Vy, z: 0 }
+        { id: 'n2', x: engineGeom.Vx1, y: 0, z: 0 },
+        { id: 'n3', x: engineGeom.Vx1, y: engineGeom.Vy, z: 0 },
+        { id: 'n4', x: engineGeom.Vx1 + engineGeom.Vx2, y: engineGeom.Vy, z: 0 }
       ];
       segments = [
         { id: 's1', startNodeId: 'n1', endNodeId: 'n2' },
@@ -114,14 +157,14 @@ export default function Bundle2DSolverView() {
       ];
       anchors.anchor2 = 'n4';
     } else if (shape === 'U-Loop') {
-      const halfL = geom.L / 2;
+      const halfL = engineGeom.L / 2;
       nodes = [
         { id: 'n1', x: 0, y: 0, z: 0 },
         { id: 'n2', x: halfL, y: 0, z: 0 },
-        { id: 'n3', x: halfL, y: geom.H, z: 0 },
-        { id: 'n4', x: halfL + geom.W, y: geom.H, z: 0 },
-        { id: 'n5', x: halfL + geom.W, y: 0, z: 0 },
-        { id: 'n6', x: geom.L + geom.W, y: 0, z: 0 } // To ensure net distance is L (assuming W absorbs)
+        { id: 'n3', x: halfL, y: engineGeom.H, z: 0 },
+        { id: 'n4', x: halfL + engineGeom.W, y: engineGeom.H, z: 0 },
+        { id: 'n5', x: halfL + engineGeom.W, y: 0, z: 0 },
+        { id: 'n6', x: engineGeom.L + engineGeom.W, y: 0, z: 0 } // To ensure net distance is L (assuming W absorbs)
       ];
       segments = [
         { id: 's1', startNodeId: 'n1', endNodeId: 'n2' },
@@ -133,9 +176,16 @@ export default function Bundle2DSolverView() {
       anchors.anchor2 = 'n6';
     }
 
+    // Pre-process global inputs if metric
+    const engineInputs = { ...globalInputs };
+    if (unitSystem === 'Metric') {
+      engineInputs.tOperate = MetricToImperial.C_to_F(globalInputs.tOperate);
+      engineInputs.corrosionAllowance = MetricToImperial.mm_to_in(globalInputs.corrosionAllowance);
+    }
+
     // Mock an empty vessel so it skips MIST. Pass down methodology to trigger friction logic.
     const payload = {
-      nodes, segments, anchors, inputs: globalInputs, boundaryMovement: {x:0, y:0, z:0},
+      nodes, segments, anchors, inputs: engineInputs, boundaryMovement: {x:0, y:0, z:0},
       constraints: { maxStress: 20000 }, vessel: { vesselOD: 0, vesselThk: 0, nozzleRad: 0, designPress: 0, flangeClass: 150, momentArm: 0 },
       methodology
     };
@@ -165,7 +215,7 @@ export default function Bundle2DSolverView() {
               </div>
 
               <div style={{ background: '#1e293b', padding: '12px', borderRadius: '8px', border: '1px solid #334155' }}>
-                <div style={{ fontSize: '12px', color: '#38bdf8', marginBottom: '8px', fontWeight: 'bold' }}>Geometry (feet)</div>
+                <div style={{ fontSize: '12px', color: '#38bdf8', marginBottom: '8px', fontWeight: 'bold' }}>Geometry ({getUnitLabel(unitSystem, 'length')})</div>
                 {shape === 'L-Shape' && (
                   <>
                     <div style={styles.row}><span>Leg X (Vx):</span> <input type="number" style={styles.input} value={geom.Vx} onChange={e => updateGeom('Vx', e.target.value)} /></div>
@@ -189,10 +239,29 @@ export default function Bundle2DSolverView() {
               </div>
 
               <div style={{ background: '#1e293b', padding: '12px', borderRadius: '8px', border: '1px solid #334155' }}>
-                 <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '8px', fontWeight: 'bold' }}>Piping Spec (From Global)</div>
-                 <div style={styles.row}><span>Material:</span> <span style={{ color: '#fff' }}>{globalInputs.material}</span></div>
-                 <div style={styles.row}><span>Size/Sch:</span> <span style={{ color: '#fff' }}>{globalInputs.pipeSize}" / {globalInputs.schedule}</span></div>
-                 <div style={styles.row}><span>Temp:</span> <span style={{ color: '#fff' }}>{globalInputs.tOperate} °F</span></div>
+                 <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '8px', fontWeight: 'bold' }}>Piping Spec (Global)</div>
+                 <div style={styles.row}>
+                   <span>Material:</span>
+                   <select style={styles.input} value={globalInputs.material} onChange={e => useExtendedStore.getState().updateInput('material', e.target.value)}>
+                     <option>Carbon Steel</option>
+                     <option>Austenitic Stainless Steel 18 Cr 8 Ni</option>
+                   </select>
+                 </div>
+                 <div style={styles.row}>
+                   <span>Size (in - Nominal):</span>
+                   <input type="number" style={styles.input} value={globalInputs.pipeSize} onChange={e => useExtendedStore.getState().updateInput('pipeSize', Number(e.target.value))} />
+                 </div>
+                 <div style={styles.row}>
+                   <span>Schedule:</span>
+                   <select style={styles.input} value={globalInputs.schedule} onChange={e => useExtendedStore.getState().updateInput('schedule', e.target.value)}>
+                     <option>40</option>
+                     <option>80</option>
+                   </select>
+                 </div>
+                 <div style={styles.row}>
+                   <span>Temp ({getUnitLabel(unitSystem, 'temp')}):</span>
+                   <input type="number" style={styles.input} value={globalInputs.tOperate} onChange={e => useExtendedStore.getState().updateInput('tOperate', Number(e.target.value))} />
+                 </div>
               </div>
 
               <button onClick={handleRun} style={{ background: '#10b981', color: '#fff', border: 'none', borderRadius: '4px', padding: '12px', fontWeight: 'bold', cursor: 'pointer', marginTop: 'auto' }}>
@@ -216,10 +285,10 @@ export default function Bundle2DSolverView() {
                     <thead>
                       <tr>
                         <th style={{ background: '#1e293b', padding: '12px', textAlign: 'left', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid #334155' }}>Axis</th>
-                        <th style={{ background: '#1e293b', padding: '12px', textAlign: 'left', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid #334155' }}>Expansion (Δ)</th>
-                        <th style={{ background: '#1e293b', padding: '12px', textAlign: 'left', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid #334155' }}>Bending Leg (B)</th>
-                        <th style={{ background: '#1e293b', padding: '12px', textAlign: 'left', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid #334155' }}>Force (F)</th>
-                        <th style={{ background: '#1e293b', padding: '12px', textAlign: 'left', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid #334155' }}>Stress (S)</th>
+                        <th style={{ background: '#1e293b', padding: '12px', textAlign: 'left', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid #334155' }}>Expansion ({getUnitLabel(unitSystem, 'shortLength')})</th>
+                        <th style={{ background: '#1e293b', padding: '12px', textAlign: 'left', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid #334155' }}>Bending Leg ({getUnitLabel(unitSystem, 'length')})</th>
+                        <th style={{ background: '#1e293b', padding: '12px', textAlign: 'left', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid #334155' }}>Force ({getUnitLabel(unitSystem, 'force')})</th>
+                        <th style={{ background: '#1e293b', padding: '12px', textAlign: 'left', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid #334155' }}>Stress ({getUnitLabel(unitSystem, 'pressure')})</th>
                         <th style={{ background: '#1e293b', padding: '12px', textAlign: 'left', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid #334155' }}>Status</th>
                       </tr>
                     </thead>
@@ -230,10 +299,10 @@ export default function Bundle2DSolverView() {
                         return (
                           <tr key={axis}>
                             <td style={{ padding: '12px', borderBottom: '1px solid #1e293b', fontSize: '14px', color: '#38bdf8' }}>{axis}-Ax</td>
-                            <td style={{ padding: '12px', borderBottom: '1px solid #1e293b', fontSize: '14px' }}>{row.delta.toFixed(3)}"</td>
-                            <td style={{ padding: '12px', borderBottom: '1px solid #1e293b', fontSize: '14px' }}>{row.bendingLeg.toFixed(1)}'</td>
-                            <td style={{ padding: '12px', borderBottom: '1px solid #1e293b', fontSize: '14px' }}>{row.force.toFixed(0)} lbs</td>
-                            <td style={{ padding: '12px', borderBottom: '1px solid #1e293b', fontSize: '14px' }}>{row.stress.toFixed(0)} PSI</td>
+                            <td style={{ padding: '12px', borderBottom: '1px solid #1e293b', fontSize: '14px' }}>{formatUnit(unitSystem, 'shortLength', row.delta, 3)}</td>
+                            <td style={{ padding: '12px', borderBottom: '1px solid #1e293b', fontSize: '14px' }}>{formatUnit(unitSystem, 'length', row.bendingLeg, 1)}</td>
+                            <td style={{ padding: '12px', borderBottom: '1px solid #1e293b', fontSize: '14px' }}>{formatUnit(unitSystem, 'force', row.force, 0)}</td>
+                            <td style={{ padding: '12px', borderBottom: '1px solid #1e293b', fontSize: '14px' }}>{formatUnit(unitSystem, 'pressure', row.stress, 0)}</td>
                             <td style={{ padding: '12px', borderBottom: '1px solid #1e293b', fontSize: '14px' }}>
                               <span style={styles.statusBadge(row.status === 'PASS')}>{row.status}</span>
                             </td>
