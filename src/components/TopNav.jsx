@@ -52,7 +52,7 @@ export const TopNav = () => {
         <TabItem id="simpAnalysis" name="Simp. Analysis" icon={Activity} />
         <TabItem id="gc3d" name="GC 3D Analyzer" icon={Activity} />
         <TabItem id="spl2bundle" name="Simpl. Analysis 2D bundle" icon={Calculator} />
-        <TabItem id="calcExtended" name="Calc Extended" icon={Calculator} />
+        <TabItem id="calcExtended" name="Extended Calc" icon={Calculator} />
         <TabItem id="config" name="Config" icon={Settings} />
       </div>
       <div style={{ padding: '0 24px', fontSize: '11px', color: '#64748b', fontFamily: 'monospace' }}>

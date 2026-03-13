@@ -1,0 +1,81 @@
+import React from 'react';
+
+const styles = {
+  container: { padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' },
+  header: { fontSize: '14px', fontWeight: 'bold', color: '#94a3b8', borderBottom: '1px solid #1e293b', paddingBottom: '8px' }
+};
+
+import { usePipeRackStore } from '../store/usePipeRackStore';
+import { solvePipeRack } from '../solver/PipeRackSolver';
+
+export default function RackInputsDock() {
+  const { globalSettings, lines, updateGlobalSetting, updateLine, addLine, removeLine, setResults } = usePipeRackStore();
+
+  const handleRun = () => {
+    const res = solvePipeRack(lines, globalSettings);
+    setResults(res);
+  };
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.header}>Global Rack Parameters</div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+        <span>Anchor Dist (ft):</span>
+        <input type="number" style={{ width: '80px', background: '#1e293b', border: '1px solid #334155', color: '#fff', padding: '2px' }}
+               value={globalSettings.anchorDistanceFt} onChange={e => updateGlobalSetting('anchorDistanceFt', Number(e.target.value))} />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+        <span>Spacing Step (ft):</span>
+        <input type="number" style={{ width: '80px', background: '#1e293b', border: '1px solid #334155', color: '#fff', padding: '2px' }}
+               value={globalSettings.defaultSpacingFt} onChange={e => updateGlobalSetting('defaultSpacingFt', Number(e.target.value))} />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+        <span>Allow Stress (PSI):</span>
+        <input type="number" style={{ width: '80px', background: '#1e293b', border: '1px solid #334155', color: '#fff', padding: '2px' }}
+               value={globalSettings.allowableStressPsi} onChange={e => updateGlobalSetting('allowableStressPsi', Number(e.target.value))} />
+      </div>
+
+      <div style={{ ...styles.header, marginTop: '16px', display: 'flex', justifyContent: 'space-between' }}>
+        <span>Piping Lines ({lines.length})</span>
+        <button onClick={addLine} style={{ background: '#38bdf8', color: '#000', border: 'none', borderRadius: '4px', cursor: 'pointer', padding: '0 8px' }}>+ Add</button>
+      </div>
+
+      {lines.map((line) => (
+        <div key={line.id} style={{ background: '#1e293b', padding: '8px', borderRadius: '4px', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', color: '#a78bfa' }}>
+            <span>Line {line.id}</span>
+            <button onClick={() => removeLine(line.id)} style={{ background: 'transparent', color: '#ef4444', border: 'none', cursor: 'pointer' }}>X</button>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>Size (NPS):</span>
+            <input type="number" style={{ width: '60px', background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '2px' }}
+                   value={line.sizeNps} onChange={e => updateLine(line.id, 'sizeNps', Number(e.target.value))} />
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>Material:</span>
+            <select style={{ width: '120px', background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '2px' }}
+                    value={line.material} onChange={e => updateLine(line.id, 'material', e.target.value)}>
+              <option>Carbon Steel</option>
+              <option>Austenitic Stainless Steel 18 Cr 8 Ni</option>
+            </select>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>Temp (°F):</span>
+            <input type="number" style={{ width: '60px', background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '2px' }}
+                   value={line.tOperate} onChange={e => updateLine(line.id, 'tOperate', Number(e.target.value))} />
+          </div>
+
+        </div>
+      ))}
+
+      <button onClick={handleRun} style={{ background: '#10b981', color: '#fff', border: 'none', borderRadius: '4px', padding: '12px', fontWeight: 'bold', cursor: 'pointer', marginTop: 'auto' }}>
+        RUN LOOP NESTING ►
+      </button>
+
+    </div>
+  );
+}

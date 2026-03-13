@@ -3,10 +3,14 @@ import { useAppStore } from '../../store/appStore';
 import { useSketchStore } from '../../sketcher/SketcherStore';
 
 const initialState = {
+  // Global Settings
+  methodology: 'FLUOR', // 'FLUOR' | '2D_BUNDLE'
+  activeSubTab: '3d', // '2d' | '3d' | 'piperack'
+
   // UI State
   activeView: 'dashboard', // 'dashboard' | '3d-solver'
   calculationStatus: 'AWAITING_ANCHORS', // 'AWAITING_ANCHORS' | 'READY' | 'CALCULATED'
-  heatmapMode: 'STRESS', // 'STRESS' | 'FORCE'
+  heatmapMode: 'STRESS', // 'STRESS' | 'SHELL'
 
   // Geometry (Walled Garden - isolated clone)
   nodes: [],
@@ -51,6 +55,8 @@ const initialState = {
 export const useExtendedStore = create((set) => ({
   ...initialState,
 
+  setMethodology: (method) => set({ methodology: method }),
+  setActiveSubTab: (tab) => set({ activeSubTab: tab }),
   setActiveView: (view) => set({ activeView: view }),
   setHeatmapMode: (mode) => set({ heatmapMode: mode }),
 
