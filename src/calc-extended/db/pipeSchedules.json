@@ -1,0 +1,7 @@
+{
+  "NPS6": {
+    "outsideDiameter": 168.3,
+    "sch40": { "wallThickness": 7.11 },
+    "sch80": { "wallThickness": 10.97 }
+  }
+}

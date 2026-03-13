@@ -1,0 +1,14430 @@
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 1 of 95
+15/11/2002 Rev. 0
+1
+
+PIPE STRESS
+
+1.1
+
+PREFACE
+
+This lesson will cover the procedures for simple stress analysis required when doing a layout study.
+Two things to keep in mind; first, use Fluor standards as a guide, and second, the guidelines mentioned
+in this lesson may be different than jobs you may have worked on in the past. Most clients have their
+own engineering standards.
+1.1.1
+
+Lesson Objectives
+
+Lessons provide self-directed piping layout training to designers who have basic piping design skills.
+Training material can be applied to manual or electronic applications. Lesson objectives are:
+•
+
+To familiarize you with the stress requirements when making a layout.
+
+•
+
+To know the different materials and terminology used when making a stress analysis (i.e.
+nomograph).
+
+•
+
+To know the common stress considerations when laying out pipeways, pumps, vertical vessels,
+etc., avoiding major mistakes and costly changes, and to show you some of the pitfalls that causes
+them.
+
+•
+
+To familiarize you with Fluor standards on stress analysis. (Fluor standards are a guide; the
+standards used on your contract may differ.)
+
+1.1.2
+
+Lesson Study Plan
+
+Take the time to familiarize yourself with the lesson sections.
+The following information will be required to support your self-study:
+Fluor Technical Practices. The following Fluor Technical practices/resources are included in this lesson
+guide:
+000.250.2041, Plant Arrangement. Pipeway Layout - Allowable Pipe Spans
+000.250.2600, Exchangers - TEMA Nomenclature
+000.250.2601, Exchangers - Equipment Location and Piping Layout - Shell and Tube
+Heat Exchangers
+000.250.9823, Co-efficient of Expansion Tables
+000.250.2220, Stress Design - Sketch Procedure
+000.250.2221, Stress Design - Sketch Information
+
+It should take you approximately 30 hours to read the lesson plan and be prepared to take the test.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 2 of 95
+15/11/2002 Rev. 0
+If you have layout questions concerning this lesson your immediate supervisor is available to assist
+you. If you have general questions about the lesson, contact Piping Staff - Stress Group.
+1.1.3
+
+Study Aid
+
+Videos on Process Plant Layout & Piping Design (SPED) supplement your layout training. It is
+suggested that you view these videos prior to starting the layout training. You may check-out a copy of
+the videos from the Knowledge Centre (Library).
+1.1.4
+
+Proficiency Testing
+
+There is a self-test and a test-grading master included enabling the designer to evaluate their
+comprehension of this lesson.
+Testing
+Questions are true-false, stress calculating and manual fill-in.
+You are encouraged to use your lesson plan and any reference data during the self-testing.
+1.2
+
+THERMAL EXPANSION
+
+Piping Designer Responsibilities
+The Piping Designer is responsible for the layout, design, and support of all piping systems and is also
+responsible for the following items, obtained by using the applicable sections of the Piping technical
+practices:
+Locating supports, guides, anchors, compressor hold-downs, and hanger rods.
+Providing prespring, cold spring, clearance required for line expansion, and additional line flexibility.
+Transmitting and handling stress sketches in complete compliance with procedures outlined in
+Piping Engineering Practices.
+Piping Designer is not responsible for the flexibility calculations or the validity of such calculations made
+by the Stress Engineer. Designer is responsible for any calculations or flexibility analysis that was
+undertaken and resolved without Stress Supervisor's approval.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 3 of 95
+15/11/2002 Rev. 0
+1.2.1
+
+How to find pipe expansion
+
+Figure #1-01
+In order to check the line spacing on the right, one thing we need to know is the thermal expansion.
+Clearance must be allowed for expansion so that lines will not grow into and damage each other.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 4 of 95
+15/11/2002 Rev. 0
+Solution Steps
+1.2.1.1.1 Write the formula for thermal expansion ∆ = eL
+e - is called the linear co-efficient of thermal expansion. It's value
+changes with the type of material and the change in temperature. The
+values of "e" we use are given in tables in the Refinery Piping Code and
+reproduced in this section, page 7. Refer to resource 000.250.9823
+The units of "e" are inches per foot.
+L - is the original length of pipe at installation. In most cases this is at 70o
+F, approximately. This is the installation temperature used in the code
+expansion tables. The units of L are in feet.
+
+∆ is the Greek letter "Delta" used to represent the change in length; i.e.
+the expansion.
+1.2.1.1.2 From the Piping Code tables, since "A" spec. Pipe is A53-B (this is carbon steel) and the
+temperature is 600oF, e = .0460 inches/foot (per coefficient of expansion tables).
+1.2.1.1.3 From the piping layout, L - 110 feet.
+1.2.1.1.4 Substitute e and L into the formula. Your calculation will look like this:
+
+∆
+∆
+∆
+
+=
+=
+=
+
+eL
+.046 X 110
+5.06 inches
+
+c.s. @600oF
+
+For OSIP information refer to 000 250 9822 Properties of Pipe, Attachment 01, Attachment 02 and
+Attachment 03
+1.2.2
+
+Anchors
+
+Definition:
+An anchor is a mechanical connection (welded and/or bolted between a pipe (or exchanger, etc.) and a
+structure. The structure must be strong enough so that it cannot bend excessively under large forces.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 5 of 95
+15/11/2002 Rev. 0
+
+1.2.2.1
+
+Full Anchors
+Definition: A full anchor will not permit the pipe to move or twist in any direction at the point it is
+anchored.
+
+Figure #1-02
+
+Types of Full Anchors
+
+1.2.2.2
+
+5A1, 5A2 for 2" and smaller pipe. 5DA1
+5DA2 or 5DA3 will be used with a guide for
+larger sizes. Bolted end of a shell and tube
+exchanger.
+
+Directional Anchors
+Definition: A directional anchor stops movement parallel to the centerline of the pipe, but permits
+sideways pipe motion.
+
+Figure #1-03
+
+Types of Directional Anchors
+5DA1, 5DA2, and 5DA3.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 6 of 95
+15/11/2002 Rev. 0
+
+1.2.3
+
+Guides
+Definition: A guide stops sideways movement of a pipe, but permits movement
+parallel to the pipe's centerline.
+
+Figure #1-04
+Supports
+A pipe support prevents downward motion of a pipe. If the weight of the pipe
+acting down on the support is great enough, upward motion of the pipe may not
+be possible.
+Equipment
+Most equipment is anchored to a foundation. Therefore equipment nozzles are
+also anchors. Generally they are full anchors. The anchors are mechanically
+rigid but may have additional expansion when the equipment is hot. Even if the
+equipment is not bolted down, the weight may be great enough to make the
+equipment an anchor point.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 7 of 95
+15/11/2002 Rev. 0
+
+Problem
+
+Figure #1-05
+Find the thermal expansion of each unit header into the interconnecting pipeway on the right.
+LINE
+
+∆ = eL
+
+ANSWER
+
+FH - 4"
+
+= 68' X .088 =
+
+5.98"
+
+R - 8"
+
+= 81.5 X .0362 =
+
+2.95"
+
+S - 6"
+
+= 83' X .0617 =
+
+5.12"
+
+L -10"
+
+= 80' X .0061 =
+
+.49"
+
+These expansions are used with general note #2 on 000 250 9815 line spacing pipe for checking line
+spacing. Line spacing problems will be covered in more detail when pipeway layout is discussed.
+Definition: Flexibility of a piping system is a measure of the amount of thermal expansion it can safely
+absorb. Points to remember:
+1. The amount of expansion to be absorbed must be known before the flexibility can be checked.
+2. The amount of expansion that is considered safe is dependent on the situation.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 8 of 95
+15/11/2002 Rev. 0
+
+How pipes flex when absorbing thermal expansion
+
+Figure #1-06
+Solid line is the cold position of the pipe.
+Dashed line is the hot position of the pipe.
+Expansion to be absorbed is given by the line movement.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 9 of 95
+15/11/2002 Rev. 0
+1.2.4
+
+Concepts of Free Thermal Expansion
+
+1. Free thermal expansion is not generally the same as line movement. (It is in this simple case.)
+2.This method has its greatest advantage in complex piping arrangements.
+3. When "imagining" movement, weight and friction do not exist.
+4. This concept is the most useful tool to prevent piping flexibility problems, especially at plot
+development and for locating solid supports.
+Calculating free thermal expansion
+To find the "free thermal expansion" pretend only one end is anchored, find the movement at the other
+end, assuming there is no friction and there are no guides.
+
+Figure #1-07
+The actual motion at a corner is not easily found if there is no anchor. The stress engineer should be
+consulted to determine line expansion in critical cases.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 10 of 95
+15/11/2002 Rev. 0
+
+Figure #1-08
+* The actual expansion in this direction can only be determined by the stress engineer. Free
+expansion is found by adding lengths in the direction being computed.
+When piping reverses directions the pipe lengths subtract.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 11 of 95
+15/11/2002 Rev. 0
+
+Figure #1-09
+* The actual expansion in this direction can only be determined by the stress engineer.
+Using Coordinates to find free expansion:
+The algebraic combination of lengths in any direction is the same as the difference in anchor
+coordinates. (In all three dimensions, i.e., north, south and elevation).
+The fastest way to find the free thermal expansion is to multiply the difference between the anchor
+coordinates times the coefficient of expansion. This is where the method has its greatest advantage.
+(Carbon Steel @ 300oF
+e =.0182)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 12 of 95
+15/11/2002 Rev. 0
+
+North ∆ = 190' X .0182 = 3.46"
+East ∆ = 65' X .0182 = 1.18"
+
+Figure #1-10
+
+Expansion can be radially from the centerline or axially along the centerline from some "anchor point".
+Short vertical drops have little effect on horizontal movement. Ignore it in this problem.
+
+Figure #1-11
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 13 of 95
+15/11/2002 Rev. 0
+
+Answer
+In the N-S direction the expansion to be absorbed is:
+=
+=
+=
+
+eL (Coefficient of expansion X Length)
+.046 x 30'
+1.38"
+
+In the E-W Direction:
+=
+=
+=
+
+eL
+.046 x 20'
+.92"
+
+The location of the anchor needs to be considered in relation to the major piping systems (large
+diameter pipe, pipe coming from underground, etc.) When finalizing the layout and plot plan.
+Relationship of expansion and flexibility requirements are set by the plot plan, since only the difference
+is used to find expansion.
+The Stress Engineer should be consulted in critical cases.
+Now take about five minutes to calculate as before, except change the anchor end of the drum:
+
+Figure #1-12
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 14 of 95
+15/11/2002 Rev. 0
+
+Answer
+In the N-S direction the expansion to be absorbed is:
+=
+=
+=
+
+eL
+.046 x 10'
+.46"
+
+In the E-W Direction:
+=
+=
+=
+
+eL
+.046 x 20'
+.92"
+
+The E-W expansion did not change from the previous example. The N-S expansion was reduced
+considerably by just shifting the anchor end of the drum.
+Notice also that the free thermal expansion does not depend on the piping arrangement.
+The free thermal expansion depends only on the relative locations of the anchor points. This is the
+greatest value of learning the free thermal expansion concept, especially for the layout man who is
+locating equipment.
+The second arrangement requires less flexibility (since there is less expansion to be absorbed) and
+has the potential of saving pipe and fittings.
+Review of Expansion
+All thermal expansions are found using the same formula:
+
+∆ = eL
+Actual expansions are measured from a full anchor or directional anchor to the point where it is
+necessary to know the expansion.
+When finding free thermal expansion, the lengths to use in the expansion formula are the
+differences between anchor coordinates.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 15 of 95
+15/11/2002 Rev. 0
+
+1.3
+
+FORCE AND STRESS NOMOGRAPHS
+
+Pipe routed in straight lines cost the least. Normally, pipe cannot be routed straight because of thermal
+expansion.
+Stretching a pipe even a small amount takes a very large force. Preventing pipe from expanding
+thermally takes an equally large force.
+(Note: You will not be held responsible for knowing the following formulas).
+Stress =
+
+Load
+P
+=
+Area
+A
+
+Allowable stress varies with material and temperature, but, are on an order of magnitude of:
+(a) Pressure =
+(b) Deadload =
+(c) Thermal =
+
+1,000 to 10,000 psi
+1,000 to 10,000 psi
+to 20,000 psi
+
+The material engineer checks pressure stresses when calculating wall thicknesses.
+Dead load stresses are controlled by proper use of the pipe span charts and checked by the stress
+engineer when required.
+Thermal expansion stresses are roughly determined by piping during the pipe study and finally checked
+by the stress engineer.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 16 of 95
+15/11/2002 Rev. 0
+
+Tensile and Compressive Stress
+
+Figure #1-13
+Experiments on different materials at different temperatures determine safe stresses. These values are
+given in the piping code.
+Strain (Stretching)
+
+∈ is the "unit strain" and is found by dividing the total stretching by the total length being stretched.
+Example:
+
+Figure#1-14
+
+∈=
+
+* .1inch
+= .001
+*100inches
+
+* Must use same units of length
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 17 of 95
+15/11/2002 Rev. 0
+
+1.3.1
+
+Young's Modulus
+
+E (Young's Modulus) relates the amount of strain (stretching) to the amount of stress (loading). It is
+defined as:
+E =
+
+S
+∈
+
+The value of E changes with material and temperature. The stress and strain are measured
+experimentally. E is calculated and is tabulated in the piping code.
+E = 30,000,000 P.S.I. for Cold Steel
+Normally designed anchors cannot stand large forces because the structure would bend first, and the
+anchor would not be effective Equipment shells would dimple before they would act as anchors.
+Expansions are absorbed by bending the piping system rather than compressing it.
+
+1.3.2
+
+Thermal Force Between Two Anchors
+
+Figure #1-15
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 18 of 95
+15/11/2002 Rev. 0
+Free Expansion ∆ = eL
+The force required to prevent the pipe from expanding is the same as the force required to stretch it an
+equal amount.
+Since S =
+
+∆
+S
+P
+and E =
+and = ∈=
+12 L ( feet converted to inches )
+∈
+A
+
+To find P (the Force),
+P = SA = E ∈ A = E
+P=
+
+∆
+eL
+A =E
+A
+12 L
+12 L
+
+eAE
+12
+
+Example:
+For a 6" Sch. 40 Pipe at 300oF
+P=
+
+.0182 x5.58sq.in.x30,000,000 psi
+12
+
+P = 253,890#
+
+Nomograph A:
+See Figure #1-16, Nomograph A
+This Chart is based on formula (modified)
+
+P=
+
+12 EI∆
+L3
+
+This formula will not be used in the lesson.
+Moment of inertia is the stiffness of object being bent based on its cross-sectional shape. This formula
+shows force is directly proportional to the deflection. Force is inversely proportional to the bending leg
+cubed.
+Size and schedule relates to moment of inertia. Lengths to be added are approximate. The force
+found in this way can differ greatly from a computer output, but is good enough for piping study
+purposes.
+The total free expansion between the two restraints (guide and anchor) is trying to grow outwards in
+either direction simultaneously since it can't actually move at either end.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 19 of 95
+15/11/2002 Rev. 0
+
+1.3.3
+
+Using the Force Nomograph
+See 000.250.2230 Stress Design - Layout
+Aids for Rotating Equipment for examples
+
+Examples
+
+Figure #1-17
+Steps:
+1. Align straight edge with nominal pipe size (6 in), pipe length in bending (20 ft) and mark point on
+pivot line.
+2. Align point on pivot line with total thermal expansion (3.62 in) and read off thermal force (1500#).
+The force against the anchor (indicated by the dotted arrow) is equal to but is pushing in the opposite
+direction.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 20 of 95
+15/11/2002 Rev. 0
+
+Figure #1-18
+
+Direction
+A
+B
+
+Expansion
+35 x .046 = 1.61
+25 x .046 = 1.15
+
+Leg
+25.00
+35.00
+
+Force
+About 380#
+Less than 200#
+
+Bending leg for T.F. (Thermal Force) B is the sum of lengths at right angles to the expansion in the
+direction of B.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 21 of 95
+15/11/2002 Rev. 0
+
+Figure #1-19
+FREE THERMAL EXPANSION
+∆ A = 15 x .0182 = .27
+∆ B = 20 x .0182 = .36
+
+L = 15
+L = 27
+
+T.F.A = 700#
+T.F.B = Less than 200#
+
+Vertical force is not required in this example. Both vessel and pipe C.S. at 300oF 8" SCH. 40.
+Radial expansion must be added for vertical vessel.
+Anchor end of horizontal vessel must be taken into account. If the anchor end and slotted end
+were reversed, then T.F.A. would be: ∆ A = (12 + 15) X .0182 = .49
+Reversal of anchor end of horizontal vessel causes an increase in anchor force.
+Anchor movements are okay to incorporate this way since shell material and temperature are the
+same as the pipe.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 22 of 95
+15/11/2002 Rev. 0
+
+Figure #1-20
+
+∆ A = 70 x .0321 = 2.25
+∆ B = 25 x .0321 = .80
+
+L = 25
+L = 45
+
+T.F.A = 2100#
+T.F.B = Less than 200#
+
+The guide acts as an anchor for forces in "B" direction, but not in "A" direction.
+If the bending leg is longer than those listed on the chart, a flexibility problem does not exist.
+
+Figure #1-21
+
+8" SCH. 40
+
+∆A = 5
+
+L = 60
+
+T.F.A = 200#
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 23 of 95
+15/11/2002 Rev. 0
+
+Find the Horizontal and Vertical T.F.
+
+Figure #1-22
+Force and expansion calculations are the same in plan or elevation.
+1.
+2.
+3.
+4.
+5.
+
+Pump nozzle is not used for flexibility.
+Pump expansion is included in total expansion.
+Moving the anchor end is mandatory.
+Nozzle projections are not used for flexibility here. The stress engineer may include them.
+The piping in the example was dimensioned by roughly following 000 250 2040.
+
+6. Clearances for access maintenance and insurance regulations generally set piping dimensions.
+The stress and force are checked afterwards, and flexibility is increased only if necessary.
+7. Following the Fluor Standards is usually a good guide for stress problems because the stress group
+has already reviewed the standards.
+Answer:
+Horizontal
+
+Vertical
+
+∆ = .0182 x 25 = .46
+T.F. = 350#
+
+L = 16.5
+
+∆ = .0182 x 19 = .35
+T.F. = 540#
+
+L = 13
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 24 of 95
+15/11/2002 Rev. 0
+
+If the anchor end was toward the pipeway:
+Horizontal
+
+∆ = 15 x .0182 = .27
+T.F. = 220#
+
+L = 16.5
+
+Obviously it is better for the pump if the anchor is moved.
+1.3.3.1.1 Add ALL bending legs at right angles to the expansion.
+1.3.3.1.2 Thermal force will be calculated in only one direction, since the bending legs in the other
+directions are so much larger these calculations are unnecessary.
+12" SCH. 30 S.S. @ 400 Degrees F.
+
+Figure #1-23
+
+Answer:
+
+∆ = 55 x
+.038 = 2.09
+L = 30
+I - 249
+T.F. = 2100#
+Although forces parallel to the exchanger were not calculated, it should be noted, if a guide is added on
+the long pipe run calculations might then be required. (Calculations by stress might be required
+because of limited forces at equipment nozzles.)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 25 of 95
+15/11/2002 Rev. 0
+
+1.3.4
+
+Anchor Movement
+
+Taking the difference between anchor coordinates does not work when portions of the system are
+different temperatures and/or of materials with different expansion coefficients. Actual temperature
+conditions are determined by the stress engineer using the line list, mechanical flow diagram and
+special conditions noted on the stress sketch.
+When the equipment a pipe is anchored to is of a different material or at a different temperature, the
+free thermal expansion is found by adding or subtracting "anchor movement" to the free expansion of
+the piping.
+Example:
+
+Figure #1-24
+E-W Free Expansion
+Free Expansion of Pipe = .0624 x 20
+Vessel Anchor Movement - .0617 x 10
+
+= 1.248"
+= .617"
+= 1.865"
+
+N-S Free Expansion
+Free Expansion of Pipe
+Vessel Anchor Movement
+
+=
+=
+
+.0624 x 30 = 1.872"
+Zero
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 26 of 95
+15/11/2002 Rev. 0
+Anchor Movement Problem:
+Find the N-S and E-W thermal force.
+Short pipeway drops (generally about 2'-6") have very little affect on flexibility and are ignored safely.
+In tight situations (pump calculations) they may be considered. The vertical force is not to be
+calculated.
+
+Figure #1-25
+Answer:
+N-S Expansion = 20 x .0182 = .364"
+L = 20 + 25 + 5 = 50
+T.F. = Less than 200#
+E-W Expansion = 70 x .0182
+Boiler Anchor Movement = .0362x15
+Difference
+L = 20 + 5 = 25
+T.F. = Less than 200#
+
+=
+=
+=
+
+1.274"
+.543"
+.731"
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 27 of 95
+15/11/2002 Rev. 0
+
+Explanation of Bending Stress
+Diagram of Tensile Stress
+
+Figure #1-26
+
+Diagram of Bending Stress
+
+Figure #1-27
+
+Strain increases From the Center Outwards. Therefore the Stress is Proportional to the Pipe O.D. for a
+Given Amount of Curvature
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 28 of 95
+15/11/2002 Rev. 0
+
+Example
+
+Figure #1-28
+The formula for calculating stress is:
+
+S=
+
+3E∆D
+L2
+
+Where:
+
+S
+E
+∆
+D
+L
+
+=
+=
+=
+=
+=
+
+Stress in PSI
+Modulus of Elasticity
+Thermal Growth
+Pipe Diameter
+Length of Bending Leg
+
+Guides and anchors have the same effect as in the force calculations. Small diameter piping becomes
+over stressed before large forces are developed. Large diameter piping creates excessive forces
+before the piping becomes overstressed.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 29 of 95
+15/11/2002 Rev. 0
+1.4
+
+PIPEWAY STUDY
+
+1.4.1
+
+Basic Pipeway Layout
+
+Basic Pipeway Layout Requirements
+1. Positive control of thermal expansion for establishing line spacing and for appearance.
+2. Minimizing structural forces for economy of steel design and making the anchors more effective.
+3. Conservation of berthing space by the use of expansion loops, when required.
+
+Figure #1-29
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 30 of 95
+15/11/2002 Rev. 0
+
+Figure #1-30
+
+Figure #1-31
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 31 of 95
+15/11/2002 Rev. 0
+
+Pipeway Layout Steps
+1. Determine approximate length of pipeway from plot plan.
+2. Establish line sizes and temperatures.
+3. Establish preliminary berthing.
+4. Anchor all lines near the center of the pipeway.
+5. Calculate line spacing at the corners.
+6. If the line spacing is wasting berthing room at the turns, determine which lines are giving the most
+trouble.
+7. Move the anchors of these lines (one line at a time) closer to the corners. (The line will now have
+two anchors).
+8. Place one or more loops between these two anchors.
+9. Size the loops to fit the available space.
+10. Finalize berthing.
+11. Check the anchor forces.
+12. Send finished layout to stress for calculations of exact forces to be transmitted to structural, and
+check of loop design.
+Lines that will require the biggest loops should be grouped near the outside, with lines requiring smaller
+loops progressing toward the center. Consideration should be given to placement of small diameter
+lines where they can get additional support from larger, cooler lines.
+If a relief header needs a loop, it must be berthed so as not to interfere with other lines, since the relief
+header can not be pocketed and must slope.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 32 of 95
+15/11/2002 Rev. 0
+
+Line Spacing with no Flanges near the Corners
+
+Figure #1-32
+When there are no flanges between the corner and first guide or anchor on two adjacent lines, line
+spacing may be based on O.D. of pipe or insulation to O.D. of insulation plus expansion plus 1"
+clearance.
+Where flanges are near pipe intersections the spacing is based on flange diameter rather than O.D. of
+pipe. Usually spacing is calculated with one line hot (operating) and one line cold (not operating).
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 33 of 95
+15/11/2002 Rev. 0
+
+Bowing of "L" Shapes
+
+Figure #1-33
+Bowing:
+The bowing can be much greater than the actual movement ( ∆ ) at the corner.
+Distances between guides and anchors around corners will limit the bowing to no more than the ∆ at
+the turn, eliminating calculations.
+For critical lines see the stress engineer for movements and bowing calculated by the computer.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 34 of 95
+15/11/2002 Rev. 0
+
+Problem
+Assuming no extra space is available for thermal expansion, determine which lines require loops,
+based on the line spacing at the east end of the pipeway under consideration.
+
+Figure #1-34
+1. Set standard spacing.
+2. Check clearance for expansion.
+3. Decide which lines require lops.
+Do not make any scale drawings!
+Make a freehand sketch of the section.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 35 of 95
+15/11/2002 Rev. 0
+
+1. Set Standard Spacing:
+
+Figure #1-35
+
+1
+1
+3
+1
+1
+A = 2 " + 2" + 1" + 10 " = 15 " → 16" or 4 " + 1" + 3" + 7" = 15 " → 16"
+4
+2
+4
+2
+2
+1
+1
+1
+1
+3
+B = 7" + 3" + 1" + 4 " = 15 " → 16" or 10 " + 1" + 2 " = 13 " → 14"
+2
+2
+2
+4
+4
+C = per 000.250.9815
+→ 12"
+Note: always use the larger dimension
+
+→ 19"
+
+D = per 000.250.9815
+Total
+
+63"
+
+See 000.250.9815, Dimensional Chart Line Spacing - Pipe
+2. Check Clearance for Expansion (Check Flg. Location)
+4" IH ∆ = .0501 x 375' = 18.79"
+
+1
+" + 2" + 18.79" + 1" +3" +7" = 34.04"
+4
+8" IH ∆ = .0362 x 350' = 12.67"
+1
+B = 7" + 3" + 12.67" + 1" + 2 =25.92"
+4
+4" ∆ = .0362 x 350' = 12.67"
+3
+1
+C = 2 " + 5.29" + 1" + 1 5 " =13.92"
+4
+8
+10" ∆ = .0061 x 350' = 2.135"
+3
+3
+D = 5 " + 2.135" + 1" + 11 =20.26"
+8
+4
+A = 2
+
+WAS
+
+→ 35"
+
+16"
+
+→ 26"
+
+16"
+
+→ 14"
+
+12"
+
+→ 31"
+
+19"
+
+Total
+96"
+63"
+All four lines on the left will require loops, if 33" additional berthing space is uneconomical to obtain.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 36 of 95
+15/11/2002 Rev. 0
+
+1.4.2
+
+Locating Loop Anchors
+(After the Need for a Loop Has Been Established)
+
+4" S.S. @ 500OF - 2" IH
+
+Figure #1-36
+Allowable expansion at the right end, without increasing line spacing =
+
+16"−7"−3"−1"−2"−2 1 " = 0.75"
+4
+The maximum distance the anchor may be from the corner is found by dividing the allowable movement
+by the coefficient of expansion.
+Left End L = 6 ÷ .0501 = 120 Ft.
+Right End L = 0.75 ÷ .0501 = 15 Ft.
+The loop(s) will have to absorb at least 565 Ft. x .0501 = 28.31" of expansion.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 37 of 95
+15/11/2002 Rev. 0
+Locating Pipeway Loops
+Ideally loops shall be located centered between anchors with equal legs on either side of anchor.
+
+Figure #1-37
+When this isn't practical make legs on either side of anchor as equal as possible.
+
+Figure #1-38
+Friction Forces are determined by the number of pipe supports a line crosses. By making these legs
+equal, the forces at the anchor should remain nearly balanced.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 38 of 95
+15/11/2002 Rev. 0
+
+1.4.3
+
+Multiple Loops
+
+More than one loop may be required when:
+(a) It is impossible to make branch connections flexible enough.
+(b) Spacing between branches and neighboring lines or steel is limited.
+(c) When loop becomes too large to support or fit into space available.
+(d) Anchor forces become too unbalanced and steel cannot be economically braced.
+
+Figure #1-39
+If this situation is encountered, check with your supervisor. He will check with stress and structural and
+together a solution will be found. If it is multiple loops instead of added bracing, then:
+
+Figure #1-40
+Smaller loops required, but more fittings and welds are used.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 39 of 95
+15/11/2002 Rev. 0
+
+Multiple Loops
+More than one loop may be required when:
+The forces required to bend the loop are too great, and the anchors cannot be economically reinforced.
+
+Figure #1-41
+
+Figure #1-42
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 40 of 95
+15/11/2002 Rev. 0
+
+Maximum unbalanced loads should be no more than 2000 lbs.
+
+Figure #1-43
+
+=
+
+(TF1+FF1)
+(TF2+FF2)
+Total Unbalanced Load less than 2000 lbs
+
+To insure a thermal force is not balancing a friction force, check separately that friction and thermal
+forces balance to within 2000 lbs.
+Placing Loops
+1. Loop width should always be based on utilizing existing supports.
+2. Thermal expansion must be allowed for when spacing adjacent loops.
+3. Loop width does not have to be near 20 feet just because the loop nomographs happen to use that
+number. Loop width has only secondary effect on results.
+4. Minimum loop height depends on the berthing of the line with respect to the location of the loop
+support.
+5. Loops cannot extend too far beyond an existing support or the overhang will cause the loop to
+"loose its balance." This sets the maximum allowable loop height.
+6. The first two points have more influence on loop design than stress formulas, from the piping point
+of view.
+7. The practical problem of sizing loops at a particular bay is finding which has to be the biggest and
+second biggest, etc.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 41 of 95
+15/11/2002 Rev. 0
+
+Method for Sizing Pipeway Loops
+1.4.3.1.1 Anchor lines near their center. Determine which lines require loops by checking the allowable
+expansion at each end of the run. If each end will absorb the resulting expansion, no loop is
+required, usually. If the line spacing cannot be adjusted to take the movement, a loop is
+required.
+1.4.3.1.2 Determine which of the lines requiring loops need the largest loop, second largest, etc., by
+the following:
+1.4.3.1.2.1 Multiply the total expansion of each line between its proposed anchors by the pipe's
+moment of inertia (E). (The stiffness of a line is measured by its "Moment of inertia.")
+1.4.3.1.2.2 The line with the largest of these calculated numbers will require the largest loop, the next
+smaller number, the next smaller loop, etc.
+1.4.3.1.2.3 The above rule does not check stress. This is checked after the loops are roughly
+dimensioned.
+1.4.3.1.3 Check the space available for the loops. Make sure that the lines requiring the biggest loops
+are berthed near the edge of the pipeway opposite the top of the loop. Fit the loops between
+two pipe supports using minimum spacing plus allowance for line expansion and bowing.
+Make the loops as wide as possible, but keep the height to a minimum. If stress or force is
+extremely high, check with stress engineer for height of loop.
+Note:
+
+Usually the lines with the most expansion are
+berthed on the edge of the pipeway so that the
+thermal expansion grows away from the other pipes
+at the corners, even if the line doesn't require the
+largest loop.
+
+1.4.3.1.4 Send finished pipeway to stress for accurate calculation of anchor forces for transmittal to
+Structural and accurate evaluation of stresses in the piping.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 42 of 95
+15/11/2002 Rev. 0
+
+Loop Sizing Example
+Note: All Pipe is Standard Wall
+
+Figure #1-44
+Calculations:
+Pipe
+
+Ip
+
+X
+
+∆
+
+10"
+4"
+2"
+16"
+6"
+
+161.0
+7.23
+.666
+562
+28.1
+
+X
+X
+X
+X
+X
+
+5 = 805
+11 =
+80
+15 =
+10
+4 = 2248
+6 = 169
+
+Loop Order
+2
+4
+5
+1
+3
+
+This calculation also shows that the 16" line should be berthed where the 6" line is, the 10" line should
+be where the 16" is, and the 6" line should be where the 2" line is. Notice that this is also the best
+arrangement for the beam to carry the weight.
+Pipe bridges may be used to absorb thermal expansion, reducing the number of loops required.
+Place anchors the same way as normal loop anchors are placed.
+On longer than normal span, loop bowing may cause the pipe to lift off intermediate support causing
+overspan. Check with stress during layout.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 43 of 95
+15/11/2002 Rev. 0
+
+Pipeway Drops
+Short drops are very rigid and can be ignored (depending on pipe size).
+Longer drops are flexible and must be anchored to control the amount of expansion they absorb, to
+prevent overstress.
+These requirements vary with pipe size and the location of the drop and anchors, so check with stress
+during layout.
+1.4.4
+
+Locating Friction Balance
+
+Locating the Friction Balance
+Of Liquid Headers That Change Size
+
+Figure #1-45
+The anchor is placed at the lines "center of gravity". Find the total pipe weight and divide by two.
+6" STD = 31.5#/ft. X 100 ft. = 3,150 lbs.
+10" STD = 74.6#/ft. X 100 ft. = 7,460 lbs.
+16" STD = 141.7#/ft. X 100 ft. = 14,170 lbs.
+TOTAL = 24,780 lbs. divided by 2 = 12,390 lbs.
+This is the weight of 12,390 lbs. = 87.4 ft. of 16" STD pipe + water.
+141.7#/ft
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 44 of 95
+15/11/2002 Rev. 0
+
+Locating the Friction Balance of Vapor Headers That Change Size
+Steam headers and flare headers should have their anchors located without considering water in the
+line. Include insulation, however, if present. Using the last example:
+
+Figure #1-46
+
+6" STD = (19.0#/ft. + 3.28#/ft.) X 100 ft. = 2,228 lbs.
+10" STD = (40.5#/ft. + 7.07#/ft.) X 100 ft. = 4,757 lbs.
+16" STD = (62.6#/ft. + 14.6#/ft.) X 100 ft. = 7,720 lbs.
+TOTAL = 14,705 lbs. divided by 2 = 7,353 lbs.
+This is the weight of 7,353 lbs. = 95.2 ft. of 16" STD pipe + 3" IH.
+(62.6 + 14.6)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 45 of 95
+15/11/2002 Rev. 0
+
+Offsite Pipeway Arrangements
+
+Figure #1-47
+Alternate routing shortens each individual run so that the number of loops can be minimized if line
+spacing is increased a little. Loops for offsite flare headers can be avoided in the same way.
+Flare Headers in Unit Pipeways
+Due to the no - pocketing requirement of flare header design, berthing locations and other layout
+difficulties, flare headers should not be looped in unit pipeways.
+
+Figure #1-48
+If expansion is too great, the anchor may have to be moved back. If too great, the unbalanced friction
+may be reduced by using Teflon shoes on the heavier side
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 46 of 95
+15/11/2002 Rev. 0
+
+1.5
+
+SUPPORT AND PIPE SPANS
+
+1.5.1
+
+Allowable Pipe Spans
+
+The allowable pipe span depends on the following:
+1. Stiffness of the Pipe
+2. Weight of the Pipe
+3. Weight of the Contents
+4. Weight of the Insulation
+5. Allowable Stress of Pipe Material at Design Temperature.
+6. Allowable Sag for Appearance, and Adequate Drainage.
+When using the pipe span chart, allowance must be made for deviations from the conditions given on
+the chart. In special case (such as plastic pipe), see stress engineer for allowable span information.
+Problem
+
+Figure #1-49
+Using the pipe span chart 000.250.2041, find the maximum support spacing if pick-ups cannot be used.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 47 of 95
+15/11/2002 Rev. 0
+
+Answer:
+4" SCH 40 @ 600oF = 27'-0"
+3" SCH 40 @ 200oF = 25'-0"
+2" SCH 40 @ 200oF = 19'-0"
+1" SCH 80 @ 150oF = 17'-0"
+Answer = 17'-0"
+
+Figure #1-50
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 48 of 95
+15/11/2002 Rev. 0
+
+1.5.2
+
+Dead Load Calculations
+
+DEAD LOAD CALCULATIONS (Approximate)
+Uniform Loads:
+
+Figure #1-51
+W
+
+=
+
+Total weight between supports (pounds)
+
+w
+
+=
+
+Weight per foot of pipe (include water for test loads) (include commodity and insulation
+for operating loads)
+
+l
+
+=
+
+Distance between supports (in feet)
+
+For weight of pipe and water per foot see 000.250.9822 Attachment 1.
+
+Various other charts can be used for weight of insulation, valves and fittings.
+Weights at each support are calculated using half the weight from either side of the support. Generally,
+fittings can be calculated as straight pipe unless they are especially heavy.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 49 of 95
+15/11/2002 Rev. 0
+
+Dead Load Calculations (Approximate)
+Concentrated Loads:
+
+Figure #1-52
+
+W
+
+=
+
+Such as:
+
+Total weight of in-line item (pounds)
+Valves, flanges, specialty in-line items, and strainers, weight of branch resting on
+header.
+
+Weights of control valves, PSV's, other instruments and specialty items can, often, be obtained from
+vendor drawings. The loads should be added to stress sketches when available.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 50 of 95
+15/11/2002 Rev. 0
+
+Example Problem: Dead Load Calculation
+Estimate the load on the platform:
+
+Figure #1-53
+Header = 6" Sch. 40
+Commodity = oil
+Specific gravity = .8
+Insulation = 2" thick calcium silicate (4.57#/ft)
+Branch = 4" Sch. 40
+Commodity = oil
+Specific gravity = .8
+Insulation = 1.5" thick calcium silicate (2.55#/ft)
+4"-300# flange = 29#
+Problems on dead load are worked from the top downwards. Loads estimated should have 20% safety
+factor added.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 51 of 95
+15/11/2002 Rev. 0
+
+Answer
+Break the problem into simple sections and add the results:
+4" Branch
+
+Uniform Case
+
+Figure #1-54
+4" Sch. 40 pipe
+
+= 10.79
+
+Water X 0.8
+1.5" insulation
+W
+
+= 4.41
+= 2.55
+= 17.75#/ft.
+Plus:
+
+Concentrated Case
+4"-300# gate
+= 215#
+(2)4"-300# w.n. Flgs. = 58#
+w = 273#
+
+Figure #1-55
+Solve for load at the header end only:
+
+w 10'×17.75
+=
+= 89#
+2
+2
+
+Wb 273 × 8
+=
+= 218#
+1
+10
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 52 of 95
+15/11/2002 Rev. 0
+
+Plus:
+
+Concentrated Case
+
+Figure #1-56
+Total load the header must support equals:
+
+89#
+218#
+142#
+449#
+
+W = wl= 17.75#/ft. X 8' = 142#
+
+6" Header
+
+= Hor. pipe load
+= CV load
+= Vert. pipe load
+= Total bend leg load
+at header
+
+Uniform Case
+
+Figure #1-57
+6" sch. 40 pipe
+
+= 18.98
+
+water X 0.8
+2" insulation
+
+= 10.01
+= 4.57
+
+w
+
+= 33.56
+
+w 33.56 × 20'
+=
+= 336#
+2
+2
+w 33.56 × 25'
+=
+= 420#
+2
+2
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 53 of 95
+15/11/2002 Rev. 0
+
+Concentrated Case
+
+Figure #1-58
+Branch = 449#
+5HR1-6 load =
+
+449# x 20'
+Wb
+=
+= 359#
+l
+25'
+Total 5HR1-6 load is: 336#
++420#
++359#
+1115# plus 20% = 1338#
+
+Note: Allowable load for 5HR1-6 is 1500# per technical practice 000.250.2154., Piping Standard
+Drawing - Hanger Rod
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 54 of 95
+15/11/2002 Rev. 0
+
+1.5.3
+
+Support Location
+
+Figure #1-59
+The sag between two widely spaced supports may cause the pipe to lift off improperly located supports.
+Try to equalize the spans on either side of a support, when possible, balancing loads.
+
+Figure #1-60
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 55 of 95
+15/11/2002 Rev. 0
+
+PROPER LOOP SUPPORT
+
+Figure #1-61
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 56 of 95
+15/11/2002 Rev. 0
+
+Figure #1-62
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 57 of 95
+15/11/2002 Rev. 0
+
+Figure #1-63
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 58 of 95
+15/11/2002 Rev. 0
+
+1.6
+
+EQUIPMENT
+
+Equipment must be considered in stress analysis. Anchor locations, temperature, shell material, nozzle
+projection and physical dimensions all effect stress calculations and need to be transmitted to stress.
+1.6.1
+
+Horizontal Vessels
+
+Figure #1-64
+
+*Give operating and design temperature of process inlet and outlet lines. Do not use vessel design
+temperature.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 59 of 95
+15/11/2002 Rev. 0
+
+1.6.2
+
+Exchangers
+
+EXCHANGER AVERAGE SHELL TEMPERATURE
+
+Figure #1-65
+Average temperature for finding anchor movement is:
+800oF+400oF
+2
+TAverage = 600oF
+The stress engineer will determine the average temperatures and resulting expansion from the
+information on the stress sketch.
+"Shell and tube" exchangers are used to heat and cool a commodity stream, using another commodity
+isolated in tubes.
+Generally the flow through the shell and channel will flow in opposite directions. temperatures and
+pressures vary at each nozzle. See 000.250.2601, Equipment Location and Piping Layout
+Shell and Tube Heat Exchangers, for layout details
+See Figure#1-66, Exchangers - TEMA Nomenclature
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 60 of 95
+15/11/2002 Rev. 0
+
+Figure #1-67
+Stress Requirements
+1. Shell Material
+2. Process Temperatures - both Design & Operating
+3. Type of Flow Through Exchanger (Single Pass)
+4. Dimensions shown Above
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 61 of 95
+15/11/2002 Rev. 0
+
+1.6.3
+
+Vertical Vessels
+
+Note: Use operating temperatures of outlet nozzles only for figuring vessel growth. Do not use vessel
+operating temperature.
+Expansion occurs both from the tangent line (up or down) and radially from the center of the vessel.
+Temperatures can vary greatly from the bottom to the top of a tall vertical vessel.
+
+Figure #1-68
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 62 of 95
+15/11/2002 Rev. 0
+
+On tall vessels piping will generally be supported and guided off the vessel. Different temperatures
+inside the vessel and pipe can cause them to expand at different rates.
+
+Figure #1-69
+Care should be taken placing manifolds at the based of vessels. If they must be located at the base of
+vessel, the weight must be carried by the vessel support and a base guide used in place of a field
+support.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 63 of 95
+15/11/2002 Rev. 0
+
+Figure #1-70
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 64 of 95
+15/11/2002 Rev. 0
+
+1.6.4
+
+Pumps (Forces)
+
+Pump Vendors will accept only limited forces and moments at their suction and discharge nozzles.
+When more than one pump is fed by a single source, one pump can be running (Hot) while the other is
+shutdown (Cold).
+
+Figure #1-71
+Move anchor near pumps to prevent excessive flexibility requirements.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 65 of 95
+15/11/2002 Rev. 0
+
+Figure #1-72
+Note:
+Not only pumps, but also all valve piping systems must be analyzed for all hot-cold temperature
+combinations that are possible.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 66 of 95
+15/11/2002 Rev. 0
+
+Figure #1-73
+For a given pipe size and temperature, the horizontal forces are twice as great as in sparing (hot-cold)
+service.
+If hot-cold operation is also occasionally possible, it must also be allowed for during layout.
+Information on the pump operation must be included on the stress sketch if other than hot-cold.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 67 of 95
+15/11/2002 Rev. 0
+
+Figure #1-74
+N-S force for either pump (during hot or cold) is found using total N-S expansion with bending leg equal
+to A+B+D.
+Vertical force between vessel and pumps does not depend on hot-cold.
+Vertical force is found using total expansion between pump support and vessel support with bending
+leg equal to C. Since the force pushes down halfway between the pumps, divide by two to find the
+force at each pump. Add this force to the hot-cold vertical force, which is occurring simultaneously.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 68 of 95
+15/11/2002 Rev. 0
+
+Figure #1-75
+Find forces between pt. "O" and pt. "E" in the usual manner.
+The forces calculated are then added to the previously determined loads at one pump.
+(Do not divide the forces between the two pumps, except for symmetrical piping.)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 69 of 95
+15/11/2002 Rev. 0
+
+Figure #1-76
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 70 of 95
+15/11/2002 Rev. 0
+
+Example Calculation: Symmetrical Pump Suction
+
+Figure #1-77
+Forces-Between Pumps
+Vertical
+
+Between Vessel and Pump
+Vertical
+
+∆ = 8.5' x .0141 = .12"
+T.F. = About 390#
+Bending Leg = 10'-0"
+
+∆ = 18' x .0141 = .254"
+T.F. = 250# 2 = 125# per Pump
+Bending Leg = 15'-0"
+
+East-West
+
+North-South
+
+∆ = 5' x .0141 2 = .035"
+Use 3 x .035 on Chart = .105"
+Chart Force = 1100#
+T.F. = Chart Force = 370#
+Bending Leg = 7'-0"
+
+∆ = 15' x .0141 = .212"
+T.F. ‹ 200# per Pump
+Bending Leg = 19'-0"
+
+If the nozzle size in this example decreases to 3" the allowable thermal force drops from 800 (4"x200#)
+to 600 (3"x200#).
+If the temperature increases the previous example will not work. Additional leg must be added between
+the pumps.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 71 of 95
+15/11/2002 Rev. 0
+
+Figure #1-78
+6" sch. 40 C.S. 600oF design
+Vertical Forces (Spare Cold)
+∆ = 8.5 X .046 = .39
+T.F. = 480#
+Bending Leg = 14'
+
+East-West Forces (Spare Cold)
+∆ = 5 X .046 = .23 2 = .12
+T.F. = 530#
+Bending Leg = 9'
+
+Proper alignment of piping at pumps is critical. Foundations can settle (actually, sinking into the
+ground). To avoid excessive forces, pipe supports generally will be tied into the pump foundation or
+springs will be used. Sometimes, several pumps will have a common foundation or will have piles that
+limit settlement.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 72 of 95
+15/11/2002 Rev. 0
+See Figure #1-79, Basic Support Principles
+
+Figure #1-80
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 73 of 95
+15/11/2002 Rev. 0
+
+Pedestals off the pump base plate support pumps. Thermal growth occurs between this point and the
+suction and discharge flanges.
+
+Figure #1-81
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 74 of 95
+15/11/2002 Rev. 0
+
+There are various kinds of centrifugal pumps; the main difference that effects piping is the location of
+the suction and discharge nozzles.
+
+Figure #1-82
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 75 of 95
+15/11/2002 Rev. 0
+
+When valves are located directly above a nozzle, springs are often used to reduce the loads on the
+pumps. Pumps should be located where they can be easily supported, usually, under or near the edge
+of a pipeway.
+
+Figure #1-83
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 76 of 95
+15/11/2002 Rev. 0
+
+Figure #1-84
+
+On steam turbines: As with pumps where differential settlement can occur, foundations for supports
+must be integral with the equipment foundation. Steam supply and exhaust lines must be supported
+independently from the turbine nozzle so that the flange bolts can be removed and the flange alignment
+will not change. See standard 000.250.2352, Pump Piping (Steam) Turbines and Reciprocating
+Pumps, for typical piping arrangements at steam turbines.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 77 of 95
+15/11/2002 Rev. 0
+
+1.6.5
+
+Air Coolers (Fin Fans)
+
+Air coolers are generally located above pipeways to conserve space but they can be located at grade.
+Air coolers should be grouped together when practical to share a common support structure. Air
+coolers used in vessel overhead condensing service needs to be free draining and piping often needs
+to be symmetrical (see standard 000.250.2602, Forced Draft and Induced Draft Air Cooler
+Arrangements).
+
+Figure #1-85
+The temperature of the upper surface of the header box is the same temperature as the inlet header,
+and the temperature of the lower surface of the header box is the same temperature as the outlet
+header.
+1. Gap clearance must be checked. If insufficient, upper and lower headers may be cold sprung,
+or the gaps may be increased. Piping and stress will squad check the vendor drawings.
+2. Dead loads must be given on squad check. This is critical especially when vendor platforms are
+used for any additional support of risers, etc.
+3. Check with stress engineer for minimum dimension during early layout.
+4. Four nominal branch diameters or 2'-0", whichever one is longer, unless otherwise directed by a
+stress engineer. This length may be required for field to bend and allow for flange mismatch
+due to fabrication tolerance.
+5. If reinforcing pads are required for pressure, it may be more economical to increase the header
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 78 of 95
+15/11/2002 Rev. 0
+wall thickness. Check with the stress and material engineers.
+
+Figure #1-86
+1. Additional steel may be required. Check with stress engineer early on in layout. If a dummy
+support cannot be used, a solid support may be required level with top of fin fan support. A
+spring may be required if supported elsewhere.
+2. Dummy flexibility helps absorb vertical expansion dummy must be sized correctly to carry the
+weight.
+3. Provide flexibility for vertical expansion, shoe at P.S. Col. may be removed in limited cases.
+4. If this dimension becomes too great the piping may become unbalanced and required additional
+support.
+
+AIR COOLER PROBLEM
+See Figure #1-87
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 79 of 95
+15/11/2002 Rev. 0
+
+Question:
+1. Pipe Expansion ______________________
+2. Total Movement _____________________
+3. Minimum Flex Leg @ 15,000 PSI Stress __________________________
+4. Minimum Flex Leg @ 1600 Force _______________________________
+5. Maximum Span Chart Recommendation __________________________
+6. Thermal Force _______________________
+7. Find Min. Dimension __________________
+8. Minimum Dead Leg Required______________________
+9. Dead Load @ Nozzle________________________
+10. Dead Load @ Nozzle________________________
+Sample Calculations
+1. Pipe expansion = 70' x .014"/ft = .98.
+2. Total Movement = 1.5" - .98" = .52" net.
+3. Flex leg required at 15000 psi stress = 23 ft.
+4. Flex leg required at 1600# force = 30 ft.
+5. Span chart recommends 47'-0".
+6. Thermal force = 1600#.
+7. This dimension should be approximately 28.3' =
+
+302 ft - 102 = 28.3 ft
+
+8. ∆ = 10 ft. (.014 - .0061) = .079" leg required = 4 ft.
+9.
+
+5' 3'
++ = 4' x 182 lbs/ft2 = 728 lbs
+2 2
+4" - Sch.40 (2' X 16.3# = 33 lbs)
+4" - 150# W.N. Flg. = 17 lbs
+728 + 33 + 17 = 778 lbs = Load on all Nozzles
+
+10.
+(30/2 + 5' (between fittings)) x 182 lbs/ft. = 1820 lbs = additional load from overhead line.
+The load at these nozzles is 1820 lbs + 778 lbs = 2598#. A vendor will accept this load (2598 lbs)
+if negotiated prior to award of contract.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 80 of 95
+15/11/2002 Rev. 0
+
+1.7
+
+PIPING DESIGNER STRESS RESPONSIBILITIES
+1. Check flexibility and support of all lines by the rule of thumb method and/or by inspection during
+layout.
+2. Recognition during layout of stress problems that require consultation with these stress
+engineer.
+3. Submitting lines for stress analysis as required on the line list and in accordance with
+000.250.2210 of the piping design guide.
+4. Submitting additional lines for analysis that fail the rule of thumb methods.
+5. Submitting required information on stress sketches.
+6. Initially locating:
+(a)
+(b)
+(c)
+(d)
+(e)
+(f)
+(g)
+
+Anchors
+Guides
+Hangers (Check with Stress Engineer for Spring Requirements)
+Supports (Check with Stress Engineer for Spring Requirements)
+Loops
+Expansion Clearances (Including Bowing Effects)
+Cold Spring for Line Spacing
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 81 of 95
+15/11/2002 Rev. 0
+
+1.7.1
+
+Stress Sketch Requirements
+
+Figure #1-88
+1. Locate equip. anchors and give info. for calculation of shell temp. (draw outline on stress sketch or
+submit Xerox of 8-1/2" x 11" vendor drawing).
+2. Give dimension to the nearest foot (or exact if known).
+3. Basic dimension info. same as M.T.O. sketch.
+4. Add support location to spool (in red on blueline, pencil original).
+5. Use to represent pipeway type support.
+6. Locate FS or HR (do not show as a pipeway type support.)
+7. Locate support clips (even for carbon steel spools).
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 82 of 95
+15/11/2002 Rev. 0
+
+1.7.2
+
+Code Requirements (From ANSI B31.3-1993 Page 41)
+
+The layout and design of piping, including supporting elements, shall be directed toward preventing the
+following:
+1. Piping stresses in excess of those permitted by this code.
+2. Leakage at joints.
+3. Excessive thrusts and moments on connected equipment (such as pumps and turbines).
+4. Excessive stresses in the pipe supporting (or restraining) elements.
+5. Resonance with imposed fluid-induced vibrations.
+6. Excessive interference with thermal expansion and contraction in piping which is otherwise
+adequately flexible.
+7. Unintentional disengagement of piping from it supports.
+8. Excessive piping sag in piping requiring drainage slope.
+9. Excessive distortion or sag of piping (e.g. thermoplastics) subject to creep under conditions of
+repeated thermal cycle.
+10. Excessive heat flow, exposing supporting elements to temperature extremes outside their design
+limits.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 83 of 95
+15/11/2002 Rev. 0
+
+1.8
+
+GENERAL DESIGN INFORMATION
+
+Recommended Method of Locating Piping Support Points
+The primary objective is to obtain practical support point locations compatible with the structures normal
+to the plant, thereby permitting pipe line routing to be finalized as far as possible during study. The
+material presented here is primarily for the guidance of the piping designer, detailer or checker and
+therefore is limited in scope and subject to changes which will occur when the piping system is
+analyzed for flexibility stresses and dead weight loading. Major changes should be avoided with
+application of the following general rules.
+1.0 Pipe spans should not exceed the recommended spans as shown in the PDG and as
+modified by the notes. Lines at temperatures in excess of those listed may require severely
+shortened spans and the table does not apply to lines which may vibrate from mechanical
+excitation, pressure pulsation or mixed phase flow (flashing).
+2.0 Temperature growth or contraction must be computed to determine the type of support
+required. Assumptions that a line is supported properly by rigid or non-elastic supports create
+a major source of problems. These problems will generally be eliminated if the thermal
+behavior of the line is properly evaluated during study. A line that grows off a support is not
+properly supported, making it necessary to use an overhead type spring support, or in limited
+cases the application of prespring might suffice.
+3.0 Support points should be located directly over or under major weight concentrations occurring
+in vertical lines, and as close as possible to weight concentrations in horizontal lines in order
+to attain what is called balancing moments. Dummy supports are to be avoided if reasonably
+possible. For individual cases we prefer supports located in a manner that will take into
+account the type of equipment as listed in the following groups.
+3.1 Inlet and outlet risers from top nozzles on pumps.
+3.1.1
+
+Ambient temperatures with dead weight on nozzles less than 200 lbs./nom.
+in. with a maximum of 2000 lbs: 75% of normal span length is permitted
+adding length of riser and horizontal run, otherwise additional support
+required. Cast iron pumps 50#/nominal in.
+
+3.1.2
+
+Lines 150oF to 300oF: Subject to flexibility analysis, weight and expansion
+effects may permit 75% span as above to non-elastic support if prespring is
+effective. To be safe, locate support point directly over riser with 3'-6"
+minimum clearance from top of line to underside of supporting structure.
+
+3.1.3
+
+Lines 300oF and over: Locate support point directly over riser with same
+minimum clearances as above. Where clearances are less it may be
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 84 of 95
+15/11/2002 Rev. 0
+
+possible to employ a riser clamp directly below the elbow weld, plus two
+spring hangers. The line should be reviewed with the Stress Group during
+layout. Dead weight loading will be severely restricted.
+3.2 Side inlet and outlet nozzles on centrifugal pumps or compressors.
+3.2.1
+
+Ambient temperatures: Risers should be supported from below with 75% of
+normal span permitted like Item 3.1.1.
+
+3.2.2
+
+Lines 150oF to 300oF: Base support usually is sufficient but a spring may be
+required if equipment expansion causes large expansion bending moments
+to be imposed on the equipment. Normally 75% of span is permissible
+similar to Item 3.1.1, to a non-elastic pipeway support point. Flexibility
+analysis may require pipeway support point to be an overhead spring,
+particularly on line sizes 10" and over. Clearances should be based on
+PDG spring hanger clearance table.
+
+3.2.3
+
+Lines 300oF and over are generally subject to the same conditions as 3.2.2
+for lines up to and including 6". The line routing should be reviewed during
+layout with a representative of the Pipe Stress group.
+
+3.3 Vertical Vessel Piping
+Piping risers on even low temperature vessels may cause support problems because
+of steam out conditions for maintenance and inspection. Vertical vessel growth is
+frequently a matter of computing section by section because the temperature may vary
+from 650o or 700o in the reboiler zone to 200o or less in the overhead vapor zone. The
+vessel may actually be two or three separate vessels stacked and not always
+operating at the same time. It may be a packed column subject to high temperatures
+during regeneration.
+Intelligent arrangement of the piping requires some familiarity with the operating
+sequences, which is obtained by experience or consulting with the Process or
+Instrument engineers. When the operating temperature conditions are determined
+and type of commodity flow such as vapor, liquid, mixed or flashing mixtures, then
+lines are ready to be routed for proper support and flexibility. The following pointers
+should help to avoid problems serious enough to cause reorientation or major piping
+layout changes:
+3.3.1
+
+Heater to vessel feed lines. These lines are frequently subject to what is
+called mixed phase flow or partial vaporization and therefore subject to
+vibration. They should be given top priority study-wise due to the priority of
+the heater planning. Pressure drop is usually critical which, together with
+the frequent need for alloy piping because of temperature, make optimum
+routing an economic necessity. Spring hangers may be an absolute
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 85 of 95
+15/11/2002 Rev. 0
+
+necessity and require an overhead structure. Hydraulic rubbers may be
+required if the line is resonant with the heater pulse so line routing should
+be in a manner which permits minimum shock absorber installation either
+initially or later in the field if vibration develops. Predicting resonance on
+these lines is practically impossible and controlling it after start-up, if and
+when it develops, can be quite expansive if the line is not routed reasonably
+close to structures or equipment which can be utilized.
+3.3.2
+
+Overhead line from vessel to condensers: This is usually one of the largest,
+if not the largest, line attaching to a vessel. The trend has been for more
+application of air coolers to perform the condensing operation, which can
+create a major support problem. The vertical expansion of the vessel
+frequently is large, exceeding the compensating growth of the line by more
+than one inch. Routing the line down the side adjacent to the condenser
+may not be the most economical if lengths and elbows have to be added for
+flexibility reasons, then spring hangers have to be added for unbalanced
+loads and line stability. To further complicate the problem, relief valves are
+sometimes added on this line to a blowdown system, linking the flexibility of
+both systems and adding a weight concentration with no visible means of
+support, because the line is ten feet or more above the nearest available
+structure. The route that appears shortest sometimes turns out the longest
+unless temperature differential growths are evaluated.
+
+3.3.3
+
+Vessel reflux lines: These lines are normally the smallest line on the vessels
+and consequently considered quite flexible. The problem here is created
+when a control valve assembly is located directly below the nozzle and
+adjacent to the vessel at grade. Due to the relatively low temperature of
+these lines, the bottom of the Control Valve loop is pulled up over 1-1/2", so
+that special guides and spring supports must be detailed if the C.V. manifold
+is left in this location. Relocating the C.V. manifold below the pipeway run
+avoids this problem, or as an alternate, locating the manifold on vessel
+platform close to the reflux nozzle. The alternate location on the platform
+may or may not be approved by the Instrument or Process engineer if he
+thinks hand operation of the bypass valve makes it necessary to locate at
+grade because of fluctuating operations. It is a matter of opinion and
+operators' methods, however, and worth consideration, as automated
+design is becoming more reliable.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 86 of 95
+15/11/2002 Rev. 0
+
+1.9
+
+PUMPS, TURBINES AND COMPRESSORS
+
+EQUIPMENT
+1.9.1
+
+A. Pumps
+
+1. Pumps and rotating equipment in general must be considered more delicate than vessels,
+exchangers and other units that are not constructed with internal moving parts. Forces and
+moments on these items must be kept within reasonable limitations to insure proper operations.
+Any wrap or distortion of the pump shell or support base may cause the impellers to bind and
+consequently require shutdown of the plant with extensive repair of the pump or complete
+replacement.
+2. Pumps - Supporting Requirements
+With vertical risers from top nozzles (inlet or outlet).
+(a) On cast steel pumps at ambient temperatures to 150oF, limit the dead weight on nozzles to
+the lesser of 200 lbs./nom. inch of nozzle size or 2000 lbs. On cast iron or aluminum pumps
+limit the dead weight load to the lesser of 50 lbs./nom. inch of nozzle size or 500 lbs. Also
+limit the unsupported span length (including the length of the riser) to 75% of the normal
+span.
+(b) At temperatures of 150oF to 300oF weight and expansion effects may permit handling similar
+to the above, however it is best to plan a support point directly over the riser with a 3'-6"
+minimum clearance from the top of line to the underside of the supporting structure.
+(c) Lines 300oF and over: Locate support point directly over riser with same minimum clearance
+as above. Where clearances are less it may be possible to employ a riser clamp directly
+below the elbow weld, plus two spring hangers. The line should be reviewed with Stress
+Group during the piping study. Dead weight loading will be severely restricted.
+3. Pumps - End or side suction - Side discharge - Supporting
+(a) At ambient temperature of 150oF: A base support will take care of the dead weight loading;
+however, the unsupported span must be limited to 75% of normal span.
+(b) At temperatures of 150oF to 300oF: A base support usually is sufficient but a spring may be
+required if equipment expansion causes larger expansion bending moments to be imposed
+on the equipment. Normally 75% of span is permissible to a non-elastic pipeway support
+point. Flexibility analysis may require pipeway support point to be an overhead spring,
+particularly on line sizes 10" and over. Clearances should be based on spring hanger
+clearance table.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 87 of 95
+15/11/2002 Rev. 0
+
+(c) At temperatures over 300oF the same general conditions as (b) above, will apply. The line
+routing should be reviewed with an Analyst during layout, especially, if the size is 8" or over.
+4. Points to look for and arrangements to avoid
+(a) When pump nozzle size is two or more sizes smaller than the line and valve sizes, a spring
+will probably be required for top suction of discharge lines.
+(b) When pump nozzle is the same size as the line and valve ratings are 300# or more, a spring
+will probably be required for top suction and discharge lines.
+(c) When pump risers have an offset before the valves and installation of a 5BSS is impractical,
+a spring may be required.
+(d) When top suction and discharge nozzles are overloaded, an overhead spring may often be
+avoided by offsetting the line to the side of the pump and installing a 5BSS.
+5. Thermal force limitations on pumps
+(a) For all practical purposes the pump piping may be designed during the study stage for a
+maximum reaction of 200#/nominal inch on steel pump nozzles and 50#/nominal inch for
+cast iron or aluminum pump nozzles. Dead weight must be added algebraically to the
+thermal loads in all cases to obtain the total vertical loading on the pump nozzles.
+6. Stress sketch requirements
+(a) For purposes of computing thermal expansion the face of the nozzle shown on the stress
+sketch must be related dimensionally to the centerline of the pump shaft vertically and
+horizontally. Suction lines should have an additional dimension horizontally relating it to the
+centerline of the pump shaft vertically and horizontally. Suction lines should have an
+additional dimension horizontally relating it to the centerline of the discharge nozzle.
+(b) Make sure that flange ratings, size and material if other than steel are also listed.
+(c) List any vendor force or moment limitations.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 88 of 95
+15/11/2002 Rev. 0
+
+1.9.2
+
+Turbine Drivers: Support requirements
+
+1. Steam Inlet
+Generally, the turbine connection is subject to expansions in three directions. The Fluor Standard
+5BS field support may be used only when care has been taken to neutralize the vertical expansion.
+Normally the 5BSS is far superior where the supply piping is similar to that shown on 000.250.2352,
+Pump Piping (Steam) Turbines and Reciprocating Pumps. Additional support will normally be
+required on the top horizontal turn to the header, compatible with the expansion requirements, and
+should be considered with the steam system drawing.
+2. Steam Exhaust
+(a) To exhaust header
+The Fluor Standard indicates routing to an exhaust header. Generally a 5BS at the base ell
+will be satisfactory with the riser and horizontal run to the header supported to take care of
+the expansion requirements. Exhaust header expansions must be taken into account.
+(b) To exhaust head
+An exhaust head may require an anchored stack because of a long riser requirement.
+Where a short riser is permissible, locate the riser adjacent to a pipe support column to
+permit a guide as near as possible to the exhaust head, then the use of a field support is
+possible at the exhaust flange level.
+(c) To a condenser
+Condensing type turbine drivers usually are found as drivers for large centrifugal
+compressors. When these are mounted close to grade with a vertical exhaust nozzle, the
+support and line expansion control of the exhaust line usually becomes a major problem.
+The exhaust line is usually large and it becomes necessary to use an expansion joint subject
+to vacuum and positive pressure. A supporting structure must be planned during the piping
+study, and a stress analyst must be consulted. Generally it is better to orient the exhaust
+flange down and mount the condenser directly below the turbine with only an expansion joint
+between the flanges on the condenser and turbine. Do not approve turbine outlines with a
+vertical exhaust unless the latter case has been thoroughly investigated.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 89 of 95
+15/11/2002 Rev. 0
+
+3. Thermal Force Limitations
+(a) Thermal force can normally be considered as being in the same category as for pumps.
+That is 200#/nominal inch limitation for steel and 50#/nominal inch limitation for aluminum or
+cast iron nozzles.
+(b) In any case where the vendor limits forces and moments to NEMA Standard SM 20 the
+stress analyst and design supervisor should be notified immediately so that steps may be
+taken to remove the note from the vendor's drawings. In cases where compliance is
+mandatory, considerably more piping may be required. Estimating the amount of additional
+piping is nearly impossible and will be determined by the stress analyst. Notes concerning
+these limitations are usually found in the upper left- or right-hand corner of the outline and
+are generally printed in small letters.
+(c) Stress sketch requirements are similar to those on pumps.
+1.9.3
+
+Centrifugal Compressors:
+1. With Turbine Drivers
+Generally it is better practice to orient both the suction and discharge nozzles down.
+Again, this is for reasons of support and control of line expansions. Usually the
+location of other auxiliary equipment, such as lube oil consoles and coolers, benefit
+from this arrangement.
+2. With Electric Motor Drive
+Orientation with downward suction and discharge nozzles should again be preferred.
+If upward orientation is mandatory, provision should be made during layout for an
+overhead structure. Consult with a Stress Analyst during layout.
+3. Thermal forces and limitations are similar to those at turbines.
+4. Stress sketch requirements are similar to those at turbines.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 90 of 95
+15/11/2002 Rev. 0
+
+1.10
+
+GLOSSARY OF STRESS TERMS
+
+ALLOY STEEL
+
+A steel which owes it distinctive properties to elements other than
+carbon.
+
+ALLOYING ELEMENTS
+
+Chemical elements constituting an alloy. In steel, usually the elements
+added to modify the properties of the steel.
+
+ANNEALING
+
+A heating and controlled cooling operation to impart specific desirable
+properties generally concerned with subsequent fabrication of the alloy,
+such as softness and ductility. When annealing follows cold working for
+the purpose of stress removal, it is called stress annealing.
+
+AUSTENITIC STEEL
+
+Steel, which due to its composition has a stable structure at normal
+(room) temperatures; as for example: the 18-8 types. It is not hardened
+by thermal treatment.
+
+BRINELL HARDNESS
+
+A hardness number determined by applying a known load to the surface
+of the material to be tested through a hardened steel ball of known
+diameter. Note: Not suitable for measuring the hardness of strip and
+sheet because of insufficient thickness.
+
+BRITTLENESS
+
+A tendency to fracture without appreciable deformation.
+
+BUTT WELD
+
+A circumferential weld in pipe fusing the abutting pipe walls completely
+from inside wall to outside wall.
+
+CARBON STEEL
+
+Steel, which owes its distinctive properties chiefly to the various
+percentages of carbon (as distinguished from the other elements) which
+it, contains.
+
+COEFFICIENT OF
+EXPANSION
+
+A number indicating the degree of expansion or contraction of a
+substance.
+The coefficient of expansion is not constant and varies with changes in
+temperature. For linear expansion it is expressed as the change in
+length of one unit of length of a substance having one degree rise in
+temperature. A Table of Expansion is generally used to determine
+expansion or contraction within a piping system.
+
+COOLING STRESSES
+
+Stresses caused by uneven contraction, external restraint or localized
+plastic deformation during cooling.
+
+CORROSION
+
+The gradual destruction or alteration of a metal or alloy caused by direct
+chemical attack or by electrochemical reaction.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 91 of 95
+15/11/2002 Rev. 0
+
+CORROSION FATIGUE
+
+Combined action of corrosion and fatigue in which local corroded areas
+act as stress concentrators, causing failure at the point of stress
+concentration and exposing new metal surfaces to corrosion. The failure
+is progressive and rapid.
+
+CREEP
+
+Plastic flow of metal, usually occurring at high temperatures, subject to
+stress appreciable less than its yield strength. Progresses through first,
+second, and third stage to fracture or results in stress relaxation.
+
+DUCTILITY
+
+The property of elongation, above the elastic limit, but under the tensile
+strength.
+A measure of ductility is the percentage of elongation of the fractured
+piece over its original length.
+
+ELASTIC LIMIT
+
+The greatest stress which a material can withstand without a permanent
+deformation after release of the stress.
+
+ELONGATION
+
+The amount of permanent extension in the tensile test, usually expressed
+as a percentage of the original gauge length, as "25 percent in 2 inches."
+It may also refer to the amount of extension at any stage in any process
+that continuously elongates a body, as in rolling.
+
+ENDURANCE LIMIT
+
+A limiting stress, below which metal will withstand without fracture; a
+specified larger number of applications of such stress.
+
+EROSION
+
+The gradual destruction of metal or other material by the abrasive action
+of liquids, gases, solids or mixtures thereof.
+
+FATIGUE
+
+The tendency of metal to fracture under conditions of repeated cyclic
+stressing below the ultimate tensile strength but above the yield.
+
+HARDNESS
+
+Resistance to indentation by standard balls, diamonds, etc., under
+standard loads. Also, the degree of cold working.
+
+HEAT TREATMENT
+
+A combination of treating and cooling operations timed and applied to
+metal or alloy to produce desired properties.
+
+HOOKE'S LAW
+
+Stress is proportional to strain in the elastic region.
+
+HYDROGEN
+EMBRITTLEMENT
+
+Brittleness sometimes engendered by contact with plating and pickling
+solution acid due to absorption of hydrogen by the metal. The
+embrittlement is more evident in hardened parts, and can be removed by
+aging or heating the steel for a prescribed period.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 92 of 95
+15/11/2002 Rev. 0
+
+MAGNETIC PARTICLE
+TESTING
+
+This method of inspection consists of suitably magnetizing the material
+and applying a prepared magnetic powder that adheres along lines of
+flux leakage. On properly magnetized material, flux leakage develops
+along surface non-uniformities. This method is not applicable to high
+manganese or austenitic stainless steels and nonferrous alloys which are
+nonmagnetic.
+
+MECHANICAL
+PROPERTIES
+
+Those properties that reveal the reaction, elastic or plastic, of a material
+to an applied stress, or that involving the relationship between stress and
+strain; for example, Young's modulus, tensile strength, fatigue limit.
+These properties have often been designated as physical properties, but
+the term "mechanical properties" is technically more accurate and
+therefore preferred.
+
+MOMENT OF INERTIA
+
+A measure of stiffness or resistance to bending, tension, compression or
+shear of a material with respect to its geometric shape.
+
+PHYSICAL PROPERTIES
+
+Those properties familiarly discussed in physics, exclusive of those
+described under Mechanical Properties; for example, density, electrical
+conductivity; coefficient of thermal expansion. This term has often been
+used to describe mechanical properties, but this usage is not
+recommended.
+
+PICKLING
+
+Immersion in dilute acid or other suitable media for the removal of oxide
+scale from hot-rolled or otherwise sealed surfaces.
+
+POISSON'S RATIO
+
+Ratio expressing the relation of strain normal to the applied load as a
+proportion of direct strain within the elastic limit. Also relates Module of
+Elasticity and Rigidity.
+
+PROPORTIONAL LIMIT
+
+The highest stress at which the material still follows Hooke's Law. This is
+similar to Elastic Limit.
+
+ROCKWELL HARDNESS
+
+A measure of the depth of penetration of a penetrator such as a diamond
+pyramid (Rc) or hardened ball (Rb) under a specified load.
+
+STRAIN
+
+Change of shape or size of a body produced by the action of a stress.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 93 of 95
+15/11/2002 Rev. 0
+
+STRESS
+
+The intensity of the internal, distributed forces that resist a change in the
+form of a body. When external forces act on a body they are resisted by
+reactions within the body, which are termed stresses.
+A Tensile Stress is one that resists a force tending to pull a body apart.
+A Compressive Stress is one that resists a force tending to crush a body.
+A Shearing Stress is one that resists a force tending to make one layer of
+a body slide across another layer.
+A Torsional Stress is one that resists forces tending to twist a body.
+
+STRESS RELIEVING
+
+Heating to and holding at a suitable temperature for the purpose of
+reducing residual stresses followed by cooling at such a rate as to leave
+the material in essentially stress free condition.
+
+TENSILE STRENGTH
+
+The maximum tensile stress which a material will develop. The tensile
+strength is usually considered to be the load in pounds per square inch at
+which a test specimen ruptures.
+
+TURBULENCE
+
+Any deviations from parallel flow in a pipe due to rough inner walls,
+obstructions or directional changes.
+
+VELOCITY
+
+Time rate of motion in a given direction and sense, usually expressed in
+feet per second.
+
+WELDING
+
+A process of joining metals by heating until they are fused together, or by
+heating and applying pressure until there is a plastic joining action. Filler
+metal may or may not be used.
+
+YIELD STRENGTH
+
+The stress at which a material exhibits a specified limiting permanent set.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 94 of 95
+15/11/2002 Rev. 0
+
+1.11
+
+CHARTS AND TABLES
+
+ASTM Material Designation Versus General Name Used on ANSI B31.3 Code Thermal Expansion
+Chart
+GENERAL MATERIAL
+
+ASTM CLASSIFICATION
+
+Carbon Steel
+
+A 53
+A 83
+A 106
+
+Gr A,B
+Gr A
+Gr A,B
+
+A 120
+A 135
+A 139
+
+Gr A,B
+Gr A,B
+
+Carbon Steel &
+Low Chrome
+
+A
+A
+A
+A
+A
+
+134
+155
+333
+335
+335
+
+5-9 Cr
+
+A 335
+335
+335
+335
+
+P
+P
+P
+P
+P
+
+Austenitic Stainless Steels
+18 Cr 8 Ni
+
+A 312
+312
+312
+312
+312.00
+
+TP 304
+316
+317
+321
+347
+
+25 Cr 20 Ni
+
+A 312
+
+Tp 310
+Tp 309
+
+Gr 6
+P 3
+P 3b
+5
+5b
+5c
+7
+9
+
+A 335 P 11
+335 P 12
+335 P 15
+335 P 22
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS
+Page 95 of 95
+15/11/2002 Rev. 0
+
+WEIGHT of INSULATION (POUNDS PER LINEAL FOOT)
+
+1. Based on calcium silicate @11 #/ft3
+2. Chart must be adjusted for other materials.
+3. Chart includes banding and covering weight.
+
+1"
+1-1/2"
+2"
+3"
+4"
+6"
+8"
+10"
+12"
+14"
+16"
+18"
+20"
+24"
+26"
+28"
+30"
+32"
+34"
+36"
+42"
+
+1"
+
+1-1/2"
+
+2"
+
+2-1/2"
+
+3"
+
+3-1/2"
+
+4"
+
+4-1/2"
+
+5"
+
+6"
+
+0.72
+0.84
+1.01
+1.25
+1.62
+2.11
+
+1.23
+1.35
+1.71
+2.08
+2.55
+3.28
+4.13
+5.20
+6.04
+6.16
+6.90
+7.73
+8.45
+10.00
+10.40
+11.20
+11.90
+12.70
+13.40
+14.20
+16.50
+
+1.94
+2.52
+2.53
+3.01
+3.61
+4.57
+5.64
+7.07
+8.13
+8.38
+9.33
+10.40
+11.60
+13.40
+14.10
+15.10
+16.10
+17.10
+18.20
+19.20
+22.20
+
+2.76
+3.47
+3.48
+4.07
+4.66
+6.09
+7.85
+8.93
+10.50
+10.70
+12.00
+13.30
+14.60
+17.00
+18.00
+19.20
+20.50
+21.70
+23.00
+24.20
+28.00
+
+3.70
+4.52
+4.42
+5.24
+6.07
+7.60
+9.48
+11.00
+12.70
+13.10
+14.60
+16.30
+17.70
+21.00
+21.90
+23.40
+25.00
+26.50
+28.00
+29.50
+34.00
+
+5.59
+6.65
+7.48
+9.82
+11.50
+13.20
+15.10
+15.80
+17.50
+19.30
+21.10
+24.80
+26.00
+27.80
+29.50
+31.30
+33.10
+34.80
+40.10
+
+9.10
+11.50
+13.80
+15.50
+17.40
+18.50
+20.50
+22.60
+24.60
+28.70
+30.20
+32.20
+34.30
+36.30
+38.30
+40.30
+46.40
+
+16.00
+18.10
+20.40
+21.30
+23.60
+25.90
+28.10
+32.90
+34.60
+36.90
+39.10
+41.10
+43.70
+45.90
+52.20
+
+41.60
+44.10
+46.60
+49.10
+51.70
+59.20
+
+51.40
+54.40
+57.50
+60.50
+63.50
+72.60
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9823
+Publication Date 18Jan00
+Page 1 of 1
+
+FLUOR DANIEL
+COEFFICIENT OF EXPANSION TABLES
+
+PURPOSE
+This practice provides data for the linear expansion of metals. This material is for information
+only; the metals listed in Attachment 01 are not always suitable for the temperatures shown.
+
+SCOPE
+This practice covers linear expansion in the following metals:
+Carbon steel, carbon-moly
+5 and 9 chrome-moly
+Austenitic stainless steel
+12, 17, and 27 chrome
+25 chrome/20 nickel
+Monel 67
+3-1/2 nickel
+Aluminum
+Grey cast iron
+Bronze
+Brass
+70 Cu / 30 Ni
+Ni-Fe-Cr
+
+APPLICATION
+This practice should be used as a guide in layout only.
+
+ATTACHMENTS
+Attachment 01: (18Jan00)
+Linear Thermal Expansion Of Metals
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9823
+Publication Date 18Jan00
+Attachment 01 Page 1 of 6
+
+FLUOR DANIEL
+LINEAR THERMAL EXPANSION OF METALS
+
+(Base Temp. = 70°F)
+
+Linear Thermal Expansion of Metals (Inches / 100 Feet)
+Material
+
+Temp.
+Degree F
+
+Carbon Steel
+Carbon-Moly
+Low-Chrome
+(Through 3 Cr Mo)
+
+5 Cr Mo
+Through
+9 Cr Mo
+
+Austenitic
+Stainless
+Steels
+18 Cr 8 Ni
+
+12 Cr
+17 Cr
+27 Cr
+
+-325
+
+-2.37
+
+-2.22
+
+-3.85
+
+-300
+
+-2.24
+
+-2.10
+
+-275
+
+-2.11
+
+-250
+
+25 Cr
+20 Ni
+
+Monel 67
+Ni 30 Cu
+
+3-1/2
+Nickel
+
+-2.04
+
+-2.62
+
+-2.24
+
+-3.63
+
+-1.92
+
+-2.50
+
+-2.17
+
+-1.98
+
+-3.41
+
+-1.80
+
+-2.38
+
+-2.07
+
+-1.98
+
+-1.86
+
+-3.19
+
+-1.68
+
+-2.26
+
+-1.96
+
+-225
+
+-1.85
+
+-1.74
+
+-2.96
+
+-1.57
+
+-2.14
+
+-1.86
+
+-200
+
+-1.71
+
+-1.62
+
+-2.73
+
+-1.46
+
+-2.02
+
+-1.76
+
+-175
+
+-1.58
+
+-1.50
+
+-2.50
+
+-1.35
+
+-1.90
+
+-1.62
+
+-150
+
+-1.45
+
+-1.37
+
+-2.27
+
+-1.24
+
+-1.79
+
+-1.48
+
+-125
+
+-1.30
+
+-1.23
+
+-2.01
+
+-1.11
+
+-1.59
+
+-1.33
+
+-100
+
+-1.15
+
+-1.08
+
+-1.75
+
+-0.98
+
+-1.38
+
+-1.17
+
+-75
+
+-1.00
+
+-0.94
+
+-1.50
+
+-1.18
+
+-1.01
+
+-50
+
+-0.84
+
+-0.79
+
+-1.24
+
+-0.98
+
+-0.84
+
+-25
+
+-0.68
+
+-0.63
+
+-0.98
+
+-0.77
+
+-0.67
+
+0
+25
+
+-0.49
+-0.32
+
+-0.46
+-0.30
+
+-0.72
+-0.46
+
+-0.57
+-0.37
+
+-0.50
+-0.32
+
+50
+
+-0.14
+
+-0.13
+
+-0.21
+
+-0.20
+
+-0.15
+
+70
+
+0
+
+0
+
+0
+
+0
+
+0
+
+100
+
+0.23
+
+0.22
+
+0.34
+
+0.28
+
+0.23
+
+125
+
+0.42
+
+0.40
+
+0.62
+
+0.52
+
+0.42
+
+150
+
+0.61
+
+0.58
+
+0.90
+
+0.75
+
+0.61
+
+175
+
+0.80
+
+0.76
+
+1.18
+
+0.99
+
+0.81
+
+200
+
+0.99
+
+0.94
+
+1.46
+
+1.22
+
+1.01
+
+225
+
+1.21
+
+1.13
+
+1.75
+
+1.46
+
+1.21
+
+250
+
+1.40
+
+1.33
+
+2.03
+
+1.71
+
+1.42
+
+275
+
+1.61
+
+1.52
+
+2.32
+
+1.96
+
+1.63
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9823
+Publication Date 18Jan00
+Attachment 01 Page 2 of 6
+
+FLUOR DANIEL
+LINEAR THERMAL EXPANSION OF METALS
+
+(Base Temp. = 70°F)
+
+Linear Thermal Expansion of Metals (Inches / 100 Feet)
+Material
+
+Temp.
+Degree F
+
+Carbon Steel
+Carbon-Moly
+Low-Chrome
+(Through 3 Cr Mo)
+
+5 Cr Mo
+Through
+9 Cr Mo
+
+Austenitic
+Stainless
+Steels
+18 Cr 8 Ni
+
+300
+
+1.82
+
+1.71
+
+325
+
+2.04
+
+350
+
+12 Cr
+17 Cr
+27 Cr
+
+25 Cr
+20 Ni
+
+Monel 67
+Ni 30 Cu
+
+3-1/2
+Nickel
+
+2.61
+
+2.21
+
+1.84
+
+1.90
+
+2.90
+
+2.44
+
+2.05
+
+2.26
+
+2.10
+
+3.20
+
+2.68
+
+2.26
+
+375
+
+2.48
+
+2.30
+
+3.50
+
+2.91
+
+2.47
+
+400
+
+2.70
+
+2.50
+
+3.80
+
+3.25
+
+2.69
+
+425
+
+2.93
+
+2.72
+
+4.10
+
+3.52
+
+2.91
+
+450
+
+3.16
+
+2.93
+
+4.41
+
+3.79
+
+3.13
+
+475
+
+3.39
+
+3.14
+
+4.71
+
+4.06
+
+3.35
+
+500
+
+3.62
+
+3.35
+
+5.01
+
+4.33
+
+3.58
+
+525
+
+3.86
+
+3.58
+
+5.31
+
+4.61
+
+3.81
+
+550
+
+4.11
+
+3.80
+
+5.62
+
+4.90
+
+4.04
+
+575
+
+4.35
+
+4.02
+
+5.93
+
+5.18
+
+4.27
+
+600
+
+4.60
+
+4.24
+
+6.24
+
+5.46
+
+4.50
+
+625
+650
+
+4.86
+5.11
+
+4.47
+4.69
+
+6.55
+6.87
+
+5.75
+6.05
+
+4.74
+4.98
+
+675
+
+5.37
+
+4.92
+
+7.18
+
+6.34
+
+5.22
+
+700
+
+5.63
+
+5.14
+
+7.50
+
+6.64
+
+5.46
+
+725
+
+5.90
+
+5.38
+
+7.82
+
+6.94
+
+5.70
+
+750
+
+6.16
+
+5.62
+
+8.05
+
+7.25
+
+5.94
+
+775
+
+6.43
+
+5.86
+
+8.47
+
+7.55
+
+6.18
+
+800
+
+6.70
+
+6.10
+
+8.80
+
+7.85
+
+6.43
+
+825
+
+6.97
+
+6.34
+
+9.13
+
+8.16
+
+6.68
+
+850
+
+7.25
+
+6.59
+
+9.46
+
+8.48
+
+6.93
+
+875
+
+7.53
+
+6.83
+
+9.79
+
+8.80
+
+7.18
+
+900
+
+7.81
+
+7.07
+
+10.12
+
+9.12
+
+7.43
+
+925
+
+8.08
+
+7.31
+
+10.46
+
+9.44
+
+7.68
+
+950
+
+8.35
+
+7.56
+
+10.80
+
+9.77
+
+7.93
+
+975
+
+8.62
+
+7.81
+
+11.14
+
+10.09
+
+8.17
+
+1000
+
+8.89
+
+8.06
+
+11.48
+
+10.42
+
+8.41
+
+1025
+
+9.17
+
+8.30
+
+11.82
+
+10.75
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9823
+Publication Date 18Jan00
+Attachment 01 Page 3 of 6
+
+FLUOR DANIEL
+LINEAR THERMAL EXPANSION OF METALS
+
+(Base Temp. = 70°F)
+
+Linear Thermal Expansion of Metals (Inches / 100 Feet)
+Material
+
+Temp.
+Degree F
+
+Carbon Steel
+Carbon-Moly
+Low-Chrome
+(Through 3 Cr Mo)
+
+5 Cr Mo
+Through
+9 Cr Mo
+
+Austenitic
+Stainless
+Steels
+18 Cr 8 Ni
+
+1050
+
+9.46
+
+8.55
+
+12.16
+
+11.09
+
+1075
+
+9.75
+
+8.80
+
+12.50
+
+11.43
+
+1100
+
+10.04
+
+9.05
+
+12.84
+
+11.77
+
+1125
+
+10.31
+
+9.28
+
+13.18
+
+12.11
+
+1150
+
+10.57
+
+9.52
+
+13.52
+
+12.47
+
+1175
+
+10.83
+
+9.76
+
+13.86
+
+12.81
+
+1200
+
+11.10
+
+10.00
+
+14.20
+
+13.15
+
+1225
+
+11.38
+
+10.26
+
+14.54
+
+13.50
+
+1250
+
+11.66
+
+10.53
+
+14.88
+
+13.86
+
+1275
+
+11.94
+
+10.79
+
+15.22
+
+14.22
+
+1300
+
+12.22
+
+11.06
+
+15.56
+
+14.58
+
+1325
+
+12.50
+
+11.30
+
+15.90
+
+14.94
+
+1350
+
+12.78
+
+11.55
+
+16.24
+
+15.30
+
+1375
+1400
+
+13.06
+13.34
+
+11.80
+12.05
+
+16.58
+16.92
+
+15.66
+16.02
+
+1425
+
+17.30
+
+1450
+
+17.69
+
+1475
+
+18.08
+
+1500
+
+18.47
+
+12 Cr
+17 Cr
+27 Cr
+
+25 Cr
+20 Ni
+
+Monel 67
+Ni 30 Cu
+
+3-1/2
+Nickel
+
+Piping Engineering
+
+Practice 000 250 9823
+Publication Date 18Jan00
+Attachment 01 Page 4 of 6
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+LINEAR THERMAL EXPANSION OF METALS
+
+(Base Temp. = 70°F)
+
+Linear Thermal Expansion of Metals (Inches /
+100 Feet)
+Material
+
+Temp.
+Degree F
+
+Aluminum
+
+-325
+
+Gray
+Cast
+Iron
+
+Bronze
+
+Brass
+
+70 Cr
+30 Ni
+
+Ni-Fe-Cr
+
+-4.68
+
+-3.98
+
+-3.88
+
+-3.15
+
+-300
+
+-4.46
+
+-3.74
+
+-3.64
+
+2.87
+
+-275
+
+-4.21
+
+-3.50
+
+-3.40
+
+-2.70
+
+-250
+
+-3.97
+
+-3.26
+
+-3.16
+
+2.53
+
+-225
+
+-3.71
+
+-3.02
+
+-2.93
+
+-2.36
+
+-200
+
+-3.44
+
+-2.78
+
+-2.70
+
+-2.19
+
+-175
+
+-3.16
+
+-2.54
+
+-2.47
+
+2.12
+
+-150
+
+-2.88
+
+-2.31
+
+-2.24
+
+-1.95
+
+-125
+
+-2.57
+
+-2.06
+
+-2.00
+
+-1.74
+
+-100
+
+-2.27
+
+-1.81
+
+-1.76
+
+-1.53
+
+-75
+
+-1.97
+
+-1.56
+
+-1.52
+
+-1.33
+
+-50
+
+-1.67
+
+-1.32
+
+-1.29
+
+-1.13
+
+-25
+
+-1.32
+
+-1.25
+
+-1.02
+
+-0.89
+
+0
+25
+
+-0.97
+-0.63
+
+-0.77
+-0.49
+
+-0.75
+-0.48
+
+-0.66
+-0.42
+
+50
+
+-0.28
+
+-0.22
+
+-0.21
+
+-0.19
+
+70
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+100
+
+0.46
+
+0.21
+
+0.36
+
+0.35
+
+0.31
+
+0.28
+
+125
+
+0.85
+
+0.38
+
+0.66
+
+0.64
+
+0.56
+
+0.52
+
+150
+
+1.23
+
+0.55
+
+0.96
+
+0.94
+
+0.82
+
+0.76
+
+175
+
+1.62
+
+0.73
+
+1.26
+
+1.23
+
+1.07
+
+0.99
+
+200
+
+2.00
+
+0.90
+
+1.56
+
+1.52
+
+1.33
+
+1.23
+
+225
+
+2.41
+
+1.08
+
+1.86
+
+1.83
+
+1.59
+
+1.49
+
+250
+
+2.83
+
+1.27
+
+2.17
+
+2.14
+
+1.86
+
+1.76
+
+275
+
+3.24
+
+1.45
+
+2.48
+
+2.45
+
+2.13
+
+2.03
+
+300
+
+3.67
+
+1.64
+
+2.79
+
+2.76
+
+2.40
+
+2.30
+
+325
+
+4.09
+
+1.83
+
+3.11
+
+3.08
+
+2.68
+
+2.59
+
+350
+
+4.52
+
+2.03
+
+3.42
+
+3.41
+
+2.96
+
+2.88
+
+375
+
+4.95
+
+2.22
+
+3.74
+
+3.73
+
+3.24
+
+3.18
+
+400
+
+5.39
+
+2.42
+
+4.05
+
+4.05
+
+3.52
+
+3.48
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9823
+Publication Date 18Jan00
+Attachment 01 Page 5 of 6
+
+FLUOR DANIEL
+LINEAR THERMAL EXPANSION OF METALS
+
+(Base Temp. = 70°F)
+
+Linear Thermal Expansion of Metals (Inches /
+100 Feet)
+Material
+
+Temp.
+Degree F
+
+Aluminum
+
+Gray
+Cast
+Iron
+
+Bronze
+
+Brass
+
+70 Cr
+30 Ni
+
+Ni-Fe-Cr
+
+425
+
+5.83
+
+2.62
+
+4.37
+
+4.38
+
+3.76
+
+450
+
+6.28
+
+2.83
+
+4.69
+
+4.72
+
+4.04
+
+475
+
+6.72
+
+3.03
+
+5.01
+
+5.06
+
+4.31
+
+500
+
+7.17
+
+3.24
+
+5.33
+
+5.40
+
+4.59
+
+525
+
+7.63
+
+3.46
+
+5.65
+
+5.75
+
+4.87
+
+550
+
+8.10
+
+3.67
+
+5.98
+
+6.10
+
+5.16
+
+575
+
+8.56
+
+3.89
+
+6.31
+
+6.45
+
+5.44
+
+600
+
+9.03
+
+4.11
+
+6.64
+
+6.80
+
+5.72
+
+625
+
+4.34
+
+6.96
+
+7.16
+
+6.01
+
+650
+
+4.57
+
+7.29
+
+7.53
+
+6.30
+
+675
+
+4.80
+
+7.62
+
+7.89
+
+6.58
+
+700
+
+5.03
+
+7.95
+
+8.26
+
+6.88
+
+725
+
+5.26
+
+8.28
+
+8.64
+
+7.17
+
+750
+775
+
+5.50
+5.74
+
+8.62
+8.96
+
+9.02
+9.40
+
+7.47
+7.76
+
+800
+
+5.98
+
+9.30
+
+9.78
+
+8.06
+
+825
+
+6.22
+
+9.64
+
+10.17
+
+8.35
+
+850
+
+6.47
+
+9.99
+
+10.57
+
+8.66
+
+875
+
+6.72
+
+10.33
+
+10.96
+
+8.95
+
+900
+
+6.97
+
+10.68
+
+11.35
+
+9.26
+
+925
+
+7.23
+
+11.02
+
+11.75
+
+9.56
+
+950
+
+7.50
+
+11.37
+
+12.16
+
+9.87
+
+975
+
+7.76
+
+11.71
+
+12.57
+
+10.18
+
+1000
+
+8.02
+
+12.05
+
+12.98
+
+10.49
+
+1025
+
+12.40
+
+13.39
+
+10.80
+
+1050
+
+12.76
+
+13.81
+
+11.11
+
+1075
+
+13.11
+
+14.23
+
+11.42
+
+1100
+
+13.47
+
+14.65
+
+11.74
+
+1125
+
+12.05
+
+1150
+
+12.38
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9823
+Publication Date 18Jan00
+Attachment 01 Page 6 of 6
+
+FLUOR DANIEL
+LINEAR THERMAL EXPANSION OF METALS
+
+(Base Temp. = 70°F)
+
+Linear Thermal Expansion of Metals (Inches /
+100 Feet)
+Material
+
+Temp.
+Degree F
+
+Aluminum
+
+Gray
+Cast
+Iron
+
+Bronze
+
+Brass
+
+70 Cr
+30 Ni
+
+Ni-Fe-Cr
+
+1175
+
+12.69
+
+1200
+
+13.02
+
+1225
+
+13.36
+
+1250
+
+13.71
+
+1275
+
+14.04
+
+1300
+
+14.39
+
+1325
+
+14.74
+
+1350
+
+15.10
+
+1375
+
+15.44
+
+1400
+
+15.80
+
+1425
+
+16.16
+
+1450
+
+16.53
+
+1475
+
+16.88
+
+1500
+
+17.25
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2220
+Publication Date 11Feb00
+Page 1 of 1
+
+FLUOR DANIEL
+STRESS DESIGN - SKETCH PROCEDURE
+
+PURPOSE
+This practice establishes guidelines for preparing and submitting piping sketches for stress
+analysis and ensures that these sketches are complete and contain the necessary information.
+This practice eliminates sketching of lines that can be given approval by other means such as
+inspection at model or equipment study, and provides the Piping Supervisor with a method to
+verify that the isometric checker has reviewed the Stress Sketch.
+
+SCOPE
+This practice provides direction for the interface between Piping Design and Pipe Stress
+during the stress sketch development and isometric sign-off phase of the contract.
+
+APPLICATION
+This practice will be implemented during the piping layout phase of the contract. The Piping
+Design Supervisor and the Pipe Stress Engineer will utilize this practice to ensure that stress
+related requirements are properly integrated into the piping design.
+
+ACTIVITIES/
+RESPONSIBILITIES
+Step-by-step activities and the responsible parties involved in implementing this practice are
+outlined in Attachment 01.
+
+TERMINOLOGY
+Formal Analysis: A system requiring a manual stress review or a formal computer analysis;
+however, the Stress Engineer may require that certain lines be sketched in order to determine
+if a formal analysis is required.
+
+REFERENCES
+Piping Engineering
+Practice 000.250.2221:
+
+Stress Design - Sketch Information
+
+Piping Engineering
+Practice 000.250.2250:
+
+Stress Design - Piping Flexibility Log
+
+ATTACHMENTS
+Attachment 01: (11Feb00)
+Responsibilities And Activity Descriptions
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2220
+Publication Date 11Feb00
+Attachment 01 Page 1 of 3
+
+FLUOR DANIEL
+RESPONSIBILITIES AND ACTIVITY DESCRIPTIONS
+
+Sequence
+
+Responsibility
+
+Activity Description
+
+1
+
+Lead Stress Engineer
+
+Review line list using contract specifications and flow diagrams to determine
+initially which lines require sketches (formal submittal) and mark the line list under
+stress column accordingly.
+
+2
+
+Unit Piping Supervisor
+
+Refer to line list and initiate Flexibility Log listing line numbers to be sketched.
+Refer to Piping Engineering Practice 000.250.2250: Stress Design - Piping
+Flexibility Log.
+
+3
+
+Unit Piping Supervisor /
+Stress Engineer
+
+Jointly review layouts as this work progresses. Prior to drawing sketch, verify if a
+formal analysis is actually required for the lines originally listed in the line list.
+Review closely for any problem areas or additional lines which may require formal
+analysis. Update line list and Flexibility Log accordingly.
+
+4
+
+Layout Designer
+
+Initiate a sketch / DWD for each line listed in the Flexibility Log. The intent is to
+provide the Stress Engineer with a complete system showing all lines of a system
+that affect the piping flexibility of that system. Complex or large systems may
+require more than 1 sketch or the system may be drawn on roll size sheet.
+
+5
+
+Layout Design
+
+Sign off and date in spaces provided after insuring all required data has been
+provided. Submit sketch to Unit Supervisor for review.
+
+6
+
+Unit Piping Supervisor
+
+Review sketch for completeness. Sign off and forward.
+
+7
+
+Unit Piping Supervisor or Order 2 prints of Stress Sketch and place 1 in Stress file for reference until original
+Designee (Piping Assistant is returned. Transmit Stress Sketch original and 1 print (work print) to Stress
+or Contract Clerk)
+Engineer. Post date "to" Stress in Flexibility Log. For revisions, erase dates to and
+from Stress in Flexibility Log and post new date to Stress for revision.
+
+8
+
+Stress Engineer
+
+Inspect line and either approve by inspection, start test calculations or start formal
+calculations. If sketch is incomplete or routing is unacceptable, hand carry to Unit
+Supervisor to rework. Make recommendations to ensure a prompt solution to the
+problem.
+
+9
+
+Stress Engineer
+
+Add all Stress comments and notes directly on original in red. If necessary, circle
+comments in red so they stand out. Complete Stress approval and stress stamp and
+indicate if sketch is approved, not approved, or approved as marked.
+
+10
+
+Stress Engineer
+
+Sign off in space provided, run 1 print of sketch for stress file and return original to
+Unit Piping Supervisor.
+
+11
+
+Unit Piping Supervisor /
+Layout Designer
+
+Review stress comments with Layout Designer. Transmit loads and other relevant
+data to affect disciplines. Forward original for filing. For checker initiated changes
+and revisions, review stress comments with checker.
+
+12
+
+Unit Piping Supervisor or Place original in Stress sketch file binder. Remove and destroy print from file.
+Piping Assistant / Contract Post date "from" Stress in Flexibility Log.
+Clerk
+
+13
+
+Unit Piping Supervisor
+
+Continuously monitor stress file to ensure isometric and model include stress
+requirements.
+
+14
+
+Assigned Designers
+
+Continuously monitor stress file to ensure isometric and model include stress
+requirements.
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2220
+Publication Date 11Feb00
+Attachment 01 Page 2 of 3
+
+FLUOR DANIEL
+RESPONSIBILITIES AND ACTIVITY DESCRIPTIONS
+
+Sequence
+
+Responsibility
+
+Activity Description
+Checking
+
+15
+
+Piping Checker
+
+Review line list and Flexibility Log to determine which sketches pertain to area.
+Compare finished isometrics to Stress sketch. Ensure that all stress requirements
+are met. Negotiate minor differences with Stress Engineer.
+
+16
+
+Piping Checker
+
+For checker initiated changes, consult with the Stress Engineer and determine if a
+resubmittal is required and is so, revise the Stress sketch original and sign off in
+space provided. Change Stress sketch revision. Erase Unit Supervisor and Stress
+Analyst signatures. Forward to Unit Supervisor. Return to Sequence 6. Hold
+check prints until Stress Engineer returns Stress Sketch. Incorporate Stress
+comments.
+
+17
+
+Piping Checker
+
+Checker will enter "Yes" on line for Stress approval, in revision block on isometric,
+if Stress sketch is marked "Resubmit Checked Isometric." If Stress sketch is
+marked "Approved" or line did not require Stress analysis, draw line through
+"Stress."
+Isometric Revisions
+
+18
+
+Revision Checker
+
+Prior to releasing any revised isometric, review Stress sketch and analyze if
+flexibility is affected.
+Note!!! If there is any doubt that the change may affect Stress, the checker must
+consult with the Stress Engineer and the Piping Supervisor.
+
+19
+
+Revision Checker
+
+If flexibility is affected, consult with Stress Engineer and determine if a resubmittal
+is required and if so, revise Stress sketch original to agree with revised isometric,
+sign off in space provided and change revision, place initials on Stress sketch
+original under the appropriate revision space for that line and isometric sheet
+number. Erase Unit Piping Supervisor and Stress Analyst signatures on sketch.
+Forward to Unit Supervisor. Return to Sequence 6. Hold Check print until Stress
+Engineer returns Stress sketch. Incorporate Stress comments.
+Note!!! If the issued isometric had been signed off by Stress, the Stress Engineer
+will review and approve all changes.
+Stress Signatures on Isometrics
+
+20
+
+Unit Piping Supervisor or Note isometric sheets that must be sent to Stress for signature. check Piping
+Piping Assistant
+Isometric Record and checked isometric to determine which isometrics require
+Stress approval signature. Hand carry to Stress Engineer. Wait for approval or
+leave with Stress Engineer. Receive signed isometrics from Stress Engineer.
+
+21
+
+Stress Engineer (if Design In addition to signoff of isometrics, reviews model before and after Client review to
+Model is used on the
+ensure that all lines approved earlier by inspection only are still acceptable.
+Project)
+Unit Supervisor Monitoring
+
+22
+
+Stress Engineering
+Supervisor
+
+Stress Engineer Supervisor must review his work load and take action to meet his
+schedule.
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2220
+Publication Date 11Feb00
+Attachment 01 Page 3 of 3
+
+FLUOR DANIEL
+RESPONSIBILITIES AND ACTIVITY DESCRIPTIONS
+
+Sequence
+
+Responsibility
+
+Activity Description
+
+23
+
+Unit Piping Supervisor /
+Layout Designer
+
+Periodically consult with Stress Engineer to obtain assistance in resolving flexibility
+problems by informal reviews at the model or drawing board to eliminate
+unnecessary paper flow. Jointly, decide on the following:
+a. The addition of any line or lines for formal submittal.
+b. The deletion of any lines or portions of lines which were requested for formal
+submittal.
+Update line list and Flexibility Log as necessary.
+
+24
+
+Unit Piping Supervisor
+
+Periodically review Stress sketch file during checking phase to verify that
+isometrics checkers have entered their initials on the Stress sketch, indicating final
+isometrics agree with the Stress sketch.
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2221
+Publication Date 11Feb00
+Page 1 of 3
+
+FLUOR DANIEL
+STRESS DESIGN - SKETCH INFORMATION
+
+PURPOSE
+This practice establishes guidelines to outline the information furnished by Piping Design,
+Pipe Stress, and Process Engineering to be utilized in the production of Stress Sketches.
+
+SCOPE
+This practice includes the following major sections:
+SYSTEM BOUNDARY
+TITLE BLOCK DATA
+GRAPHIC SECTION
+SPRING HANGERS
+FLARE ISOMETRICS
+REFERENCES
+ATTACHMENTS
+
+APPLICATION
+This practice will be implemented during the Stress Analysis Phase of the contract and will be
+utilized when analysis of a piping system is required. Pipe Stress and Process Engineering
+will use this practice to convey information to Piping Design for use in the development of
+system configuration, process conditions, and pipe supports.
+
+SYSTEM BOUNDARY
+A line or system requiring stress analysis will be submitted from anchor or equipment to other
+anchors or equipment as an isometric sketch or drawing. The original, coinciding with the
+Stress group file copy, will be returned to the responsible Design Supervisor.
+
+TITLE BLOCK DATA
+Data affecting the flexibility and support analysis will be filled in on each Stress Sketch. Data
+that is not self-explanatory will be determined as outlined below.
+Maximum design and operating temperature for applicable conditions such as the
+following:
+- Startup
+- Regeneration
+- Hot and cold branch functions (pump with spares, one operating, one shut down;
+bypasses; systems with swing elbows; and swing reactor system)
+- Shutdown
+- Steam out (defined by Process)
+- Normal flowing conditions
+- Decoking
+- Upset
+
+Piping Engineering
+
+Practice 000 250 2221
+Publication
+Date 11Feb00
+This copy is intended for use solely with
+Piping Design Layout Training.
+Page 2 of 3
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+STRESS DESIGN - SKETCH INFORMATION
+
+Unusual conditions such as lethal or hazardous commodity flowing in the line or ASME
+(American Society of Mechanical Engineers) boiler code requirements. Pipe Stress
+Engineering will provide specific instructions regarding system configuration when
+jacketed pipe is specified or on pharmaceutical projects where stainless steel pipe with
+Tri-Clover connections are specified.
+
+GRAPHIC SECTION
+Line work will be single stroke and may be drawn freehand. Weld dots will be indicated to
+identify FMU (fitting makeup) only. Dimensions will indicate distance from centerline of
+branch or ell to support. Round off dimensions to nearest 6 inches. The following
+information will be included on the sketch:
+Location of proposed support points and type such as the following:
+- Pipe supports
+- Trunnions
+- Spring hangers
+- Pickups
+- Hanger rods
+- Dummy supports
+- Field supports
+- Snubbers
+Location and orientation of proposed or actual control points such as the following:
+- Anchors
+- Equipment
+- Guides
+- Critical clearance
+- Directional anchor
+- Branch points
+- Spring wedges
+- Hold downs
+Foundation settlement
+
+SPRING HANGERS
+The following information should be indicated as an integral part of the Stress Sketch as soon
+as stress information has been established. Resubmit revised sketch to Stress when steel
+information becomes available.
+Location of spring hanger.
+Height of the support point in relation to the centerline of the pipe or to the point on the
+pipe where the spring hanger is attached.
+Type of beam or structure used as supporting point and its orientation.
+
+FLARE ISOMETRICS
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2221
+Publication Date 11Feb00
+Page 3 of 3
+
+FLUOR DANIEL
+STRESS DESIGN - SKETCH INFORMATION
+
+The flare isometric will provide Stress and Process Engineering with adequate information to
+analyze the complete system on a unit-by-unit basis. Refer to Attachment 02 for flare
+isometric example. Flare isometrics will adhere to the following:
+The isometric will be drawn on roll size layout paper.
+The header will be indicated as a complete system through the unit to the interconnecting
+pipeway main header or blowdown drum.
+Two-inch and larger branches will be indicated from the pressure relief valve to the flare
+header.
+The portion upstream of the pressure relief valve will be submitted with the flare
+isometric as a package on the following documents:
+- Stress Engineering: Stress sketches
+- Process Engineering: Stress sketches or isometrics
+
+REFERENCES
+ASME (American Society of Mechanical Engineers)
+Piping Engineering
+Practice 000.250.2220:
+
+Stress Design - Sketch Procedure
+
+Piping Engineering
+Practice 000.250.2250:
+
+Stress Design - Piping Flexibility Log
+
+ATTACHMENTS
+Attachment 01: (11Feb00)
+Stress Sketch Example
+Attachment 02: (11Feb00)
+Flare Isometric Example
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Page 1 of 1
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+PURPOSE
+This practice provides lists defining the properties of pipe for use in design and engineering
+calculations.
+
+SCOPE
+This practice includes information about the following major topics:
+Properties of Pipe by Size and Schedule
+Linear Expansion of Metals
+Modulus of Elasticity of Nonferrous Material
+
+APPLICATION
+These tables should be used for reference to specific factors to be used in design and
+engineering work.
+
+REFERENCES
+Piping Engineering
+Practice 000.250.9821: Table Of Weights / Piping Components
+Piping Engineering
+Practice 000.250.9823:
+
+Coefficient Of Expansion Tables
+
+ATTACHMENTS
+Attachment 01: (18Jan00)
+Properties of Pipe
+Attachment 02: (18Jan00)
+Modulus of Elasticity for Ferrous Material
+Attachment 03: (18Jan00)
+Modulus of Elasticity of Nonferrous Material
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 1 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+Description
+
+Dimension
+
+D
+
+Outside Diameter Of Pipe
+
+Inches
+
+Sch
+
+Pipe Schedule
+
+Non Dimension
+
+t
+
+Wall Thickness
+
+Inches
+
+Inside Diameter Of Pipe
+
+Inches
+
+Fifth power of "d"
+
+Inches To The Fifth Power
+
+d
+d
+
+5
+
+Ao
+
+D Π/12
+
+Outside Pipe Surface
+
+Sq Ft / Ft Length
+
+Ai
+
+d Π/12
+
+Inside Pipe Surface
+
+Sq Ft / Ft Length
+
+Am
+
+2
+
+(d − d )Π/4
+
+Metal Area
+
+Sq Inches
+
+Af
+
+d 2Π/4
+
+Flow Area
+
+Sq Inches
+
+w
+
+3.4Am
+
+Weight Of Pipe
+
+Lbs / Ft (Carbon Steel)
+
+Ww
+
+0.433 Af
+
+Weight Of Water In Pipe
+
+Lbs / Ft
+
+Rg
+
+(I/A)1/2 = (D2 + d 2) ½ / 4
+
+Radius Of Gyrations
+
+Inches
+
+4
+
+Moment Of Inertia
+
+Inches To The Fourth Power
+
+2I/D = 0.0982(d - d )/D
+
+Section Modulus
+
+Inches Cubed
+
+I
+Z
+D
+1/8
+D=0.045
+
+1/4
+D=0.540
+
+3/8
+D=0.675
+
+Sch
+
+2
+
+2
+
+2
+
+4
+
+AmRg = 0.0491 (D - d )
+4
+
+t
+
+d
+
+4
+
+d5
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+10S 0.049
+
+0.307
+
+0.00273 0.106
+
+0.080
+
+0.055
+
+0.074
+
+0.186 0.032
+
+0.1271
+
+0.0009
+
+0.0043
+
+40 STD 40S 0.068
+
+0.269
+
+0.00141 0.106
+
+0.070
+
+0.072
+
+0.057
+
+0.245 0.025
+
+0.1215
+
+0.0011
+
+0.0052
+
+80 XS 80S 0.095
+
+0.215
+
+0.00046 0.106
+
+0.056
+
+0.092
+
+0.036
+
+0.314 0.016
+
+0.1146
+
+0.0012
+
+0.0060
+
+10S 0.065
+
+0.410
+
+0.01159 0.141
+
+0.107
+
+0.097
+
+0.132
+
+0.330 0.057
+
+0.1694
+
+0.0028
+
+0.0103
+
+40 STD 40S 0.088
+
+0.364
+
+0.00639 0.141
+
+0.095
+
+0.125
+
+0.104
+
+0.425 0.045
+
+0.1628
+
+0.0033
+
+0.0123
+
+80 XS 80S 0.119
+
+0.302
+
+0.00251 0.141
+
+0.079
+
+0.157
+
+0.0072
+
+0.535 0.031
+
+0.1547
+
+0.0038
+
+0.0140
+
+10S 0.065
+
+0.545
+
+0.04808 0.177
+
+0.143
+
+0.124
+
+0.233
+
+0.423 0.101
+
+0.2169
+
+0.0059
+
+0.0174
+
+40 STD 40S 0.091
+
+0.493
+
+0.02912 0.177
+
+0.129
+
+0.167
+
+0.191
+
+0.568 0.083
+
+0.2090
+
+0.0073
+
+0.0216
+
+80 XS 80S 0.126
+
+0.423
+
+0.01354 0.177
+
+0.111
+
+0.217
+
+0.140
+
+0.739 0.061
+
+0.1991
+
+0.0086
+
+0.0255
+
+10S 0.083
+
+0.674
+
+0.13909 0.220
+
+1.176
+
+0.197
+
+0.357
+
+0.671 0.154
+
+0.269
+
+0.0143
+
+0.0341
+
+1/2
+
+40 STD 40S 0.109
+
+0.622
+
+0.09310 0.220
+
+0.163
+
+0.250
+
+0.304
+
+0.851 0.132
+
+0.261
+
+0.0171
+
+0.0407
+
+D=0.840
+
+80 XS 80S 0.147
+
+0.546
+
+0.04852 0.220
+
+0.143
+
+0.320
+
+0.234
+
+1.088 0.101
+
+0.250
+
+0.0201
+
+0.0478
+
+160 0.188
+
+0.466
+
+0.02198 0.220
+
+0.122
+
+0.384
+
+0.171
+
+1.304 0.074
+
+0.240
+
+0.0221
+
+0.0527
+
+XXS 0.294
+
+0.252
+
+0.00102 0.220
+
+0.066
+
+0.504
+
+0.050
+
+1.715 0.022
+
+0.219
+
+0.0243
+
+0.0577
+
+5S 0.065
+
+0.920
+
+0.6591
+
+0.275
+
+0.241
+
+0.201
+
+0.664
+
+0.683 0.288
+
+0.349
+
+0.0245
+
+0.0467
+
+10S 0.083
+
+0.884
+
+0.5398
+
+0.275
+
+0.231
+
+0.252
+
+0.614
+
+0.857 0.266
+
+0.343
+
+0.0297
+
+0.0566
+
+3/4
+
+40 STD 40S 0.113
+
+0.824
+
+0.3799
+
+0.275
+
+0.216
+
+0.333
+
+0.533
+
+1.131 0.231
+
+0.334
+
+0.0370
+
+0.0706
+
+D=1.050
+
+80 XS 80S 0.154
+
+0.742
+
+0.2249
+
+0.275
+
+0.194
+
+0.434
+
+0.432
+
+1.474 0.187
+
+0.321
+
+0.0448
+
+0.0853
+
+160 0.219
+
+0.614
+
+0.0873
+
+0.275
+
+0.161
+
+0.570
+
+0.296
+
+1.937 0.128
+
+0.304
+
+0.0527
+
+0.1004
+
+XXS 0.308
+
+0.434
+
+0.0154
+
+0.275
+
+0.114
+
+0.718
+
+0.148
+
+2.441 0.064
+
+0.284
+
+0.0579
+
+0.1104
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 2 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+d
+
+d5
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+5S 0.065
+
+1.185
+
+2.337
+
+0.344
+
+0.310
+
+0.255
+
+10S 0.109
+
+1.097
+
+1.589
+
+0.344
+
+0.287
+
+1
+
+40 STD 40S 0.133
+
+1.049
+
+1.270
+
+0.344
+
+D=1.315
+
+80 XS 80S 0.179
+
+0.957
+
+0.803
+
+0.344
+
+160 0.250
+
+0.815
+
+0.360
+
+XXS 0.358
+
+0.599
+
+D
+
+Sch
+
+t
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+1.103
+
+0.867 0.478
+
+0.443
+
+0.0500
+
+0.7600
+
+0.413
+
+0.945
+
+1.404 0.409
+
+0.428
+
+0.0757
+
+0.1151
+
+0.275
+
+0.494
+
+0.864
+
+1.679 0.374
+
+0.420
+
+0.0874
+
+0.1329
+
+0.250
+
+0.639
+
+0.719
+
+2.172 0.311
+
+0.407
+
+0.1056
+
+0.1606
+
+0.344
+
+0.213
+
+0.836
+
+0.522
+
+2.844 0.226
+
+0.387
+
+0.1252
+
+0.1903
+
+0.077
+
+0.344
+
+0.157
+
+1.076
+
+0.282
+
+3.659 0.122
+
+0.361
+
+0.1405
+
+0.2137
+
+5S 0.065
+
+1.530
+
+8.384
+
+0.435
+
+0.410
+
+0.326
+
+1.839
+
+1.108 0.796
+
+0.564
+
+0.1037
+
+0.1253
+
+10S 0.109
+
+1.442
+
+6.235
+
+0.434
+
+0.378
+
+0.531
+
+1.633
+
+1.805 0.707
+
+0.550
+
+0.1605
+
+0.1934
+
+1-1/4
+
+40 STD 40S 0.140
+
+1.380
+
+5.005
+
+0.434
+
+0.361
+
+0.668
+
+1.496
+
+2.273 0.648
+
+0.540
+
+0.1948
+
+0.2346
+
+D=1.660
+
+80 XS 80S 0.191
+
+1.278
+
+3.409
+
+0.434
+
+0.334
+
+0.881
+
+1.283
+
+2.997 0.555
+
+0.524
+
+0.2418
+
+0.2914
+
+160 0.250
+
+1.160
+
+2.100
+
+0.434
+
+0.304
+
+1.107
+
+1.057
+
+3.765 0.458
+
+0.506
+
+0.2839
+
+0.3421
+
+XXS 0.382
+
+0.896
+
+0.577
+
+0.434
+
+0.234
+
+1.534
+
+0.630
+
+5.215 0.273
+
+0.472
+
+0.3412
+
+0.411
+
+5S 0.065
+
+1.770
+
+17.37
+
+0.497
+
+0.463
+
+0.375
+
+2.461
+
+1.275 1.066
+
+0.649
+
+0.158
+
+0.166
+
+10S 0.109
+
+1.682
+
+13.46
+
+0.497
+
+0.440
+
+0.613
+
+2.222
+
+2.085 0.962
+
+0.634
+
+0.247
+
+0.260
+
+1-1/2
+
+40 STD 40S 0.145
+
+1.610
+
+10.82
+
+0.497
+
+0.421
+
+0.799
+
+2.036
+
+2.718 0.882
+
+0.623
+
+0.310
+
+0.326
+
+D=1.900
+
+80 XS 80S 0.200
+
+1.500
+
+7.59
+
+0.497
+
+0.393
+
+1.068
+
+1.767
+
+3.632 0.765
+
+0.605
+
+0.391
+
+0.412
+
+160 0.281
+
+1.337
+
+4.27
+
+0.497
+
+0.350
+
+1.431
+
+1.404
+
+4.866 0.608
+
+0.581
+
+0.483
+
+0.508
+
+XXS 0.400
+
+1.100
+
+1.61
+
+0.497
+
+0.288
+
+1.885
+
+0.950
+
+6.409 0.411
+
+0.549
+
+0.568
+
+0.598
+
+5S 0.065
+
+2.245
+
+57.03
+
+0.622
+
+0.588
+
+0.472
+
+3.958
+
+1.605 1.714
+
+0.817
+
+0.315
+
+0.265
+
+10S 0.109
+
+2.157
+
+46.69
+
+0.622
+
+0.565
+
+0.776
+
+3.654
+
+2.638 1.582
+
+0.802
+
+0.499
+
+0.420
+
+40 STD 40S 0.154
+
+2.067
+
+37.73
+
+0.622
+
+0.541
+
+1.074
+
+3.356
+
+3.653 1.453
+
+0.787
+
+0.666
+
+0.561
+
+2
+
+0.167
+
+2.041
+
+35.42
+
+0.622
+
+0.534
+
+1.158
+
+3.272
+
+3.938 1.417
+
+0.783
+
+0.710
+
+0.598
+
+D=2.375
+
+0.188
+
+2.000
+
+32.00
+
+0.622
+
+0.524
+
+1.288
+
+3.142
+
+4.381 1.360
+
+0.776
+
+0.777
+
+0.654
+
+80 XS 80S 0.218
+
+1.939
+
+27.41
+
+0.622
+
+0.508
+
+1.477
+
+2.953
+
+5.022 1.278
+
+0.766
+
+0.868
+
+0.731
+
+160 0.344
+
+1.689
+
+13.74
+
+0.622
+
+0.442
+
+2.190
+
+2.240
+
+7.445 0.970
+
+0.728
+
+1.163
+
+0.979
+
+XXS 0.436
+
+1.503
+
+7.67
+
+0.622
+
+0.393
+
+2.656
+
+1.774
+
+9.030 0.768
+
+0.703
+
+1.312
+
+1.104
+
+5S 0.083
+
+2.709
+
+145.9
+
+0.753
+
+0.709
+
+0.728
+
+5.76
+
+2.475 2.496
+
+0.988
+
+0.711
+
+0.495
+
+10S 0.120
+
+2.635
+
+127.0
+
+0.753
+
+0.690
+
+1.039
+
+5.45
+
+3.531 2.361
+
+0.975
+
+0.988
+
+0.687
+
+2-1/2
+
+40 STD 40S 0.203
+
+2.469
+
+91.8
+
+0.753
+
+0.646
+
+1.704
+
+4.79
+
+5.794 2.073
+
+0.947
+
+1.530
+
+1.064
+
+D=2.875
+
+80 XS 80S 0.276
+
+2.323
+
+67.6
+
+0.753
+
+0.608
+
+2.254
+
+4.24
+
+7.662 1.835
+
+0.924
+
+1.925
+
+1.339
+
+160 0.375
+
+2.125
+
+43.3
+
+0.753
+
+0.556
+
+2.945
+
+3.55
+
+10.01
+
+1.536
+
+0.894
+
+2.353
+
+1.637
+
+XXS 0.552
+
+1.771
+
+17.4
+
+0.753
+
+0.464
+
+4.028
+
+2.46
+
+13.70
+
+1.067
+
+0.844
+
+2.872
+
+1.998
+
+5S 0.083
+
+3.334
+
+411.9
+
+0.916
+
+0.873
+
+0.891
+
+8.73
+
+3.03
+
+3.780
+
+1.208
+
+1.300
+
+0.743
+
+10S 0.120
+
+3.260
+
+368.2
+
+0.916
+
+0.853
+
+1.274
+
+8.35
+
+4.33
+
+3.610
+
+1.196
+
+1.822
+
+1.041
+
+3
+
+40 STD 40S 0.216
+
+3.068
+
+271.8
+
+0.916
+
+0.803
+
+2.228
+
+7.39
+
+7.58
+
+3.200
+
+1.164
+
+3.018
+
+1.724
+
+D=3.500
+
+80 XS 80S 0.300
+
+2.900
+
+205.0
+
+0.916
+
+0.759
+
+3.016
+
+6.60
+
+10.25
+
+2.860
+
+1.136
+
+3.900
+
+2.226
+
+160 0.438
+
+2.624
+
+124.0
+
+0.916
+
+0.687
+
+4.213
+
+5.41
+
+14.33
+
+2.340
+
+1.094
+
+5.040
+
+2.879
+
+XXS 0.600
+
+2.300
+
+64.0
+
+0.916
+
+0.602
+
+5.466
+
+4.15
+
+18.58
+
+1.800
+
+1.047
+
+5.990
+
+3.425
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 3 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+D
+
+3-1/2
+D=4.000
+
+d
+
+d5
+
+Ao
+
+Ai
+
+5S 0.083
+
+3.834
+
+828.0
+
+1.047
+
+10S 0.120
+
+3.760
+
+752.0
+
+40 STD 40S 0.226
+
+3.548
+
+80 XS 80S 0.318
+
+3.364
+
+Sch
+
+t
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+1.004
+
+1.021 11.55
+
+3.47
+
+5.000
+
+1.385
+
+1.960
+
+0.979
+
+1.047
+
+0.984
+
+1.463 11.10
+
+4.97
+
+4.810
+
+1.372
+
+2.760
+
+1.378
+
+562.0
+
+1.047
+
+0.929
+
+2.680
+
+9.89
+
+9.11
+
+4.280
+
+1.337
+
+4.790
+
+2.394
+
+431.0
+
+1.047
+
+0.881
+
+3.678
+
+8.89
+
+12.51
+
+3.850
+
+1.307
+
+6.280
+
+3.141
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 4 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+D
+
+4
+D=4.500
+
+5
+D=5.563
+
+D
+
+d
+
+d5
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+5S 0.083
+
+4.334
+
+1529.0
+
+1.178
+
+1.135
+
+1.151
+
+14.75
+
+3.91
+
+6.390
+
+1.562
+
+2.810
+
+1.248
+
+10S 0.120
+
+4.260
+
+1403.0
+
+1.178
+
+1.115
+
+1.651
+
+14.25
+
+5.61
+
+6.170
+
+1.549
+
+3.960
+
+1.762
+
+40 STD 40S 0.237
+
+4.026
+
+1058.0
+
+1.178
+
+1.054
+
+3.170
+
+12.73
+
+10.79
+
+5.510
+
+1.510
+
+7.230
+
+3.220
+
+Special 0.312
+
+3.876
+
+875.0
+
+1.178
+
+1.015
+
+4.100
+
+11.80
+
+13.96
+
+5.110
+
+1.485
+
+9.050
+
+4.020
+
+80 XS 80S 0.337
+
+3.826
+
+820.0
+
+1.178
+
+1.002
+
+4.410
+
+11.50
+
+14.99
+
+4.980
+
+1.477
+
+9.610
+
+4.270
+
+Special 0.375
+
+3.750
+
+742.0
+
+1.178
+
+0.982
+
+4.860
+
+11.04
+
+16.52
+
+4.780
+
+1.404
+
+10.420
+
+4.630
+
+Sch
+
+t
+
+120 0.438
+
+3.624
+
+625.0
+
+1.178
+
+0.949
+
+5.590
+
+10.31
+
+19.00
+
+4.470
+
+1.444
+
+11.660
+
+5.180
+
+Special 0.500
+
+3.500
+
+525.0
+
+1.178
+
+0.916
+
+6.280
+
+9.62
+
+21.36
+
+4.170
+
+1.425
+
+12.770
+
+5.670
+
+160 0.531
+
+3.438
+
+480.0
+
+1.178
+
+0.900
+
+6.620
+
+9.28
+
+22.51
+
+4.020
+
+1.416
+
+13.270
+
+5.900
+
+XXS 0.674
+
+3.152
+
+311.0
+
+1.178
+
+0.825
+
+8.100
+
+7.80
+
+27.54
+
+3.380
+
+1.374
+
+15.290
+
+6.790
+
+5S 0.109
+
+5.345
+
+4363.0
+
+1.456
+
+1.399
+
+1.880
+
+22.43
+
+6.38
+
+9.710
+
+1.928
+
+6.970
+
+2.510
+
+10S 0.134
+
+5.295
+
+4162.0
+
+1.456
+
+1.386
+
+2.290
+
+22.02
+
+7.77
+
+9.530
+
+1.920
+
+8.430
+
+3.030
+
+40 STD 40S 0.258
+
+5.047
+
+3275.0
+
+1.456
+
+1.321
+
+4.300
+
+20.01
+
+14.62
+
+8.660
+
+1.878
+
+15.170
+
+5.450
+
+80 XS 80S 0.375
+
+4.813
+
+2583.0
+
+1.456
+
+1.260
+
+6.110
+
+18.19
+
+20.78
+
+7.880
+
+1.839
+
+30.680
+
+7.430
+
+Special 0.438
+
+4.688
+
+2264.0
+
+1.456
+
+1.227
+
+7.040
+
+17.26
+
+23.95
+
+7.470
+
+1.819
+
+23.310
+
+8.380
+
+120 0.500
+
+4.563
+
+1978.0
+
+1.456
+
+1.194
+
+7.950
+
+16.35
+
+27.04
+
+7.060
+
+1.799
+
+25.740
+
+9.250
+
+160 0.625
+
+4.313
+
+1492.0
+
+1.456
+
+1.129
+
+9.700
+
+14.61
+
+32.97
+
+6.330
+
+1.760
+
+30.030
+
+10.800
+
+XXS 0.750
+
+4.063
+
+1107.0
+
+1.456
+
+1.064
+
+11.34
+
+12.97
+
+38.55
+
+5.610
+
+1.722
+
+33.640
+
+12.100
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+7.58
+
+13.95 2.304
+
+11.84
+
+3.58
+
+Sch
+
+t
+
+d
+
+d5/10 3
+
+5S 0.109
+
+6.407
+
+10.80 1.734
+
+1.677
+
+2.23
+
+32.2
+
+10S 01.34
+
+6.357
+
+10.38 1.734
+
+1.664
+
+2.73
+
+31.7
+
+9.29
+
+13.74 2.295
+
+14.40
+
+4.35
+
+Special 0.250
+
+6.125
+
+8.62 1.734
+
+1.604
+
+5.01
+
+29.5
+
+17.02
+
+12.75 2.256
+
+25.50
+
+7.69
+
+6
+
+40 STD 40S 0.280
+
+6.065
+
+8.21 1.734
+
+1.588
+
+5.58
+
+28.9
+
+18.98
+
+12.51 2.246
+
+28.10
+
+8.50
+
+D=6.625
+
+80 XS 80S 0.432
+
+5.761
+
+6.35 1.734
+
+1.508
+
+8.40
+
+26.1
+
+28.58
+
+11.29 2.195
+
+40.50
+
+12.23
+
+120 0.562
+
+5.501
+
+5.04 1.734
+
+1.440
+
+10.70
+
+23.8
+
+36.40
+
+10.29 2.153
+
+49.60
+
+14.98
+
+160 0.719
+
+5.189
+
+3.76 1.734
+
+1.358
+
+13.32
+
+21.1
+
+45.30
+
+9.16 2.104
+
+59.00
+
+17.81
+
+XXS 0.864
+
+4.897
+
+2.82 1.734
+
+1.282
+
+15.64
+
+18.8
+
+53.17
+
+8.16 2.060
+
+66.30
+
+20.03
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 5 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+D
+
+8
+D=8.625
+
+Sch
+
+t
+
+d
+
+d5/10 3
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+5S 0.109
+
+8.407
+
+42.00 2.258
+
+2.201
+
+2.92
+
+55.5
+
+9.91
+
+24.04 3.010
+
+26.40
+
+6.13
+
+10S 0.148
+
+8.329
+
+40.10 2.258
+
+2.180
+
+3.94
+
+54.5
+
+13.40
+
+23.59 3.000
+
+35.40
+
+8.21
+
+20 0.250
+
+8.125
+
+35.40 2.258
+
+2.127
+
+6.58
+
+51.8
+
+22.37
+
+22.45 2.960
+
+57.70
+
+13.39
+
+30 0.277
+
+8.071
+
+34.20 2.258
+
+2.113
+
+7.26
+
+51.2
+
+24.70
+
+22.15 2.950
+
+63.40
+
+14.69
+
+40 STD 40S 0.322
+
+7.981
+
+32.40 2.258
+
+2.089
+
+8.40
+
+50.0
+
+28.56
+
+21.68 2.940
+
+72.50
+
+16.81
+
+Special 0.375
+
+7.875
+
+30.30 2.258
+
+2.062
+
+9.72
+
+48.7
+
+33.00
+
+21.10 2.920
+
+82.90
+
+19.22
+
+60 0.406
+
+7.813
+
+29.10 2.258
+
+2.045
+
+10.48
+
+47.9
+
+35.60
+
+20.80 2.910
+
+88.80
+
+20.58
+
+80 XS 80S 0.500
+
+7.625
+
+25.80 2.258
+
+1.996
+
+12.76
+
+45.7
+
+43.40
+
+19.80 2.880
+
+105.70
+
+24.52
+
+100 0.594
+
+7.439
+
+22.80 2.258
+
+1.948
+
+14.96
+
+43.5
+
+50.90
+
+18.80 2.850
+
+121.40
+
+28.14
+
+120 0.719
+
+7.189
+
+19.20 2.258
+
+1.882
+
+17.84
+
+40.6
+
+60.60
+
+17.60 2.810
+
+140.60
+
+32.60
+
+140 0.812
+
+7.001
+
+16.80 2.258
+
+1.883
+
+19.93
+
+38.5
+
+67.80
+
+16.70 2.780
+
+153.70
+
+35.63
+
+XXS 0.875
+
+6.875
+
+15.40 2.258
+
+1.800
+
+21.30
+
+37.1
+
+72.40
+
+16.10 2.760
+
+162.00
+
+37.57
+
+160 0.906
+
+6.813
+
+14.70 2.258
+
+1.784
+
+21.97
+
+36.5
+
+74.70
+
+15.80 2.750
+
+165.90
+
+38.48
+
+5S 0.134
+
+10.482
+
+127.00 2.810
+
+2.740
+
+4.47
+
+86.3
+
+15.20
+
+37.40 3.750
+
+63.00
+
+11.72
+
+10S 0.165
+
+10.420
+
+123.00 2.810
+
+2.730
+
+5.49
+
+85.3
+
+18.70
+
+36.90 3.740
+
+76.90
+
+14.30
+
+20 0.250
+
+10.250
+
+113.00 2.810
+
+2.680
+
+8.25
+
+82.5
+
+28.00
+
+35.70 3.710
+
+113.70
+
+21.16
+
+30 0.307
+
+10.136
+
+107.00 2.810
+
+2.650
+
+10.07
+
+80.7
+
+34.20
+
+34.90 3.690
+
+137.50
+
+25.57
+
+10
+
+40 STD 40S 0.365
+
+10.020
+
+101.00 2.810
+
+2.620
+
+11.91
+
+78.9
+
+40.50
+
+34.10 3.670
+
+160.80
+
+29.91
+
+D=10.75
+
+60 XS 80S 0.500
+
+9.750
+
+88.10 2.810
+
+2.550
+
+16.10
+
+74.7
+
+54.70
+
+32.30 3.630
+
+212.00
+
+39.40
+
+80 0.594
+
+9.654
+
+80.00 2.810
+
+2.500
+
+18.92
+
+71.8
+
+64.30
+
+31.10 3.600
+
+244.80
+
+45.50
+
+100 0.719
+
+9.314
+
+70.10 2.810
+
+2.440
+
+22.63
+
+68.1
+
+76.90
+
+29.50 3.560
+
+286.20
+
+53.20
+
+Special 0.750
+
+9.250
+
+67.70 2.810
+
+2.420
+
+23.56
+
+67.2
+
+80.10
+
+29.10 3.550
+
+296.30
+
+55.10
+
+120 0.843
+
+9.064
+
+61.20 2.810
+
+2.370
+
+26.24
+
+64.5
+
+89.20
+
+27.90 3.520
+
+324.30
+
+60.30
+
+140 XXS 1.000
+
+8.750
+
+51.30 2.810
+
+2.290
+
+30.63
+
+60.1
+
+104.1
+
+26.00 3.470
+
+367.90
+
+68.40
+
+160 1.125
+
+8.500
+
+44.40 2.810
+
+2.230
+
+34.02
+
+56.7
+
+115.7
+
+24.60 3.430
+
+399.40
+
+74.30
+
+12
+D=14.00
+
+5S 0.156
+
+12.438
+
+298.00 3.340
+
+3.260
+
+3.17 121.5
+
+21.0
+
+52.60 4.450
+
+122.40
+
+19.20
+
+10S 0.180
+
+12.390
+
+292.00 3.340
+
+3.240
+
+7.11 120.6
+
+24.2
+
+52.20 4.440
+
+140.50
+
+22.00
+
+20 0.250
+
+12.250
+
+276.00 3.340
+
+3.210
+
+9.82 117.9
+
+33.4
+
+51.10 4.420
+
+191.90
+
+301.0
+
+30 0.330
+
+12.090
+
+258.00 3.340
+
+3.170
+
+12.88 114.8
+
+43.8
+
+49.70 4.390
+
+248.50
+
+39.00
+
+STD 40S 0.375
+
+12.000
+
+249.00 3.340
+
+3.140
+
+14.58 113.1
+
+49.6
+
+49.00 4.380
+
+279.00
+
+43.80
+
+40 0.406
+
+11.938
+
+242.00 3.340
+
+3.130
+
+15.74 111.9
+
+53.5
+
+48.50 4.370
+
+300.00
+
+47.10
+
+XS 80S 0.500
+
+11.750
+
+224.00 3.340
+
+3.080
+
+19.24 108.4
+
+65.4
+
+47.00 4.330
+
+362.00
+
+56.70
+
+60 0.562
+
+11.626
+
+212.00 3.340
+
+3.040
+
+21.52 106.2
+
+73.2
+
+46.00 4.310
+
+401.00
+
+62.80
+
+Special 0.625
+
+11.500
+
+201.00 3.340
+
+3.010
+
+23.81 103.9
+
+80.9
+
+45.00 4.290
+
+439.00
+
+68.80
+
+80 0.687
+
+11.376
+
+191.00 3.340
+
+2.980
+
+26.04 101.6
+
+88.5
+
+44.00 4.270
+
+475.00
+
+74.50
+
+100 0.843
+
+11.064
+
+166.00 3.340
+
+2.900
+
+31.53
+
+96.1
+
+107.2
+
+41.60 4.220
+
+562.00
+
+88.10
+
+120 XXS 1.000
+
+10.750
+
+144.00 3.340
+
+2.810
+
+36.91
+
+90.8
+
+125.5
+
+39.30 4.170
+
+642.00
+
+100.70
+
+140 1.125
+
+10.500
+
+128.00 3.340
+
+2.750
+
+41.09
+
+86.6
+
+139.7
+
+37.50 4.130
+
+701.00
+
+109.90
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 6 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+D
+
+Sch
+
+t
+160 1.312
+
+d
+10.126
+
+d5/10 3
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+106.00 3.340
+
+2.650
+
+47.14
+
+80.5
+
+160.3
+
+Ww
+
+Rg
+
+34.90 4.070
+
+I
+
+Z
+
+781.00
+
+122.60
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 7 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+d
+
+d5/10 3
+
+Ao
+
+Ai
+
+5S 0.156
+
+13.688
+
+481
+
+3.67
+
+10S 0.188
+
+13.624
+
+469
+
+10 0.250
+
+13.500
+
+20 0.312
+
+13.375
+
+30 STD 0.375
+14
+D=14.00
+
+D
+
+16
+D=16.00
+
+Sch
+
+t
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+3.58
+
+6.78 147.2
+
+23.1
+
+63.7
+
+4.90
+
+163
+
+23.2
+
+3.67
+
+3.57
+
+8.16 145.8
+
+27.7
+
+63.1
+
+4.88
+
+195
+
+27.8
+
+448
+
+3.67
+
+3.53
+
+10.80 143.1
+
+36.7
+
+62.0
+
+4.86
+
+255
+
+36.5
+
+428
+
+3.67
+
+3.50
+
+13.44 140.5
+
+45.7
+
+60.8
+
+4.84
+
+315
+
+45.0
+
+13.250
+
+408
+
+3.67
+
+3.47
+
+16.05 137.9
+
+54.6
+
+59.7
+
+4.82
+
+373
+
+53.3
+
+40 0.438
+
+13.125
+
+389
+
+3.67
+
+3.44
+
+18.66 135.3
+
+63.4
+
+58.6
+
+4.80
+
+429
+
+61.4
+
+XS 0.500
+
+13.000
+
+371
+
+3.67
+
+3.40
+
+21.21 132.7
+
+72.1
+
+57.5
+
+4.78
+
+484
+
+69.1
+
+60 0.594
+
+12.814
+
+345
+
+3.67
+
+3.35
+
+24.98 129.0
+
+84.9
+
+55.8
+
+4.74
+
+562
+
+80.3
+
+Special 0.625
+
+12.750
+
+337
+
+3.67
+
+3.34
+
+26.26 127.7
+
+89.3
+
+55.3
+
+4.73
+
+589
+
+84.1
+
+80 0.750
+
+12.500
+
+305
+
+3.67
+
+3.27
+
+31.22 122.7
+
+106.1
+
+53.1
+
+4.69
+
+687
+
+98.2
+
+100 0.938
+
+12.125
+
+262
+
+3.67
+
+3.17
+
+38.47 115.5
+
+130.8
+
+50.0
+
+4.63
+
+825
+
+117.9
+
+120 1.094
+
+11.814
+
+230
+
+3.67
+
+3.09
+
+44.32 109.6
+
+150.7
+
+47.5
+
+4.58
+
+930
+
+132.8
+
+140 1.250
+
+11.500
+
+201
+
+3.67
+
+3.01
+
+50.07 103.9
+
+170.2
+
+45.0
+
+4.53
+
+1027
+
+146.8
+
+160 1.406
+
+11.188
+
+175
+
+3.67
+
+2.93
+
+55.63
+
+98.3
+
+189.1
+
+42.6
+
+4.48
+
+1117
+
+159.6
+
+5S 0.165
+
+15.670
+
+945
+
+4.19
+
+4.10
+
+8.21
+
+192.9
+
+27.9
+
+83.5
+
+5.60
+
+257
+
+32.2
+
+10S 0.188
+
+15.624
+
+931
+
+4.19
+
+4.09
+
+9.34
+
+191.7
+
+31.8
+
+83.0
+
+5.59
+
+292
+
+36.5
+
+10 0.250
+
+15.500
+
+895
+
+4.19
+
+4.06
+
+12.37
+
+188.7
+
+42.1
+
+81.7
+
+5.57
+
+384
+
+48.0
+
+20 0.312
+
+15.375
+
+859
+
+4.19
+
+4.02
+
+15.40
+
+185.7
+
+52.4
+
+80.4
+
+5.55
+
+474
+
+59.3
+
+30 STD 0.375
+
+15.250
+
+825
+
+4.19
+
+3.99
+
+18.41
+
+182.7
+
+63.6
+
+79.1
+
+5.53
+
+562
+
+70.3
+
+40 XS 0.500
+
+15.000
+
+759
+
+4.19
+
+3.93
+
+24.35
+
+176.7
+
+38.8
+
+76.5
+
+5.48
+
+732
+
+91.5
+
+60 0.656
+
+14.688
+
+684
+
+4.19
+
+3.85
+
+31.62
+
+169.4
+
+107.5
+
+73.4
+
+5.43
+
+833
+
+116.6
+
+Special 0.750
+
+14.500
+
+641
+
+4.19
+
+3.80
+
+35.90
+
+165.1
+
+127.5
+
+71.5
+
+5.40
+
+1047
+
+130.9
+
+80 0.844
+
+14.314
+
+601
+
+4.19
+
+3.75
+
+40.14
+
+160.9
+
+136.5
+
+69.7
+
+5.37
+
+1157
+
+144.6
+
+100 1.031
+
+13.938
+
+526
+
+4.19
+
+3.65
+
+48.48
+
+152.6
+
+164.8
+
+66.1
+
+5.29
+
+1365
+
+170.6
+
+120 1.219
+
+13.564
+
+459
+
+4.19
+
+3.55
+
+56.56
+
+144.5
+
+192.3
+
+62.6
+
+5.23
+
+1556
+
+194.5
+
+140 1.438
+
+13.124
+
+389
+
+4.19
+
+3.44
+
+65.79
+
+135.3
+
+223.7
+
+58.6
+
+5.17
+
+1761
+
+220.1
+
+160 1.594
+
+12.814
+
+345
+
+4.19
+
+3.35
+
+72.10
+
+129.0
+
+245.1
+
+55.8
+
+5.12
+
+1984
+
+236.7
+
+5S 0.165
+
+17.670
+
+1723
+
+4.71
+
+4.63
+
+9.24
+
+245.2
+
+31.4
+
+106.2
+
+6.31
+
+368
+
+40.9
+
+10S 0.188
+
+17.624
+
+1700
+
+4.71
+
+4.61
+
+10.52
+
+243.9
+
+35.8
+
+105.6
+
+6.30
+
+417
+
+46.4
+
+10 0.250
+
+17.500
+
+1641
+
+4.71
+
+4.58
+
+13.94
+
+240.5
+
+47.4
+
+104.1
+
+6.28
+
+549
+
+61.0
+
+20 0.312
+
+17.375
+
+1584
+
+4.71
+
+4.55
+
+17.36
+
+237.1
+
+59.0
+
+102.7
+
+6.25
+
+679
+
+75.5
+
+ST 0.375
+
+17.250
+
+1527
+
+4.71
+
+4.52
+
+20.76
+
+233.7
+
+70.6
+
+101.2
+
+6.23
+
+807
+
+89.6
+
+30 0.438
+
+17.124
+
+1472
+
+4.71
+
+4.48
+
+24.17
+
+230.3
+
+82.2
+
+99.7
+
+6.21
+
+932
+
+103.6
+
+18
+
+XS 0.500
+
+17.000
+
+1420
+
+4.71
+
+4.45
+
+27.49
+
+227.0
+
+93.5
+
+98.3
+
+6.19
+
+1053
+
+117.0
+
+D=18.00
+
+40 0.562
+
+16.876
+
+1369
+
+4.71
+
+4.42
+
+30.79
+
+223.7
+
+104.7
+
+96.9
+
+6.17
+
+1171
+
+130.2
+
+Special 0.625
+
+16.750
+
+1318
+
+4.71
+
+4.39
+
+34.12
+
+220.4
+
+116.0
+
+95.4
+
+6.15
+
+1289
+
+143.3
+
+60 0.750
+
+16.500
+
+1223
+
+4.71
+
+4.32
+
+40.64
+
+213.8
+
+138.2
+
+92.6
+
+6.10
+
+1515
+
+168.3
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 8 of 13
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+D
+
+Sch
+
+t
+
+d
+
+d5/10 3
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+80 0.938
+
+16.126
+
+1090
+
+4.71
+
+4.22
+
+50.23
+
+204.2
+
+170.8
+
+88.4
+
+6.04
+
+1834
+
+203.8
+
+100 1.156
+
+15.688
+
+950
+
+4.71
+
+4.11
+
+61.17
+
+193.3
+
+208.0
+
+83.7
+
+5.97
+
+2180
+
+242.2
+
+120 1.375
+
+15.250
+
+825
+
+4.71
+
+3.99
+
+71.81
+
+182.7
+
+244.2
+
+79.1
+
+5.90
+
+2498
+
+277.6
+
+140 1.562
+
+14.876
+
+728
+
+4.71
+
+3.89
+
+80.66
+
+173.8
+
+274.3
+
+75.3
+
+5.84
+
+2750
+
+305.5
+
+160 1.781
+
+14.433
+
+627
+
+4.71
+
+3.78
+
+90.75
+
+163.7
+
+308.5
+
+70.9
+
+5.77
+
+3020
+
+335.6
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 9 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+D
+
+Sch
+
+D
+
+d
+
+d5/10 3
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+5S 0.188
+
+19.624
+
+2910
+
+5.24
+
+5.14
+
+11.70
+
+302.5
+
+39.8
+
+131.0
+
+7.00
+
+574
+
+57.4
+
+10S 0.218
+
+19.564
+
+2870
+
+5.24
+
+5.12
+
+13.55
+
+300.6
+
+46.1
+
+130.2
+
+6.99
+
+663
+
+66.3
+
+10 0.250
+
+19.500
+
+2820
+
+5.24
+
+5.11
+
+15.51
+
+298.6
+
+52.7
+
+129.3
+
+6.98
+
+757
+
+75.7
+
+20 STD 0.375
+
+19.250
+
+2640
+
+5.24
+
+5.04
+
+23.12
+
+291.0
+
+78.6
+
+126.0
+
+6.94
+
+1114
+
+111.4
+
+30 XS 0.500
+
+19.000
+
+2480
+
+5.24
+
+4.97
+
+30.60
+
+283.5
+
+104.1
+
+122.8
+
+6.90
+
+1457
+
+145.7
+
+40 0.594
+
+18.814
+
+2360
+
+5.24
+
+4.93
+
+36.20
+
+278.0
+
+122.9
+
+120.4
+
+6.86
+
+1704
+
+170.4
+
+Special 0.625
+
+18.750
+
+2320
+
+5.24
+
+4.91
+
+38.00
+
+276.1
+
+129.3
+
+119.6
+
+6.85
+
+1787
+
+178.7
+
+60 0.812
+
+18.376
+
+2100
+
+5.24
+
+4.81
+
+48.90
+
+265.2
+
+166.4
+
+114.8
+
+6.79
+
+2257
+
+225.7
+
+Special 0.875
+
+18.250
+
+2020
+
+5.24
+
+4.78
+
+52.60
+
+261.6
+
+178.7
+
+113.3
+
+6.77
+
+2409
+
+240.9
+
+80 1.031
+
+17.938
+
+1860
+
+5.24
+
+4.70
+
+61.40
+
+252.7
+
+208.9
+
+109.4
+
+6.72
+
+2772
+
+277.2
+
+100 1.281
+
+17.438
+
+1610
+
+5.24
+
+4.57
+
+75.30
+
+238.8
+
+256.1
+
+103.4
+
+6.63
+
+3316
+
+331.6
+
+120 1.500
+
+17.000
+
+1420
+
+5.24
+
+4.45
+
+87.20
+
+227.0
+
+296.4
+
+98.3
+
+6.56
+
+3755
+
+375.5
+
+140 1.750
+
+16.500
+
+1220
+
+5.24
+
+4.32
+
+100.3
+
+213.8
+
+341.1
+
+92.6
+
+6.48
+
+4217
+
+421.7
+
+160 1.969
+
+16.064
+
+1070
+
+5.24
+
+4.21
+
+111.5
+
+202.7
+
+379.1
+
+87.8
+
+6.41
+
+4586
+
+458.6
+
+20
+D=20.00
+
+t
+
+Sch
+
+d
+
+d5/10 6
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+10 0.250
+
+21.500
+
+4.59
+
+5.76
+
+5.63
+
+17.1
+
+363
+
+58.1
+
+157.2
+
+7.69
+
+1010
+
+91.8
+
+t
+
+10 0.312
+
+21.376
+
+4.46
+
+5.76
+
+5.60
+
+21.5
+
+359
+
+72.3
+
+155.6
+
+7.67
+
+1250
+
+113.7
+
+20 ST 0.375
+
+21.250
+
+4.33
+
+5.76
+
+5.56
+
+25.5
+
+355
+
+86.6
+
+153.6
+
+7.65
+
+1490
+
+135.4
+
+22
+
+30 XS 0.500
+
+21.000
+
+4.08
+
+5.76
+
+5.50
+
+33.8
+
+346
+
+114.8
+
+150.0
+
+7.60
+
+1953
+
+177.5
+
+D=22.00
+
+Special 0.625
+
+20.750
+
+3.85
+
+5.76
+
+5.43
+
+42.0
+
+338
+
+142.7
+
+146.4
+
+7.56
+
+2400
+
+218.2
+
+Special 0.750
+
+20.500
+
+3.62
+
+5.76
+
+5.37
+
+50.1
+
+330
+
+170.2
+
+142.9
+
+7.52
+
+2830
+
+257.3
+
+60 0.875
+
+20.500
+
+3.41
+
+5.76
+
+5.30
+
+58.1
+
+322
+
+197.4
+
+139.5
+
+7.48
+
+3246
+
+295.1
+
+Special 1.000
+
+20.000
+
+3.20
+
+5.76
+
+5.24
+
+66.0
+
+314
+
+224.3
+
+136.0
+
+7.43
+
+3646
+
+331.5
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 10 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+D
+
+24
+D=24.00
+
+d
+
+d5/10 6
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+5S 0.218
+
+23.564
+
+7.26
+
+6.28
+
+6.17
+
+16.3
+
+436
+
+55.4
+
+188.8
+
+8.41
+
+1152
+
+96.0
+
+10 10S 0.250
+
+23.500
+
+7.17
+
+6.28
+
+6.15
+
+18.7
+
+434
+
+63.4
+
+187.8
+
+8.40
+
+1316
+
+109.6
+
+Sch
+
+t
+
+Special 0.312
+
+23.376
+
+6.98
+
+6.28
+
+6.12
+
+23.2
+
+429
+
+78.9
+
+185.8
+
+8.38
+
+1629
+
+135.8
+
+20 STD 0.375
+
+23.250
+
+6.79
+
+6.28
+
+6.09
+
+27.8
+
+425
+
+94.6
+
+183.8
+
+8.35
+
+1943
+
+161.9
+
+Special 0.438
+
+23.125
+
+6.61
+
+6.28
+
+6.05
+
+32.4
+
+420
+
+110.1
+
+181.9
+
+8.33
+
+2249
+
+187.4
+
+XS 0.500
+
+23.000
+
+6.44
+
+6.28
+
+6.02
+
+36.9
+
+415
+
+125.5
+
+179.9
+
+8.31
+
+2250
+
+212.5
+
+30 0.562
+
+22.876
+
+6.26
+
+6.28
+
+5.99
+
+41.4
+
+411
+
+140.7
+
+178.0
+
+8.29
+
+2840
+
+237.0
+
+Special 0.625
+
+22.750
+
+6.09
+
+6.28
+
+5.96
+
+45.9
+
+406
+
+156.0
+
+176.0
+
+8.27
+
+3140
+
+261.0
+
+40 0.688
+
+22.626
+
+5.93
+
+6.28
+
+5.92
+
+50.3
+
+402
+
+171.1
+
+174.1
+
+8.25
+
+3420
+
+285.0
+
+Special 0.750
+
+22.500
+
+5.77
+
+6.28
+
+5.89
+
+54.8
+
+398
+
+186.3
+
+172.2
+
+8.22
+
+3710
+
+309.0
+
+60 0.969
+
+22.064
+
+5.23
+
+6.28
+
+5.78
+
+70.0
+
+382
+
+238.1
+
+165.6
+
+8.15
+
+4653
+
+388.0
+
+Special 1.031
+
+21.938
+
+5.08
+
+6.28
+
+5.74
+
+74.4
+
+378
+
+252.9
+
+163.7
+
+8.13
+
+4920
+
+410.0
+
+80 1.219
+
+21.564
+
+4.66
+
+6.28
+
+5.65
+
+87.2
+
+365
+
+296.4
+
+158.1
+
+8.07
+
+5670
+
+473.0
+
+100 1.531
+
+20.938
+
+4.02
+
+6.28
+
+5.48
+
+108.1
+
+344
+
+367.4
+
+149.1
+
+7.96
+
+6852
+
+571.0
+
+120 1.812
+
+20.376
+
+3.51
+
+6.28
+
+5.33
+
+126.3
+
+326
+
+429.4
+
+141.2
+
+7.87
+
+7824
+
+652.0
+
+140 2.062
+
+19.876
+
+3.50
+
+6.28
+
+5.20
+
+142.1
+
+310
+
+483.2
+
+134.3
+
+7.79
+
+8630
+
+719.0
+
+160 2.344
+
+19.314
+
+2.69
+
+6.28
+
+5.06
+
+159.4
+
+293
+
+542.0
+
+126.9
+
+7.70
+
+9455
+
+788.0
+
+10 0.312
+
+25.376
+
+10.52
+
+6.81
+
+6.64
+
+25.2
+
+506
+
+85.7
+
+219.0
+
+9.08
+
+2078
+
+160.0
+
+STD 0.375
+
+25.250
+
+10.26
+
+6.81
+
+6.61
+
+30.2
+
+501
+
+102.6
+
+216.8
+
+9.06
+
+2479
+
+191.0
+
+Special 0.438
+
+25.124
+
+10.01
+
+6.81
+
+6.56
+
+35.2
+
+496
+
+119.6
+
+214.7
+
+9.04
+
+2874
+
+221.0
+
+20 XS 0.500
+
+25.000
+
+9.77
+
+6.81
+
+6.54
+
+40.1
+
+491
+
+136.2
+
+212.5
+
+9.02
+
+3257
+
+250.0
+
+Special 0.562
+
+24.876
+
+9.53
+
+6.81
+
+6.51
+
+44.9
+
+486
+
+152.7
+
+210.4
+
+9.00
+
+3639
+
+280.0
+
+26
+
+Special 0.625
+
+24.750
+
+9.29
+
+6.81
+
+6.48
+
+49.8
+
+481
+
+169.4
+
+208.3
+
+8.97
+
+4014
+
+309.0
+
+D=26.00
+
+Special 0.656
+
+24.688
+
+9.17
+
+6.81
+
+6.46
+
+52.2
+
+479
+
+177.6
+
+207.3
+
+8.96
+
+4198
+
+323.0
+
+Special 0.750
+
+24.500
+
+8.83
+
+6.81
+
+6.41
+
+59.5
+
+471
+
+202.3
+
+204.1
+
+8.93
+
+4747
+
+365.0
+
+Special 0.812
+
+24.376
+
+8.61
+
+6.81
+
+6.38
+
+64.3
+
+467
+
+218.5
+
+202.1
+
+8.91
+
+5102
+
+393.0
+
+Special 0.875
+
+24.250
+
+8.39
+
+6.81
+
+6.35
+
+69.1
+
+462
+
+234.8
+
+200.0
+
+8.89
+
+5458
+
+420.0
+
+Special 0.938
+
+24.124
+
+8.17
+
+6.81
+
+6.32
+
+73.9
+
+457
+
+251.2
+
+197.9
+
+8.87
+
+5808
+
+447.0
+
+Special 1.000
+
+24.000
+
+7.96
+
+6.81
+
+6.28
+
+78.5
+
+452
+
+267.0
+
+195.9
+
+8.85
+
+6147
+
+473.0
+
+10 0.312
+
+27.376
+
+15.38
+
+7.33
+
+7.17
+
+27.1
+
+589
+
+92.3
+
+254.9
+
+9.79
+
+2602
+
+186.0
+
+28
+D=28.00
+
+ST 0.375
+
+27.250
+
+15.03
+
+7.33
+
+7.13
+
+32.5
+
+583
+
+110.7
+
+252.5
+
+9.77
+
+3106
+
+222.0
+
+Special 0.438
+
+27.124
+
+14.68
+
+7.33
+
+7.10
+
+37.9
+
+578
+
+128.9
+
+250.2
+
+9.75
+
+3603
+
+257.0
+
+20 XS 0.500
+
+27.000
+
+14.35
+
+7.33
+
+7.07
+
+43.2
+
+573
+
+146.9
+
+247.9
+
+9.72
+
+4086
+
+292.0
+
+Special 0.562
+
+26.876
+
+14.02
+
+7.33
+
+7.04
+
+48.4
+
+567
+
+164.7
+
+245.6
+
+9.70
+
+4562
+
+326.0
+
+30 0.625
+
+26.750
+
+13.70
+
+7.33
+
+7.00
+
+53.8
+
+562
+
+182.8
+
+243.3
+
+9.68
+
+5039
+
+360.0
+
+Special 0.656
+
+26.688
+
+13.54
+
+7.33
+
+6.99
+
+56.4
+
+559
+
+191.6
+
+242.2
+
+9.67
+
+5271
+
+377.0
+
+Special 0.750
+
+26.500
+
+13.07
+
+7.33
+
+6.94
+
+64.2
+
+552
+
+218.3
+
+238.8
+
+9.64
+
+5966
+
+426.0
+
+Special 0.812
+
+26.376
+
+12.77
+
+7.33
+
+6.91
+
+69.4
+
+546
+
+235.8
+
+236.6
+
+9.62
+
+6416
+
+458.0
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 11 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+D
+
+d
+
+d5/10 6
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+Special 0.875
+
+26.250
+
+12.46
+
+7.33
+
+6.87
+
+74.6
+
+541
+
+253.5
+
+234.3
+
+9.60
+
+6867
+
+490.0
+
+Special 0.938
+
+26.124
+
+12.17
+
+7.33
+
+6.84
+
+79.7
+
+536
+
+271.1
+
+232.1
+
+9.57
+
+7311
+
+522.0
+
+Special 1.000
+
+26.000
+
+11.88
+
+7.33
+
+6.81
+
+84.8
+
+531
+
+288.4
+
+229.9
+
+9.55
+
+7742
+
+553.0
+
+Sch
+
+t
+
+Piping Engineering
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 12 of 13
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+D
+
+30
+
+d
+
+d5/10 6
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+5S 0.250
+
+29.500
+
+22.3
+
+7.85
+
+7.72
+
+23.4
+
+683
+
+79.4
+
+296.0
+
+10.52
+
+2586
+
+172
+
+10 10S 0.312
+
+29.376
+
+21.9
+
+7.85
+
+7.69
+
+29.1
+
+678
+
+98.9
+
+293.5
+
+10.50
+
+3210
+
+214
+
+Sch
+
+t
+
+ST 0.375
+
+29.250
+
+21.4
+
+7.85
+
+7.66
+
+34.9
+
+672
+
+118.7
+
+291.0
+
+10.48
+
+3833
+
+255
+
+Special 0.438
+
+29.125
+
+21.0
+
+7.85
+
+7.62
+
+40.6
+
+666
+
+138.0
+
+288.4
+
+10.45
+
+4434
+
+296
+
+20 XS 0.500
+
+29.000
+
+20.5
+
+7.85
+
+7.59
+
+46.3
+
+661
+
+157.6
+
+286.0
+
+10.43
+
+5040
+
+336
+
+Special 0.562
+
+28.875
+
+20.1
+
+7.85
+
+7.56
+
+52.0
+
+665
+
+176.8
+
+283.6
+
+10.41
+
+5635
+
+376
+
+30 0.625
+
+28.750
+
+19.6
+
+7.85
+
+7.53
+
+57.7
+
+649
+
+196.1
+
+281.1
+
+10.39
+
+6230
+
+415
+
+Special 0.656
+
+28.688
+
+19.4
+
+7.85
+
+7.51
+
+60.5
+
+646
+
+205.6
+
+279.9
+
+10.38
+
+6514
+
+434
+
+Special 0.750
+
+28.500
+
+18.8
+
+7.85
+
+7.46
+
+68.9
+
+638
+
+234.3
+
+276.2
+
+10.34
+
+7377
+
+492
+
+Special 0.812
+
+28.376
+
+18.4
+
+7.85
+
+7.43
+
+74.5
+
+632
+
+253.2
+
+273.8
+
+10.32
+
+7937
+
+529
+
+Special 0.875
+
+28.250
+
+18.0
+
+7.85
+
+7.40
+
+80.1
+
+627
+
+272.2
+
+271.4
+
+10.30
+
+8499
+
+567
+
+Special 0.938
+
+28.124
+
+17.6
+
+7.85
+
+7.36
+
+85.6
+
+621
+
+291.2
+
+269.0
+
+10.28
+
+9053
+
+604
+
+Special 1.000
+
+28.000
+
+17.2
+
+7.85
+
+7.33
+
+91.1
+
+616
+
+309.8
+
+266.6
+
+10.26
+
+9591
+
+639
+
+10 0.312
+
+31.376
+
+30.4
+
+8.38
+
+8.21
+
+31.1
+
+773
+
+105.6
+
+334.8
+
+11.20
+
+3900
+
+244
+
+STD 0.375
+
+31.250
+
+29.8
+
+8.38
+
+8.18
+
+37.3
+
+767
+
+126.7
+
+332.1
+
+11.18
+
+4660
+
+291
+
+Special 0.438
+
+31.124
+
+29.2
+
+8.38
+
+8.15
+
+43.4
+
+761
+
+147.7
+
+329.4
+
+11.16
+
+5410
+
+338
+
+20 XS 0.500
+
+31.000
+
+28.6
+
+8.38
+
+8.12
+
+49.5
+
+755
+
+168.2
+
+326.8
+
+11.14
+
+6140
+
+384
+
+Special 0.562
+
+30.876
+
+28.1
+
+8.38
+
+8.08
+
+55.5
+
+749
+
+188.7
+
+324.2
+
+11.12
+
+6861
+
+429
+
+32
+
+30 0.625
+
+30.750
+
+27.5
+
+8.38
+
+8.05
+
+61.6
+
+743
+
+209.5
+
+321.6
+
+11.10
+
+7585
+
+474
+
+D=32.00
+
+40 0.688
+
+30.624
+
+26.9
+
+8.38
+
+8.02
+
+67.6
+
+737
+
+230.1
+
+318.9
+
+11.07
+
+8300
+
+518
+
+Special 0.750
+
+30.500
+
+26.4
+
+8.38
+
+7.98
+
+73.6
+
+731
+
+250.3
+
+316.4
+
+11.05
+
+8995
+
+562
+
+Special 0.812
+
+31.376
+
+25.9
+
+8.38
+
+7.95
+
+79.6
+
+725
+
+270.5
+
+313.8
+
+11.03
+
+9682
+
+605
+
+Special 0.875
+
+30.250
+
+25.3
+
+8.38
+
+7.92
+
+85.6
+
+719
+
+290.9
+
+311.2
+
+11.01
+
+10371
+
+648
+
+Special 0.938
+
+30.124
+
+24.8
+
+8.38
+
+7.89
+
+91.5
+
+713
+
+311.2
+
+308.6
+
+10.99
+
+11052
+
+691
+
+Special 1.000
+
+30.000
+
+24.3
+
+8.38
+
+7.85
+
+97.4
+
+707
+
+331.1
+
+306.1
+
+10.97
+
+11714
+
+732
+
+10 0.312
+
+33.376
+
+41.4
+
+8.90
+
+8.74
+
+33.0
+
+875
+
+112.3
+
+378.8
+
+11.91
+
+4686
+
+276
+
+STD 0.375
+
+33.250
+
+40.6
+
+8.90
+
+8.70
+
+39.6
+
+868
+
+134.7
+
+376.0
+
+11.89
+
+5599
+
+329
+
+Special 0.438
+
+33.124
+
+39.9
+
+8.90
+
+8.67
+
+46.2
+
+862
+
+157.0
+
+373.1
+
+11.87
+
+6505
+
+383
+
+20 XS 0.500
+
+33.000
+
+39.1
+
+8.90
+
+8.64
+
+52.6
+
+855
+
+178.9
+
+370.3
+
+11.85
+
+7383
+
+434
+
+Special 0.562
+
+32.876
+
+38.4
+
+8.90
+
+8.61
+
+59.0
+
+849
+
+200.7
+
+367.6
+
+11.82
+
+8256
+
+486
+
+34
+
+30 0.625
+
+32.750
+
+37.7
+
+8.90
+
+8.57
+
+65.5
+
+842
+
+222.8
+
+364.8
+
+11.80
+
+9130
+
+537
+
+D=34.00
+
+40 0.656
+
+32.624
+
+37.0
+
+8.90
+
+8.54
+
+72.0
+
+836
+
+244.8
+
+361.9
+
+11.78
+
+9994
+
+587
+
+Special 0.750
+
+32.500
+
+36.3
+
+8.90
+
+8.51
+
+78.3
+
+830
+
+266.4
+
+359.2
+
+11.76
+
+10835
+
+637
+
+Special 0.812
+
+32.376
+
+35.6
+
+8.90
+
+8.48
+
+84.7
+
+823
+
+287.9
+
+356.5
+
+11.74
+
+11666
+
+686
+
+Special 0.875
+
+32.250
+
+34.9
+
+8.90
+
+8.44
+
+91.1
+
+817
+
+309.6
+
+353.7
+
+11.72
+
+12501
+
+735
+
+Special 0.938
+
+32.124
+
+34.2
+
+8.90
+
+8.41
+
+97.4
+
+810
+
+331.3
+
+350.9
+
+11.69
+
+13326
+
+784
+
+Special 1.000
+
+32.000
+
+33.6
+
+8.90
+
+8.38
+
+103.7
+
+804
+
+352.5
+
+348.2
+
+11.67
+
+14129
+
+831
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 01 - Page 13 of 13
+
+FLUOR DANIEL
+PROPERTIES OF PIPE
+
+D
+
+36
+D=36.00
+
+d
+
+d5/10 6
+
+Ao
+
+Ai
+
+Am
+
+Af
+
+w
+
+Ww
+
+Rg
+
+I
+
+Z
+
+10 0.312
+
+35.376
+
+55.4
+
+9.42
+
+9.26
+
+35.0
+
+983
+
+118.9
+
+425.6
+
+12.62
+
+5571
+
+310
+
+ST 0.375
+
+35.250
+
+54.4
+
+9.42
+
+9.23
+
+42.0
+
+976
+
+142.7
+
+422.6
+
+12.60
+
+6659
+
+370
+
+Special 0.438
+
+35.124
+
+53.5
+
+9.42
+
+9.20
+
+48.9
+
+969
+
+166.4
+
+419.6
+
+12.57
+
+7739
+
+430
+
+20 XS 0.500
+
+35.000
+
+52.5
+
+9.42
+
+9.16
+
+55.8
+
+962
+
+189.6
+
+416.6
+
+12.55
+
+8786
+
+488
+
+Special 0.562
+
+34.876
+
+51.6
+
+9.42
+
+9.13
+
+62.6
+
+955
+
+212.7
+
+413.6
+
+12.53
+
+9827
+
+546
+
+30 0.625
+
+34.750
+
+50.7
+
+9.42
+
+9.10
+
+69.5
+
+948
+
+236.2
+
+410.7
+
+12.51
+
+10871
+
+604
+
+Sch
+
+t
+
+40 0.750
+
+34.500
+
+48.9
+
+9.42
+
+9.03
+
+83.1
+
+935
+
+282.4
+
+404.8
+
+12.46
+
+12909
+
+717
+
+Special 0.812
+
+34.376
+
+48.0
+
+9.42
+
+9.00
+
+89.8
+
+928
+
+305.2
+
+401.9
+
+12.44
+
+13906
+
+772
+
+Special 0.875
+
+34.250
+
+47.1
+
+9.42
+
+8.97
+
+96.6
+
+921
+
+328.9
+
+398.9
+
+12.42
+
+14904
+
+828
+
+Special 0.938
+
+34.124
+
+46.3
+
+9.42
+
+8.93
+
+103.3
+
+915
+
+351.3
+
+396.0
+
+12.40
+
+15893
+
+883
+
+Special 1.000
+
+32.000
+
+45.4
+
+9.42
+
+8.90
+
+110.0
+
+908
+
+373.9
+
+393.1
+
+12.38
+
+16855
+
+936
+
+Special 0.312
+
+41.376
+
+121.3
+
+11.0
+
+10.83
+
+40.9
+
+1345
+
+138.9
+
+582.2
+
+14.74
+
+8879
+
+423
+
+STD 0.375
+
+41.250
+
+119.4
+
+11.0
+
+10.80
+
+49.0
+
+1336
+
+166.7
+
+578.7
+
+14.72
+
+10621
+
+506
+
+Special 0.438
+
+41.124
+
+117.6
+
+11.0
+
+10.77
+
+57.2
+
+1328
+
+194.4
+
+575.1
+
+14.67
+
+12353
+
+588
+
+XS 0.500
+
+41.000
+
+115.9
+
+11.0
+
+10.73
+
+65.2
+
+1320
+
+221.6
+
+571.7
+
+14.67
+
+14037
+
+668
+
+42
+
+Special 0.562
+
+40.876
+
+114.1
+
+11.0
+
+10.70
+
+73.2
+
+1312
+
+248.7
+
+568.2
+
+14.65
+
+15710
+
+748
+
+D=42.00
+
+Special 0.625
+
+40.750
+
+112.4
+
+11.0
+
+10.67
+
+81.2
+
+1304
+
+276.2
+
+564.7
+
+14.64
+
+17393
+
+828
+
+Special 0.750
+
+40.500
+
+109.0
+
+11.0
+
+10.60
+
+97.2
+
+1288
+
+330.5
+
+557.8
+
+14.59
+
+20685
+
+985
+
+Special 0.812
+
+40.376
+
+107.3
+
+11.0
+
+10.57
+
+105.1
+
+1280
+
+357.2
+
+554.4
+
+14.56
+
+22295
+
+1062
+
+Special 0.875
+
+40.250
+
+105.6
+
+11.0
+
+10.54
+
+113.0
+
+1272
+
+384.4
+
+550.9
+
+14.54
+
+23916
+
+1139
+
+Special 0.938
+
+40.124
+
+104.0
+
+11.0
+
+10.50
+
+121.0
+
+1264
+
+411.4
+
+547.5
+
+14.52
+
+25522
+
+1215
+
+Special 1.000
+
+40.000
+
+102.4
+
+11.0
+
+10.47
+
+128.8
+
+1257
+
+437.9
+
+544.1
+
+14.50
+
+27088
+
+1290
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 02 Page 1 of 1
+
+FLUOR DANIEL
+MODULUS OF ELASTICITY FOR FERROUS MATERIAL
+
+E = Modulus Of Elasticity - ksi (multiply tabulated values by 103), For Temp Degrees F
+Material
+
+Temperature - Degrees F
+-325 -200 -100
+
+70
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+800
+
+900 1000 1100 1200 1300 1400 1500
+
+Carbon steels
+with carbon
+content 0.30% 31.4 30.8 30.2 29.5 28.8 28.3 27.7 27.3 26.7 25.5 24.2 22.4 20.4 18.0
+or less
+Carbon steels
+with carbon
+content above
+0.30%
+Carbon-Molly
+steels. Low
+chrome steels
+(2-1/4 Cr thru
+3 Cr)
+Intermediate
+chrome steels
+(5 Cr thru -9
+Cr)
+
+31.2 30.6 30.0 29.3 28.6 28.1 27.5 27.1 26.5 25.3 24.0 22.2 20.2 17.9 15.4
+
+32.6 32.8 31.4 30.6 29.8 29.4 28.8 28.3 27.7 27.1 26.3 25.6 24.6 23.7 22.5 21.1 19.4
+
+32.9 32.3 31.7 30.9 30.1 29.7 29.0 28.6 28.0 27.3 26.1 24.7 22.7 20.4 18.2 15.5 12.7
+
+Austenitic
+steels (TP304, 30.3 29.7 29.0 28.3 27.6 27.0 26.5 25.8 25.3 24.8 24.1 23.5 22.8 22.1 21.2 20.2 19.2 18.1
+310, 316, 321,
+347)
+Straight
+Chromium
+steels (12 Cr,
+17 Cr, 27 Cr)
+Gray Cast Iron
+
+31.2 30.7 30.1 29.2 28.5 27.9 27.3 26.7 26.1 25.6 24.7 22.2 21.5 19.1 16.6
+13.4 13.2 12.9 12.6 12.2 11.7 11.0 10.2
+
+Note!!!
+These data are for information only. Verify suitability of materials for intended service at temperatures shown with
+Metallurgist or Piping Material Engineer.
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 9822
+Publication Date 18Jan00
+Attachment 03 Page 1 of 1
+
+FLUOR DANIEL
+MODULUS OF ELASTICITY FOR NONFERROUS MATERIAL
+
+E = Modulus Of Elasticity - ksi (multiply tabulated values by 103), For Temp Degrees F
+Material
+
+Temperature - Degrees F
+-325 -200 -100
+
+Monel 400
+
+70
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+800
+
+900 1000 1100 1200 1300 1400 1500
+
+27.8 27.3 26.8 26.0 25.4 25.0 24.7 24.3 24.1 23.7 23.1 22.6 22.1 21.7 21.2
+
+Copper - Nickel 23.3 22.9 22.7 22.0 21.5 21.1 20.7 20.2 19.6 18.8
+(70 Cu - 30 Ni)
+Aluminum
+11.1 10.8 10.5 10.0 9.60 9.20
+Alloys (6061 &
+6063)
+Copper
+(99.8% Cu)
+
+16.9 16.6 16.5 16.0 15.6 15.4 15.0 14.7 14.2 13.7
+
+Leaded Tin
+Bronze (88 Cu - 14.8 14.6 14.4 14.0 13.7 13.4 13.2 12.9 12.5 12.0
+6 Sn-1.5 Pb 4.5
+Zn)
+36% Nickel
+19.2 19.5 20.0 20.8 21.5 22.0 22.5 22.6
+Steel (Invar) 36
+Ni
+
+22.6
+
+Note!!!
+These data are for information only. Verify suitability of materials for intended service at temperatures shown with
+Metallurgist or Piping Material Engineer.
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2230
+Publication Date 11Feb00
+Page 1 of 4
+
+FLUOR DANIEL
+STRESS DESIGN - LAYOUT AIDS FOR ROTATING EQUIPMENT
+
+PURPOSE
+This practice is intended as an aid for the Piping Designer in determining the effects of the
+piping's thermal expansion or contraction on equipment nozzles.
+
+SCOPE
+This practice provides a method, which can be used by the Piping Designer, to determine the
+acceptability of pipe routings to rotating equipment. Included in this practice are instructions
+on how to determine the following:
+The location of the rotating equipment's Anchor.
+The allowable loads on the rotating equipment nozzles.
+The loads exerted by the piping on the rotating equipment.
+Methods for adding flexibility if the actual force exerted exceeds the allowable force.
+
+APPLICATION
+During the initial stages of piping layout, the Piping Designer needs to examine the effects that
+the thermal expansion or contraction of a piping system would have on rotating equipment to
+which the given system is located. Optimum equipment location, nozzle orientations, and pipe
+routing can be achieved via the implementation of the techniques outlined in this practice.
+The resulting pipe routing is still subject to the review and approval of the review and
+approval of the assigned Lead Project Stress Engineer. However, based on the Piping
+Designer's correct application of this technical practice, modification to satisfy stress
+requirements should be minimized.
+Note!!! Refer to Attachments 01 through 04, as indicated below, to determine the location of
+equipment Anchors and, therefore, nozzle thermal movements, on various types of
+rotating equipment.
+Pumps, Normal Case
+Refer to Attachment 01, Pumps - Normal Case.
+Pumps, Variation Case
+Refer to Attachment 02, Pumps - Variation Case.
+Turbines, Normal Case
+Refer to Attachment 03, Turbines - Normal Case, Figure 1.
+Turbines, Common
+Variation
+Refer to Attachment 03, Turbines - Common Variation, Figure 2.
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2230
+Publication Date 11Feb00
+Page 2 of 4
+
+FLUOR DANIEL
+STRESS DESIGN - LAYOUT AIDS FOR ROTATING EQUIPMENT
+
+Centrifugal Compressor
+Refer to Attachment 04, Centrifugal Compressor.
+Allowable Loads
+The maximum allowable force on steel equipment nozzle is 200 pounds times the nominal
+nozzle size, but must not exceed 2,000 pounds.
+Examples:
+2-inch, 300 pounds, RF, CS Nozzle, 200 by 2 = 400 pounds
+18-inch, 150 pounds, RF, CS Nozzle, 200 by 18 = 3,600 pounds
+The latter exceeds the limit; therefore, use 2,000 pounds as a limiting force.
+The maximum allowable force on cast iron equipment nozzle is 50 pounds times nominal
+nozzle size, but must not exceed 500 pounds.
+Examples:
+4-inch, 125 pounds, FF, CI Nozzle, 50 by 4 = 200 pounds
+12-inch, 250 pounds, FF, CI Nozzle, 50 by 12 = 600 pounds
+The latter exceeds the limit; therefore, use 500 pounds.
+
+EXAMPLE
+Refer to Attachment 05, How to Determine Pipe Length Required For Flexible Pump Layout.
+Allowable Force On
+Pump Nozzle
+Eight-inch nozzle times 200 lbs / nom. in. = 1,600 pounds maximum force allowed.
+Expansion North-South
+Direction
+The 15'-6" leg is the only run in the North-South direction.
+15'-6" times 0.0362 = 0.5611" expansion.
+Absorbing Legs
+The 2 legs 90 degrees to the 15'-6" leg are the East-West leg (11'-0") plus the vertical leg
+(7'-3").
+Total available bending leg = 11'-0" plus 7'-3" = 18'-3".
+Nomograph Application
+Refer to Attachment 06, Nomograph Application - North-South Expansion.
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2230
+Publication Date 11Feb00
+Page 3 of 4
+
+FLUOR DANIEL
+STRESS DESIGN - LAYOUT AIDS FOR ROTATING EQUIPMENT
+
+Expansion East-West
+Direction
+Assuming that 1 pump is hot and 1 cold, the 11'-0" leg is the only run, expanding in the
+East-West direction.
+11'-0" times 0.362"/14 = 0.3982" expansion
+Absorbing Legs
+The legs 90 degrees to the East-West run are the 2 vertical legs (6'-8" and 7'-3") and the
+North-South leg (15'-6").
+Total Available Bending Leg = (6'-8") + (7'-3") + (15'-6") = 29'-5".
+Nomograph Application
+Refer to Attachment 07, Nomograph Application - East-West Expansion.
+Expansion Vertical
+Direction
+The worst case vertical thermal expansion occurs between the Anchor point at the pump
+assumed hot and the support or Anchor on the vertical vessel. The total vertical leg expanding
+is:
+(1'-4") + (7'-3") + (6'-8") + (2'-9") = 18'-0"
+18'-0" times 0.0362 "/' = 0.6515" expansion
+Absorbing Legs
+The legs 90 degrees to the vertical runs and falling along a direct line from the vessel nozzle
+to the nozzle of the pump assumed hot, are the 11'-0" North-South leg and the 15'-6"
+East-West leg.
+Total Available Bending Leg = (11'-0") + (15'-6") = 26'-6".
+Nomograph Application
+Refer to Attachment 08, Nomograph Application - Vertical Direction, and Attachment 09,
+Nomograph A (For Flexibility Based On Piping Force).
+
+ATTACHMENTS
+Attachment 01: (11Feb00)
+Pumps - Normal Case
+Attachment 02: (11Feb00)
+Pumps - Variation Case
+Attachment 03: (11Feb00)
+Figure 1. Turbines - Normal Case
+Figure 2. Turbines - Common Variation
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2230
+Publication Date 11Feb00
+Page 4 of 4
+
+FLUOR DANIEL
+STRESS DESIGN - LAYOUT AIDS FOR ROTATING EQUIPMENT
+
+Attachment 04: (11Feb00)
+Centrifugal Compressor
+Attachment 05: (11Feb00)
+Example: How To Determine Pipe Length Required For Flexible Pump Layout
+Attachment 06: (11Feb00)
+Nomograph Application - North-South Expansion
+Attachment 07: (11Feb00)
+Nomograph Application - East-West Expansion
+Attachment 08: (11Feb00)
+Nomograph Application - Vertical Direction
+Attachment 09: (11Feb00)
+Nomograph A (For Flexibility Based On Piping Force)
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2230
+Publication Date 11Feb00
+Attachment 06 Page 1 of 1
+
+FLUOR DANIEL
+NOMOGRAPH APPLICATION - NORTH-SOUTH EXPANSION
+
+(Note!!! Refer to circled numbers on Nomograph A - Attachment 09)
+Step 1
+
+On the force scale, locate maximum allowed force on pump nozzle. 1,600 pounds (Point 1).
+
+Step 2
+
+On Total Thermal Expansion scale, locate expansion in inches. 0.5611" (Point 2).
+
+Step 3
+
+Draw a line from Point 1 to Point 2. Where this line crosses the Pivot Line , locate Point 3.
+
+Step 4
+
+On Nominal Pipe Diameter scale, locate line size 12" (Point 4). When the schedule of pipe is other than the standard
+weight, use Pipe Moment of Inertia scale. This locates Point 5 on the Pipe Length scale.
+
+Step 5
+
+Draw a line from Point 3 on the Pivot Line to Point 4 on the Nominal Pipe Diameter scale. This locates Point 5 on
+the Pipe Length scale.
+Read 23'-0" on the Pipe Length scale as the minimum required absorbing pipe length.
+
+Step 6
+
+The available bending leg is 18'-3" (Refer to Page 2) is less than 23'-0". Therefore, a minimum of 5'-0" must be
+added to the vertical or East-West direction to be within the maximum allowable force on the pump nozzle.
+
+Step 7
+
+Since equipment elevations cannot be easily changed (both Process and Structural Engineering must become
+involved), the simplest method for adding the required bending leg is to add East-West bending leg as shown by
+dotted line on Attachment 05.
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2230
+Publication Date 11Feb00
+Attachment 07 Page 1 of 1
+
+FLUOR DANIEL
+NOMOGRAPH APPLICATION - EAST-WEST EXPANSION
+
+(Note!!! Refer to circled numbers on Nomograph A - Attachment 09)
+Step 1
+
+On the force scale, locate maximum allowed force on the pump nozzle - 1,600 pounds (Point 1).
+
+Step 2
+
+On total thermal expansion scale, locate expansion in inches - 0.3982" (Point 6).
+
+Step 3
+
+Draw a line from Point 1 to Point 6. Where this line crosses the pivot line, locate Point 7.
+
+Step 4
+
+On nominal pipe diameter scale, locate line size 12" (Point 4).
+
+Step 5
+
+Draw a line from Point 7 to Point 4. This locates Point 8 on the pipe length scale.
+Note!!! The minimum required absorbing pipe length is 20'-0".
+
+Step 6
+
+The available bending leg is 29'-5" which is greater than the required leg of 20'-0". Therefore, no additional
+flexibility is required to accommodate the East-West expansion.
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2230
+Publication Date 11Feb00
+Attachment 08 Page 1 of 1
+
+FLUOR DANIEL
+NOMOGRAPH APPLICATION - VERTICAL DIRECTION
+
+(Note!!! Refer to circled numbers on Nomograph A - Attachment 09)
+Step 1
+
+On the force scale, locate maximum allowed force on the pump nozzle - 1,600 pounds (Point 1).
+
+Step 2
+
+On the total thermal expansion scale, locate expansion in inches - 0.6516" (Point 9).
+
+Step 3
+
+Draw a line from Point 1 to Point 9. Where this line crosses the pivot line, locate Point 10.
+
+Step 4
+
+On a nominal pipe diameter scale, locate line size 12" (Point 4).
+
+Step 5
+
+Draw a line from Point 10, on the pivot line, to Point 4. This locates Point 11 on the pipe length scale.
+Note!!! The minimum required absorbing pipe length (bending leg) is 24'-0".
+
+Step 6
+
+The available bending leg is 26'-6" that is greater than the required leg of 24'-0".
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2040
+Date 11Feb00
+Page 1 of 5
+
+PLANT ARRANGEMENT - TYPICAL UNIT PLOT ARRANGEMENT
+PURPOSE
+This practice establishes recommended guidelines to assist the Piping Designer for
+development of a unit plot arrangement.
+
+SCOPE
+This practice is arranged in the following major sections:
+•
+
+RESPONSIBILITY
+
+•
+
+ARRANGEMENT OF EQUIPMENT
+
+•
+
+EQUIPMENT AND PIPEWAY CLEARANCES
+
+•
+
+PIPEWAY LAYOUT
+
+•
+
+REFERENCES
+
+•
+
+ATTACHMENTS
+
+APPLICATION
+This practice is to be used as a guideline for the development of the unit Plot Plan.
+
+RESPONSIBILITY
+It is the Lead Piping Supervisor's responsibility to ensure that this guideline is
+followed, along with any specific client requirements.
+
+ARRANGEMENT OF
+EQUIPMENT
+Note!!! The numbers enclosed in parentheses below refer to specific notes in circles
+on Attachments 01, 02, and 03.
+Equipment Structures
+The plant layout of equipment shall utilize common structures for equipment vessels
+and pumps. As a rule single installation of equipment will not require a structure.
+Vertical Vessels
+Vertical vessels (A1) will be on a given centerline established by the largest vessel.
+The shell of the largest vessel will be 2'- 0" from the aisleway reference line.
+Vessels that are considered larger than the average vessel (A1.1) in a unit, will be
+established independently with the shell located 2'- 0" from the aisleway reference
+line.
+Manways in vertical vessels will normally be located on the side of the vessel away
+from the pipe rack. This leaves the pipe rack side clear for pipes going to and from
+the rack. Ladders will be located on either side of the vessel.
+
+/0002502040.doc
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2040
+Date 11Feb00
+Page 2 of 5
+
+PLANT ARRANGEMENT - TYPICAL UNIT PLOT ARRANGEMENT
+Stacking two or more vertical vessels shall be investigated. This investigation shall
+consider the process conditions (commodities, temperatures, pressures), vertical
+height limitations, and piping layout for economic advantages. The stacking of
+vessels requires the acceptance of Process and Vessel engineering.
+Horizontal
+Vessels
+Horizontal vessels (A2) will have the head of the largest vessel line up with the
+aisleway reference line. All other horizontal vessels in the same vicinity will have a
+common tangent line coordinate with the largest vessel. It may be economical for
+adjacent vessels to share a common saddle coordinate to utilize a common
+foundation.
+The minimum elevation from grade is usually shown on the P&ID if it is critical for
+process reasons. If no elevation is expressed and minimum is required, care should
+be taken to allow adequate clearance for piping.
+Exchangers
+Shell and tube heat exchangers (A3.1) will be lined up with their channel heads away
+from the pipeways, so that tube withdrawal is toward the outside of the unit.
+The shell heads will be lined up so that the largest head is in line with the aisleway
+reference line. All other exchangers are to be lined up to have a common channel
+nozzle coordinate. It may be economical for adjacent exchangers to share a common
+saddle coordinate to utilize a common foundation.
+"G"- fin or fin tube type exchangers will be located (A3.2) with the centerline of the
+shell nozzles lined up and located such that all piping remains clear of the aisleway
+reference line.
+Horizontal reboilers (A3.3) will preferably be located next to the equipment they
+service.
+Pumps
+Locate pumps close to the equipment from which they take suction (A4.1). Pumps
+handling flammable products are not to be located under pipeways carrying major
+product lines, air coolers, or vessels. Pumps handling non-flammable products may
+be located under pipeways and air cooled exchangers.
+Pumps located between pipeways and equipment row should be located to avoid
+being hazardous to pipeway and equipment. Industrial Risk Insurers IM.2.5.2 (IRI)
+indicates the minimum distance to be 10 feet clear (A4.2); this distance should be
+verified by the clients requirements.
+Layout pump suctions and discharges on common centerlines, allowing the use of
+common pipe supports (A4.3).
+Aircoolers
+Aircoolers will normally be located above the pipeways (A5).
+/0002502040.doc
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2040
+Date 11Feb00
+Page 3 of 5
+
+PLANT ARRANGEMENT - TYPICAL UNIT PLOT ARRANGEMENT
+Furnaces
+Furnaces should be located upwind or sidewind from the rest of the unit and be
+separated by at least 50 feet.
+Compressors
+Compressors should be located downwind from the rest of the unit, be separated
+from the other equipment, and preferably not located in an enclosed building.
+Valve Manifolds
+Operational valve manifolds, control valve manifolds and utility stations (A6) are to
+be located for operability and access.
+
+EQUIPMENT AND
+PIPEWAY CLEARANCES
+Walkways
+2'- 6" horizontal by 7'- 0" vertical (C1.1).
+Aisleway
+For forklift or similar equipment 6'- 0" horizontal by 8'- 0" vertical. For portable
+manual equipment operation 3'- 0" horizontal by 8'- 0" vertical (C1.2).
+Access Way
+Mobil equipment access (hydraulic cranes, trucks, etc.) 10'- 0" horizontal by 10'- 0"
+vertical (C1.3).
+Flange Clearance
+Between adjacent equipment (example: shell and tube heat exchangers) 1'- 6"
+clearance between flanges if no other access is required (C2).
+Foundation Footings
+Minimum (2'- 6") walkway clearances are required between foundations of any
+equipment and any adjacent equipment or piping.
+Pump Clearances
+For pumps extending under the pipeways, a minimum 10'- 0" (C4.1) clearance is
+required between pumps at opposite sides of the rack. This clearance need not be in
+a straight line down a series of pumps under the rack.
+Minimum clearance of 3'- 0" is required between pumps (C4.2). The 3'- 0"
+dimension is a minimum requirement between adjacent equipment, foundation or
+piping.
+
+/0002502040.doc
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2040
+Date 11Feb00
+Page 4 of 5
+
+PLANT ARRANGEMENT - TYPICAL UNIT PLOT ARRANGEMENT
+
+Exchanger Clearances
+Clear aisleway for exchanger shell head removal will be 6'- 0" when using a fork lift
+truck or portable "A" frame (C4.3).
+3'- 0" clear platform is required when using a mobile crane positioned at channel end
+to remove shell cover (C4.3.1).
+3'- 0" clear when shell cover is fixed and removal is not required.
+Miscellaneous Clearances
+Platforms will be 1'- 0" minimum clear of piping or pipeway (C4.4.1). Allow
+clearance for drain funnels in front of pumps (C4.4.2).
+Road Clearances
+The requirements for drainage ditches or underground pipeway easement may
+increase the dimension from the edge of roads to equipment (C5).
+
+PIPEWAY LAYOUT
+For pipeway support elevations (P1), refer to Practice 000.250.2041: Plant
+Arrangement - Pipeway Layout - Allowable Pipe Spans.
+•
+
+Pipe support spacings shall be maximized using the limits of pipe spans and
+structural integrity.
+
+Location of electrical and instrument raceways will be determined by one of the
+following:
+•
+
+When electrical is located primarily aboveground (P2.1), raceways for electrical
+and instruments will be located as shown (vertical or horizontal, with horizontal
+being the alternate location), taking care not to interfere with pipe turn-outs and
+expansion loops.
+
+•
+
+On projects where electrical is predominately aboveground, the top level of the
+pipeway (P2.2) will be reserved for electrical and instrument raceways.
+
+Drop space (P3), if required, for utility, steam trap, or vent piping drop space width
+is set by minimum clearance for largest line and may be on either or both sides of
+pipeway as required.
+The centerline of line drops (P4) will normally be 2'- 0" from centerline of P.S.
+column or end of cantilever, whichever is applicable. Special consideration needs to
+be given to large diameter lines.
+Width of rack (P5) will be determined by the flow diagram transposition.
+Refer to Practice 000.250.2010: Plant Arrangement - Flow Diagram Transposition
+Instructions.
+For pipe support spacing (P6), refer to Practice 000.250.2041.
+
+/0002502040.doc
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2040
+Date 11Feb00
+Page 5 of 5
+
+PLANT ARRANGEMENT - TYPICAL UNIT PLOT ARRANGEMENT
+
+REFERENCES
+Piping Engineering
+Practice 000.250.2005:
+Piping Engineering
+Practice 000.250.2010:
+Piping Engineering
+Practice 000.250.2015:
+Piping Engineering
+Practice 000.250.2041:
+
+Plant Arrangement - Plot Plan Development
+Instructions
+Plant Arrangement - Flow Diagram Transposition
+Instructions
+Plant Arrangement Location Control Plan
+Instructions
+Plant Arrangement - Pipeway Layout – Allowable
+Pipe Spans
+
+ATTACHMENTS
+Attachment 01: (11Feb00)
+Unit Plot Arrangement
+Attachment 02: (11Feb00)
+Section Thru Pipeway, Standard Arrangements
+Attachment 03: (11Feb00)
+Space Allocation At Support Columns
+
+/0002502040.doc
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2210
+Publication Date 11Feb00
+Page 1 of 4
+
+FLUOR DANIEL
+STRESS DESIGN - RESPONSIBILITIES
+
+PURPOSE
+This practice defines the responsibilities of the Piping Designer for layout, design, and support
+of all piping systems.
+
+SCOPE
+This practice includes the following major sections:
+RESPONSIBILITY
+TERMINOLOGY
+STRESS DESIGN RESPONSIBILITIES
+SUPPORT CRITERIA
+STRESS ENGINEER RESPONSIBILITIES
+REFERENCES
+
+APPLICATION
+This practice applies to all Piping Designers on all Fluor Daniel projects.
+
+RESPONSIBILITY
+Assigned Project Piping Engineer, Lead Design Supervisor, and Lead Stress Engineer are
+responsible for implementing this practice.
+
+TERMINOLOGY
+Layout and Design: The arrangement of all equipment; the routing of the piping that
+connects the equipment; and the conceptual definition of hard supports, pre-engineered,
+and engineered supports.
+Hard Supports: Structural steel or concrete structures provided by the structural
+department.
+Pre-Engineered Supports: Supports such as base supports, rod hangers, shoes, guides,
+and anchors as shown in the detail practices listed in Piping Engineering Practice
+000.250.50201: Piping Support Elements.
+Engineered Supports: Supports such as spring hangers, spring can base supports,
+snubbers, and constant support spring hangers specially designed by Stress Engineer for a
+specific location. Engineered supports will be listed in Piping Engineering Practice 000
+250 50201.
+
+STRESS DESIGN
+RESPONSIBILITIES
+Overview
+Piping Designer will create a sound piping layout and a design that includes the following
+items:
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+Practice 000 250 2210
+Publication Date 11Feb00
+Page 2 of 4
+
+FLUOR DANIEL
+STRESS DESIGN - RESPONSIBILITIES
+
+Accurate interpretation of the P&ID (Piping And Instrumentation Diagram).
+Routing of the line.
+Correct mechanical construction of the piping materials and components.
+An evaluation of the line's workability regarding stress and flexibility.
+Incorporating Stress Engineer's comments and requirements on lines analyzed by stress.
+Proper support of the line during operation, maintenance, and hydrotest.
+Stress Engineer supports Piping Designer's effort. Stress Engineer verifies that the design
+meets applicable criteria; assists in finding solutions to complex problems; helps to optimize
+the original layout of equipment and equipment support requirements; and designs engineered
+items such as spring hangers and flexible joints.
+Policy Statement
+Piping Designer is responsible for the layout, design, and support of all piping systems and is
+also responsible for the following items, obtained by using the applicable sections of the
+Piping technical practices:
+Locating supports, guides, anchors, compressor hold downs, and hanger rods.
+Providing prespring, cold spring, and clearance required for line expansion and additional
+line flexibility.
+Transmitting and handling stress sketches in complete compliance with procedures
+outlined in Piping Engineering Practice 000.250.2220: Stress Design - Sketch Procedure.
+Piping Designer is not responsible for the flexibility calculations nor the validity of such
+calculations made by the Stress Engineer. Designer is responsible for any calculations or
+flexibility analysis that was undertaken and resolved without Stress Supervisor's approval.
+Design Guidelines
+The following guidelines apply to piping design stress considerations:
+Prefer pipe routing, fittings, and loops to provide flexibility. Where space and other
+limitations preclude this approach, request assistance from Project Lead Stress Engineer.
+Design piping to require a minimum number of anchors and guides.
+Keep weight stresses off equipment nozzles using base supports and anchors, or rod
+hangers or structural supports.
+To obtain flexibility that accommodates expansion at towers and drums, arrange the
+equipment locations and nozzle orientations so that the natural run of the piping will
+provide sufficient flexibility.
+Note!!! For hot piping, do not locate nozzles so that the most direct pipe routing is the
+end result.
+When computing stresses and allowing for expansion, use the worst case operating
+conditions (hot line and cold tower, or vice versa, or both: 1 pump hot, 1 pump cold).
+Consider startup conditions when lines and equipment are brought up to operating
+conditions from the cold conditions. Consider flexibility for lines that may be steam or
+hot gas purged and that are subject to regeneration, decoking, and dryout conditions.
+Ensure that outdoor piping in cold climates can contract the required amount.
+Investigate expansion, or the lack of it, in closed relief systems and hot blowdown
+systems.
+Piping Engineering
+
+Practice 000 250 2210
+Publication
+Date 11Feb00
+This copy is intended for use solely with
+Piping Design Layout Training.
+Page 3 of 4
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+STRESS DESIGN - RESPONSIBILITIES
+
+Calculate and correctly apply the thermal expansion of the pipe to select the proper shoe
+length.
+Incorporate rigid supports for exhaust stacks of relief systems venting to the atmosphere.
+To avoid differential expansion problems, investigate equipment tube anchors on vertical
+and horizontal tube heaters.
+Investigate cold piping conditions at bypasses around exchangers.
+Make the branch lines more flexible rather than installing expansion loops or expansion
+joints in the header.
+Investigate spring supporting or Teflon mounting pumps instead of using flexible piping
+on hot pump suction lines.
+Apply cold spring and prespring to piping for the following reasons:
+- Detailed stress analysis requires it.
+- It maintains adequate pipe spacing.
+Take cold spring into account during analysis, and indicate it on drawings to ensure sound
+design.
+To maintain adequate pipe spacing, use cold spring to make clearance corrections in pipe
+groups or racks, thus preventing excessive spreading between lines. Line size has no
+bearing on this. Show cold spring with 50 percent of the total movement at operating
+temperature. There is no minimum limit to the amount of cold spring that may be used;
+however, consider using less than 1 inch cold spring only where dictated by the design
+conditions.
+Use extreme care in selecting the maximum temperature used to calculate expansion. The
+operating temperature often is not the maximum temperature experienced by the process
+lines. For instance, most process lines must be steamed out at higher temperatures than
+those encountered during normal operation.
+Both Piping Designer and Stress Engineer must investigate using engineered expansion
+joints and other flexible connectors to eliminate piping forces on equipment. No
+expansion joint, either metal or elastomer bellows, shall be specified or purchased without
+the approval of Stress Group Supervisor or Project Lead Stress Engineer.
+Guide axial expansion joints on each side and anchor at changes of direction of pipe runs
+to take hydrostatic thrust, friction force, velocity thrust, and the mechanical spring rate of
+the joint.
+
+SUPPORT CRITERIA
+Hard supports and pipe supported by pre-engineered or engineered element are to be designed
+in, not added on.
+During layout, Designer should plan, visualize, define, and communicate to Stress Engineer
+the method of support for all pipe lines.
+Talk early with Structural Engineer to establish concepts and schedule requirements.
+Continue this communication throughout the project, providing detailed definitions of support
+locations, anchor locations, anchor forces, and other data required for support design.
+
+Piping Engineering
+
+Practice 000 250 2210
+Publication
+Date 11Feb00
+This copy is intended for use solely with
+Piping Design Layout Training.
+Page 4 of 4
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+FLUOR DANIEL
+STRESS DESIGN - RESPONSIBILITIES
+
+STRESS ENGINEER
+RESPONSIBILITIES
+Lead Stress Engineer must validate calculations and flexibility analysis provided to Piping
+Designer and must further validate items listed in Policy 1 of the Pipe Stress Analyst Design
+Guide (refer to Piping Engineering Practice 000.250.1201: Piping Stress Analysis - General
+Operating Practices.
+
+REFERENCES
+Piping Engineering
+Practice 000.250.1201:
+
+Piping Stress Analysis - General Operating Practices
+
+Piping Engineering
+Practice 000.250.1202:
+
+Piping Stress Analysis - Limiting Criteria On Equipment
+
+Piping Engineering
+Practice 000.250.2220:
+
+Stress Design - Sketch Procedure
+
+Piping Engineering
+Practice 000.250.50201:
+
+Piping Support Elements
+
+Piping Engineering
+
+This copy is intended for use solely with
+Piping Design Layout Training.
+For other purposes, refer to the original document
+available through Knowledge Online.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1- STRESS TEST
+Page 1 of 6
+15/11/2002 Rev. 0
+
+STRESS TEST
+Name __________________________________
+Instructions: Place all answers in the spaces provided. Use the back of this sheet for calculations.
+Attach additional sheets if required. Please show your work. Minumum passing grade is 71.
+True or False (First Ten Questions)
+(Each Question is Worth 3 Points)
+1. _______
+
+Carbon steel at 500F expands more than stainless steel at 480F.
+
+2 ._______
+
+A spring hanger is placed over a pump to reduce thermal forces.
+
+3. _______
+
+If all other conditions are identical, a 6" SCH 80 piping system will have larger
+forces than a 6" SCH 40 system.
+
+4. _______
+
+Every spool on a job must be sent to Stess.
+
+5. _______
+
+The expansion into a pipeway loop can never exceed 10" or the anchor force
+would be too great.
+
+6. _______
+
+When locating pipeway anchors, balancing friction forces isn't important.
+
+7. _______
+
+All long runs on a pipe rack should have an anchor.
+
+8. _______
+
+If a guide is added to a bending leg, the stress changes.
+
+9. _______
+
+If two anchors are not moved, but the piping between them is rerouted, the free
+expansion in the North-South, East-West, and vertical directions is not changed.
+
+10._______
+
+A given size pipe filled with water spans a greater distance than when filled with
+steam.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1- STRESS TEST
+Page 2 of 6
+15/11/2002 Rev. 0
+11.
+
+Using your judgement, what is the best orientation of a nozzle (8") on vessel B, if a pipeline
+(C.S. @ 350F) is to be routed between vessels A and B. (Ignore vertical movements.)
+
+Give answer as N, S, E or W. DO NOT MAKE A CALCULATION!
+__________ (2 pts)
+
+12.
+
+Find the FREE thermal expansion in inches at Point "A" (Indicate direction).
+
+DISTANCE
+
+DIRECTION
+
+_________ (3 pts)
+
+_________ (1 pt)
+
+_________ (3 pts)
+
+_________ (1 pt)
+
+_________ (3 pts)
+
+_________ (1 pt)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1- STRESS TEST
+Page 3 of 6
+15/11/2002 Rev. 0
+
+13.
+
+Find the vertical thermal expansion at nozzles A,B, C and D. The average temperature of
+each section is given below. Also give the direction of movement. (Up or Down)
+
+DISTANCE:
+
+DIRECTION:
+
+A. ___________ (3 pts)
+
+___________ (1 pt)
+
+B. ___________ (3 pts)
+
+___________ (1 pt)
+
+C. ___________ (3 pts)
+
+___________ (1 pt)
+
+D. ___________ (3 pts)
+
+___________ (1 pt)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1- STRESS TEST
+Page 4 of 6
+15/11/2002 Rev. 0
+
+16A.
+
+Calculate the thermal forces at pump "A" nozzle. Also indicate direction. (Interpolate if the
+bend leg is midway between two values.)
+Pump "A" is operating.
+Pump "B" is spare.
+DIRECTION:
+
+16B.
+
+a. T.F. (Vert.):_______________ (4pts)
+
+___________ (1 pt)
+
+b. T.F. (Horz.):_______________ (4pts)
+
+____________ (1 pt)
+
+If the temperature is increased to 630F and the allowable T.F. on the pump nozzle is 1200lbs
+in any direction.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1- STRESS TEST
+Page 5 of 6
+15/11/2002 Rev. 0
+a. Show ALL calculations on this page (Ignore weight)
+
+(3 pts)
+
+b. Figure: T.F. (Vert.):
+
+_______________
+
+(3 pts)
+
+T.F. (Hor.):
+
+_______________
+
+(3 pts)
+
+c. Will the current configuration work ______________
+
+(1 pt)
+
+d. If not, draw recommended configuration on this page.
+
+(2 pts)
+
+e. Figure:
+
+Rerouted T.F. (Vert.) _______________
+
+(3 pts)
+
+Rerouted T.F. (Hor.) _______________
+
+(3 pts)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1- STRESS TEST
+Page 6 of 6
+15/11/2002 Rev. 0
+17.
+
+PUMP SUCTION LINE
+
+a)
+
+Calculate the thermal forces at the pump.
+
+T.F. (Vert.) :_____________ (3pts)
+T.F. (Horz.) :_____________ (3 pts)
+
+b)
+
+Are the T.F.'s allowable?
+
+__________
+
+(1 pt)
+
+c)
+
+Is the max. stress below 10,000 PSI?
+
+__________
+
+(1 pt)
+
+d)
+
+Considering the load on the pump due to the weight of
+the piping system, and using the "span" chart, is, in your
+opinion, the line self-supporting?
+
+__________
+
+(1 pt)
+
+e)
+
+If the T.F. (vert.) and the force due to weight are to be considered as
+acting simultaneously, what is your recommendation?
+_____________________________________________________________
+______________________________________________________________. (3 pts)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS TEST GRADING MASTER
+Page 1 of 7
+15/11/2002 Rev. 0
+
+PIPE STRESS TEST- GRADING MASTER
+Name ___________________________________
+Instructions: Place all answers in the spaces provided. Use the back of this sheet for calculations.
+Attach additional sheets if required. Please show your work.
+True or False (First Ten Questions)
+(Each Question is Worth 3 Points)
+1. ___F___
+
+Carbon steel at 500F expands more than stainless steel at 480F.
+
+2. ___F___
+
+A spring hanger is placed over a pump to reduce thermal forces.
+
+3. ___T___
+
+If all other conditions are identical, a 6" SCH 80 piping system will have larger
+forces than a 6" SCH 40 system.
+
+4. ___F___
+
+Every spool on a job must be sent to Stess.
+
+5. ___F___
+
+The expansion into a pipeway loop can never exceed 10" or the anchor force
+would be too great.
+
+6. ___F___
+
+When locating pipeway anchors, balancing friction forces isn't important.
+
+7. ___T___
+
+All long runs on a pipe rack should have an anchor.
+
+8. ___T___
+
+If a guide is added to a bending leg, the stress changes.
+
+9. ___T___
+
+If two anchors are not moved, but the piping between them is rerouted, the free
+expansion in the North-South, East-West, and vertical directions is not changed.
+
+10. ___F___ A given size pipe filled with water spans a greater distance than when filled with
+steam.
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS TEST GRADING MASTER
+Page 2 of 7
+15/11/2002 Rev. 0
+
+11.
+
+Using your judgement, what is the best orientation of a nozzle (8") on vessel B, if a pipeline
+(C.S. @ 350F) is to be routed between vessels A and B. (Ignore vertical movements.)
+
+Give answer as N, S, E or W. DO NOT MAKE A CALCULATION!
+__SOUTH__ (2 pts)
+
+12.
+
+Find the FREE thermal expansion in inches at Point "A" (Indicate direction).
+
+DISTANCE
+
+DIRECTION
+
+_3.068"__ (3 pts)
+
+____E____ (1 pt)
+
+_.642"___ (3 pts)
+
+____N____ (1 pt)
+
+_.642"___ (3 pts)
+
+____D____ (1 pt)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS TEST GRADING MASTER
+Page 3 of 7
+15/11/2002 Rev. 0
+13.
+
+Find the vertical thermal expansion at nozzles A,B, C and D. The average temperature of
+each section is given below. Also give the direction of movement. (Up or Down)
+
+DISTANCE:
+
+DIRECTION:
+
+A. __1.742"___ (3 pts)
+
+__UP______ (1 pt)
+
+B. ____.23"___ (3 pts)
+
+__DOWN___ (1 pt)
+
+C. ___1.00"___ (3 pts)
+
+__UP______ (1 pt)
+
+D. __1.455"___ (3 pts)
+
+__UP______ (1 pt)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS TEST GRADING MASTER
+Page 4 of 7
+15/11/2002 Rev. 0
+
+16A.
+
+Calculate the thermal forces at pump "A" nozzle. Also indicate direction. (Interpolate if the
+bend leg is midway between two values.)
+Pump "A" is operating.
+Pump "B" is spare.
+a. T.F. (Vert.):_900# to 1100#_ (4pts)
+
+DIRECTION:
+__DOWN___ (1 pt)
+
+b. T.F. (Horz.):_800# to 1000#_ (4pts)
+
+__WEST____ (1 pt)
+
+CALCULATIONS:
+T.F. (Vert.)
+= .0316 X 11.5 = .36
+Bending Leg = 14'-0"
+T.F.
+= 900# to 1100#
+T.F. (Hor.)
+= = .11
+Bending Leg = 10'-0"
+T.F.
+= 800# to 1000#
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS TEST GRADING MASTER
+Page 5 of 7
+15/11/2002 Rev. 0
+
+16B.
+
+If the temperature is increased to 630F and the allowable T.F. on the pump nozzle is 1200lbs
+in any direction.
+a. Show ALL calculations on this page (Ignore weight)
+(3 pts)
+b. Figure: T.F. (Vert.):
+
+__1500# to 1700#_
+
+(3 pts)
+
+T.F. (Hor.):
+
+__1400# to 1600#_
+
+(3 pts)
+
+c. Will the current configuration work _____NO______
+
+(1 pt)
+
+d. If not, draw recommended configuration on this page.
+
+(2 pts)
+
+e. Figure:
+
+Rerouted T.F. (Vert.) ___600# to 800# _
+
+(3 pts)
+
+Rerouted T.F. (Hor.) __800# to 1000#_
+
+(3 pts)
+
+SKETCH:
+
+CALCULATIONS:
+[With configuration as is (Question 16A)]
+T.F. (Vert.)
+= .0511 X 11.5 = .588
+Bending Leg = 14'-0"
+T.F.
+= 1500# to 1700#
+
+T.F. (Hor.)
+= = .179
+Bending Leg = 10'-0"
+T.F.
+= 1400# to 1600#
+
+[With rerouted configuration (above)]
+T.F. (Vert.)
+= .0511 X 11.5 = .588
+Bending Leg = 18'-0"
+T.F.
+= 600# to 800#
+
+T.F. (Hor.)
+= = .179
+Bending Leg = 12'-0"
+T.F.
+= 800# to 1000#
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS TEST GRADING MASTER
+Page 6 of 7
+15/11/2002 Rev. 0
+
+17.
+
+PUMP SUCTION LINE
+
+a)
+
+Calculate the thermal forces at the pump.
+
+T.F. (Vert.) :_800# to 900#_ (3pts)
+T.F. (Horz.) :_400# to 500#_ (3 pts)
+
+b)
+
+Are the T.F.'s allowable?
+
+__YES____
+
+(1 pt)
+
+c)
+
+Is the max. stress below 10,000 PSI?
+
+__YES____
+
+(1 pt)
+
+d)
+
+Considering the load on the pump due to the weight of
+the piping system, and using the "span" chart, is, in your
+opinion, the line self-supporting?
+
+__YES____
+
+(1 pt)
+
+e)
+
+If the T.F. (vert.) and the force due to weight are to be considered as
+acting simultaneously, what is your recommendation?
+__SPRING HANGER FROM THE BEAM ABOVE THE PUMP.___________
+_____________________________________________________________. (3 pts)
+
+PIPING DESIGN LAYOUT TRAINING
+LESSON 1
+PIPE STRESS TEST GRADING MASTER
+Page 7 of 7
+15/11/2002 Rev. 0
+
+PIPE STRESS TEST
+GRADING MASTER
+Encircle each wrong answer on the students test. Minimum passing grade is 71.
+Total points for Questions 1 through 10 (True / False)
+Points for Question 11
+Total points for Question 12 (6 answers)
+Total points for Question 13 (8 answers)
+Total points for Question 16A (4 answers)
+Total points for Question 16 B (5 answers, sketch
+and calculations)
+Total points for Question 17 (6 answers)
+Grade Average
+GRADE AVG:
+100-96
+EXCELLENT
+95-83
+VERY GOOD
+82-71
+GOOD
+70 and below FAIL
+
+(Correct pts)
+_________
+_________
+_________
+_________
+_________
+
+(Maximum)
+(30 pts)
+(2 pts)
+(12 pts)
+(16 pts)
+(10 pts)
+
+_________
+_________
+
+(18 pts)
+(12 pts)
+
+_________
+
+Total (100 pts)
+
+

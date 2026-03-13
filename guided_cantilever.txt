@@ -1,0 +1,552 @@
+D.l
+
+Guided Cantilever Method
+D.ll Basic Equation
+D.l2 Proportioned Deflection
+D.l3 Use of Basic Equation
+D.l4 Limitations of Guided Cantiliver Method
+D.l5 Example Problems
+
+BASIC EQUATION
+Definition of "Guided Cantilever"
+A beam with one end fixed and the other end held parallel to its
+original position
+
+_j_
+
+d
+
+t
+Maximum moment at either end, M (in-lbf)
+
+M = 6PL
+
+p
+1~--e--·- - L --~·I
+
+Maximum deflection, cr (in)
+
+J.Maximum stress,
+
+144
+
+PL
+
+'3
+
+ET
+
+sb (psi)
+
+Me
+I
+
+MD
+
+Solving for stress in terms of deflection
+
+S b- .o:z.o 8
+
+<:)ED
+
+L-
+
+where
+D
+
+outside diameter of pipe, in
+
+E
+
+pipe material modulus of elasticity at installation
+temperature, psi. The ANSI B31.3 says "Bending and
+torsional stresses shall be computP.d using the asinstalled _!!lOdulus of elasticity • • • ". The terms
+"cold modulus 11 can lead to confusion in cryogenic
+systems.
+
+L
+
+length of pipe being deflected, ft.
+
+PROPORTIONED DEFLECTION
+
+Many times the thermal expansion of one segment of a piping system
+is absorbed by several perpendicular segments. The following example
+shows the deflection of L3 being absorbed by L1 and L2- The amount
+of deflection absorbed by each leg can be found.
+
+Total deflection,
+
+,.,s. ..
+
+A
+
+~'l.
+
+L3
+
+r-
+
+.. 1
+
+T \
+
+I
+
+\
+
+I
+
+\
+
+L,
+
+I
+I
+I
+I
+
+l_
+
+I
+
+I
+
+A
+
+""
+
+144 PLf
+EI
+
++
+
+1
+L:z.
+
+J
+
+144 PL~
+EI
+
+assuming constant pipe cross-sec"tion
+
+cr.
+
+=
+
+D.
+c:f1
+
+""
+
+L 3
+Llj + L3
+1
+2
+
+144PLf /(EI)
+144P /(EI) (L13 + Li)
+L 3
+13
+L1
+
++ L2 3 L1
+
+cf2.
+
+a
+
+L 3
+2
+L13
+
++ L32
+
+L1
+
+If the deflection is shared by N legs, the deflection of the ith leg
+is given by
+3
+
+L -lr
+
+COMBINING STRESSES FOR GUIDED CANTILEVER
+In general, any one section or leg of pipe calculated for stress using
+the~uided Cantilever method will absorb deflection from the two directions
+perpendicular to this section of pipe. These two separate deflections
+will give two separace scress values. These two values of stress, in
+theory, should be combined; but in practi~e do NOT need to be combined.
+Case for not combining
+When using the Basic Method of guided cantilever stress calculation,
+the stresses should not need to be combined. Use only the largest of
+the two stress values to compare with the stress limit (15,000 for most
+cases). The following two points show why.
+1.
+
+When combining bending stresses per B31.3 we use
+
++
+The maximum amount by Which the combined stress can exceed the
+largest component is 41%. This occurs when the two components
+are equal. In most cases there is a significant difference
+between components,and the combined stress will nearly equal
+the .largest component.
+
+2.
+
+(smallest component)
+(largest component)
+
+(combined stress)
+(largest component)
+
+1.0
+0.9
+0.8
+0.7
+0.6
+0.5
+
+1.41
+1.35
+1.28
+1.22
+1.17
+1.12
+
+When a stress limit of 15,000 is used, the maximum amount of
+actual stress could be 21,200 psi. This value is well below
+the code value for allowable stress range for most steels.
+If you are using a steel whose code value of allowable stress
+range is below 21,200, divide the allowable stress range by
+1.41 and use the resulting value in place of 15,000.
+
+If necessary to combine
+When a more accurate value of stress is required, such as when using
+the more sophisticated refinements of the Guided Cantilever method,
+the stresses can be combined using
+
+js~ + 5
+
+2
+
+b2
+
+Combining Stresses for Guided Cantilver (continued)
+sb
+
+- combined bending stress
+
+sbl - first component of bending stress
+Sb2 - second component of bending stress
+
+Limitations of Guided Cantilever Method
+Constant moment of inertia
+a) For each leg
+b) For all legs sharing deflection
+If the legs sharing a deflection
+do not have the same moment of
+inertia, the deflection proportioning
+equation must be altered.
+Between Adjacent Restraints
+The only exception is when any intermediate
+restraints do not restrict the movements being
+considered.
+Assumes Excessive Restraints
+A one way stop is analyzed as an anchor.
+Limited to Relatively Simple Geometries
+Stress due to bending of a leg in two perpendicular
+direction~ can be calculated with the resultant
+stress.
+
+USE OF BASIC EQUATION
+The stress in the ith leg due to a perpendicular deflection is
+
+S
+
+= .0208 cfi ED
+L2
+L
+
+~(in), E (psi), D (in), L (ft)
+
+For the basic method limit Sbi
+to 15,000 psi for steel unless a higher limit is acceptable to the
+PM Principal Engineer.
+for carbon steel pipe installed at 70 deg F
+
+J;,
+
+c.
+
+D
+
+L
+
+If the minimum length of the ith leg is required
+
+for carbon steel installed at 70 deg F with a 15,000 psi stress
+lilliit
+
+Lt. • 6.21
+
+(i:::
+
+If the maximum deflection of the ith leg is required
+
+ED
+for carbon steel installed at 70 deg F with a 15,000 psi stress
+limit
+
+.,..
+d i - .0259 ~
+D
+
+Guidccl Cnnlilcvcr Charl
+
+a,
+
+-
+
+-- -----+:=rs
+
+~----- l
+
+f
+I
+
+Assumed lluwlc or rJt:Oectiun uf ;;ui.Jcd C:llltilcver.
+
+I.
+
+Len,~;tt. of leJ:, ft..
+
+a
+
+l.:lter3l dcfleclion, in.
+
+Vnluc of g used "'" 29 X" 10' psi.
+
+S.c = Code :allowai.Jic !'ln:.'"l' r:w:;c ( 1.:?5S, + 0.2.'iS.\), p:;.i.
+
+10
+
+9
+
+i
+
+...
+5
+
+'l.
+
+,ri
+
+4
+
+\
+
+"i
+
+3
+
+z
+
+L{S;
+103
+
+0.8
+0.7
+
+o.s
+0.!5
+0.4
+
+0.3
+
+0-Z
+
+0
+
+N
+
+...
+
+...
+
+on
+
+IO,._CDO>O
+
+s
+L-v'.).~/10 1 •
+
+/n.•trrrction3: D('tr:rmine \":llue of
+Enter with !his \'aluc of unlinatc sc:~le :\nrl rc:ul o..-er tu line Co; proper
+n<'mir!:d pipr~ ~izc. Hc:~J tlu.m to :ah!'ci~s."l ~calc. Til(• \';llue obtained will he the p<'rmi=-sihle btcral defl<'ction for l.:t;.
+
+This chart neglects CF and S.I.F.
+
+EXAMPLE PBDBLEM USING THE BASIC METHOD
+
+L,.
+
+4" sch 40 pipe
+carbon steel at 4oo0p
+L •
+1
+
+10ft.~
+
+L2 • 10ft •• L3 ~ 5 ft.
+
+L,
+
+find e a .027 in/ft
+D • 4.5 in
+
+calculate .l\x= eL2 = .027 (10) • .27 in.
+Ay= e(L1-LJ)= .027 (10-5) • .135 in.
+Notice that leg Lz is only deflected by the differential expansion between
+L1 and LJTo find the proportional deflection for each leg
+
+J= h. (L3 /Z l?)
+To find the stress in each leg
+
+Sb =
+For the X direction
+Stress member
+
+5.8XJ0s- JD/~
+s
+
+L
+
+10
+5
+
+.11
+
+10
+
+1.0
+
+.24
+
+6264
+
+.03
+
+3132
+
+.135
+
+3524
+
+For the Y direction
+
+Notice that the wall thickness has no part in the calculations.
+wall thickness has a very secondary effect on stress.
+
+In practice
+
+UP
+
+I
+
+u
+OR
+
+IUUEO
+
+FAD
+
+sur> T
+
+I
+
+u
+
+Pullm•n Kellogg
+
+,
+
+,,
+
+/BX/'
+
+RED ,
+
+•
+
+&J. 378'-0
+
+••
+
+>
+
+AEY,
+
+NO
+DR
+
+-1'-
+
+•
+
+>
+
+>
+
+>
+
+•
+
+II
+
+II
+
+:z:
+
+~
+
+u
+ISSUED
+FAD
+
+:z:
+
+u
+
+i'J PullmAn Ktllo;g
+'
+
+SUPT
+
+llMalon ol , . _ , .._.,.,,,..,
+
+FRICTION
+Friction is normal~not considered in the thermal expansion stress
+calculations. The friction force on ~~ial restraints or pipe guides
+due to long· runs of pipe are normally calculated by hand. In most
+thermal stress calcula~ions the effect due to friction is rather
+arbitrary and makes little difference to the accuracy of the calculations.
+The exception to this philosophy is when pipes are connected to
+pieces of sensitive equipment. In these cases the effect due to
+friction can significantly change the results. In general, this
+would include only large compressors and turbines.
+When friction must be considered for lines of 24" pipe size or smaller,
+the effect of friction is considered only to the first support on
+horizontal pipe away from the nozzle. When there are weight supports
+on pipe~hich is not horizontal between the nozzle and the first
+support on horizontal pipe the friction effects on these intermediate
+supports will also be considered. On lines with pipe sizes greater
+than 24" the effect of friction is considered at all weight support
+points and all other restraint points from the nozzle out to a point
+where these effects will no longer influence the nozzle loads.
+The techniques for modelling weight friction are given in section
+V.F.5533. Computer modelling of friction load should not be done
+on guides and stops where hand calcualtion methods can adequately calculate these forces.
+
+

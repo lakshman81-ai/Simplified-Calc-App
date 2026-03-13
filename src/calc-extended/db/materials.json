@@ -1,0 +1,10 @@
+{
+  "A106-B": {
+    "density": 7850,
+    "modulusOfElasticityCold": 203000,
+    "modulusOfElasticityHot": 190000,
+    "allowableStressCold": 137.9,
+    "allowableStressHot": 137.9,
+    "thermalExpansionCoeff": 0.0000117
+  }
+}
