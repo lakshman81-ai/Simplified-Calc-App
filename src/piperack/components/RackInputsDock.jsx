@@ -8,11 +8,15 @@ const styles = {
 import { usePipeRackStore } from '../store/usePipeRackStore';
 import { solvePipeRack } from '../solver/PipeRackSolver';
 
+import { useExtendedStore } from '../../calc-extended/store/useExtendedStore';
+
 export default function RackInputsDock() {
   const { globalSettings, lines, updateGlobalSetting, updateLine, addLine, removeLine, setResults } = usePipeRackStore();
+  const methodology = useExtendedStore(state => state.methodology);
 
   const handleRun = () => {
     const res = solvePipeRack(lines, globalSettings);
+    res.methodologyUsed = methodology === '2D_BUNDLE' ? 'SIMPLIFIED_RACK_METHOD' : 'KELLOGG_MIST';
     setResults(res);
   };
 

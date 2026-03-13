@@ -11,7 +11,10 @@ export default function RackResultsGrid() {
 
   return (
     <div>
-      <div style={styles.header}>Pipe Rack Analysis Data (Kellogg Loop Sizing & Nesting Hierarchy)</div>
+      <div style={styles.header}>
+        Pipe Rack Analysis Data
+        {results && <span style={{ marginLeft: '12px', color: '#10b981', fontSize: '12px' }}>— Method: {results.methodologyUsed}</span>}
+      </div>
 
       {!results && <div style={{color: '#64748b'}}>Awaiting loop calculation...</div>}
 

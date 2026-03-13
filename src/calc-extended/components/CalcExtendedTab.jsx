@@ -22,7 +22,8 @@ const styles = {
     background: '#1e293b',
     borderBottom: '1px solid #334155',
     padding: '0 24px',
-    height: '40px'
+    height: '50px',
+    flexShrink: 0
   },
   subTab: (isActive) => ({
     padding: '0 24px',

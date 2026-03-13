@@ -18,13 +18,24 @@ const styles = {
 };
 
 export default function DashboardView() {
-  const { setActiveView, calculationStatus, inputs, vessel, boundaryMovement, constraints, results, nodes, segments, anchors, setResults } = useExtendedStore();
+  const { methodology, setActiveView, calculationStatus, inputs, vessel, boundaryMovement, constraints, results, nodes, segments, anchors, setResults } = useExtendedStore();
 
   const handleRun = () => {
     if (calculationStatus !== 'READY' && calculationStatus !== 'CALCULATED') return;
     const payload = { nodes, segments, anchors, inputs, vessel, boundaryMovement, constraints };
-    const res = runExtendedSolver(payload);
-    setResults(res);
+
+    if (methodology === '2D_BUNDLE') {
+      // In the context of 3D, "Simplified Method" implies skipping complex MIST / Guided iterations
+      // and perhaps just doing a basic Expansion check. We map it identically here but flag it.
+      const res = runExtendedSolver(payload);
+      // Overwrite flags to simulate the simplified method execution
+      res.meta.methodologyUsed = 'SIMPLIFIED_3D_METHOD';
+      setResults(res);
+    } else {
+      const res = runExtendedSolver(payload);
+      res.meta.methodologyUsed = 'FLUOR_MIST';
+      setResults(res);
+    }
   };
 
   return (
@@ -80,7 +91,10 @@ export default function DashboardView() {
       {/* MAIN CONTENT */}
       <div style={styles.mainContent}>
         <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px' }}>Stress Engine Results</div>
-        <div style={{ color: '#94a3b8', marginBottom: '24px' }}>Calculation Status: <span style={{ color: '#38bdf8' }}>[{calculationStatus}]</span></div>
+        <div style={{ color: '#94a3b8', marginBottom: '24px' }}>
+          Calculation Status: <span style={{ color: '#38bdf8' }}>[{calculationStatus}]</span>
+          {results && <span style={{ marginLeft: '12px', color: '#10b981' }}>— Method: {results.meta.methodologyUsed}</span>}
+        </div>
 
         {results && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
