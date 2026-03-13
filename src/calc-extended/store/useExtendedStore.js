@@ -22,6 +22,16 @@ const initialState = {
     tOperate: 300,
   },
 
+  // Vessel & Nozzle (MIST)
+  vessel: {
+    vesselOD: 47.24, // 1200 mm -> ~47.24 inches
+    vesselThk: 0.787, // 20 mm -> ~0.787 inches
+    nozzleRad: 6.377, // 162 mm -> ~6.377 inches
+    designPress: 435, // 3.0 MPa -> ~435 PSI
+    flangeClass: 300,
+    momentArm: 24, // Assumed distance from centerline (in)
+  },
+
   // Boundary Movement
   boundaryMovement: {
     x: 0,
@@ -31,7 +41,6 @@ const initialState = {
 
   // System Limits
   constraints: {
-    equipmentMaterial: 'Steel',
     maxStress: 20000,
   },
 
@@ -47,6 +56,10 @@ export const useExtendedStore = create((set) => ({
 
   updateInput: (key, value) => set((state) => ({
     inputs: { ...state.inputs, [key]: value }
+  })),
+
+  updateVessel: (key, value) => set((state) => ({
+    vessel: { ...state.vessel, [key]: value }
   })),
 
   updateBoundaryMovement: (key, value) => set((state) => ({

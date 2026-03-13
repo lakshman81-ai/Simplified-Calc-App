@@ -1,6 +1,9 @@
 import expansionCoeffs from '../db/expansion_coefficients.json';
 import modulusElasticity from '../db/modulus_elasticity.json';
 import pipeProps from '../db/pipe_properties.json';
+import flangeRatings from '../db/flange_ratings.json';
+import gasketDims from '../db/gasket_dimensions.json';
+import designStress from '../db/design_stress.json';
 
 // DB Lookups with Interpolation
 const interpolateDB = (data, temp, valueKey) => {
@@ -72,9 +75,26 @@ const parseGeometry = (nodes, segments, anchor1Id, anchor2Id) => {
   };
 };
 
+const getFlangeRating = (flangeClass, temp) => {
+  const group = flangeRatings[0]; // Assuming CS Group 1.1 for now
+  const cl = group.data.find(c => c.class === flangeClass);
+  if (!cl) return 0;
+  return interpolateDB(cl.ratings, temp, 'psi');
+};
+
+const getGasket = (size, flangeClass) => {
+  const g = gasketDims.find(g => g.nominal_size === size && g.class === flangeClass);
+  return g ? g.G_in : size * 1.5; // Fallback
+};
+
+const getDesignStress = (material) => {
+  const s = designStress.find(d => d.material === material);
+  return s ? s.f_psi : 20000;
+};
+
 // Guided Cantilever Approximation Solver
 export const runExtendedSolver = (payload) => {
-  const { nodes, segments, anchors, inputs, boundaryMovement, constraints } = payload;
+  const { nodes, segments, anchors, inputs, vessel, boundaryMovement, constraints } = payload;
   const { material, pipeSize, schedule, tOperate } = inputs;
 
   const { e, E } = getMaterialProps(material, tOperate);
@@ -83,30 +103,61 @@ export const runExtendedSolver = (payload) => {
 
   const { netDiff, bendingLegs, shortDropsIgnored } = parseGeometry(nodes, segments, anchors.anchor1, anchors.anchor2);
 
+  // Phase 1: Global Piping Reactions (Fluor)
   const calcAxis = (axis, net, bendLeg, boundMovement) => {
-    // Delta = (Net Diff * e) + boundary movement offset
     const delta = (Math.abs(net) * e) + (boundMovement || 0);
-
-    // P = 3EIΔ / 144B³
     const force = bendLeg > 0 ? (3 * E * I * delta) / (144 * Math.pow(bendLeg, 3)) : 0;
-
-    // Sb = 3EDΔ / 144B²
     const stress = bendLeg > 0 ? (3 * E * OD * delta) / (144 * Math.pow(bendLeg, 2)) : 0;
+    const maxStress = constraints.maxStress;
+    const status = stress <= maxStress ? 'PASS' : 'FAIL';
 
-    const maxForce = constraints.equipmentMaterial === 'Steel' ? Math.min(200 * pipeSize, 2000) : Math.min(50 * pipeSize, 500);
-    const maxStress = constraints.maxStress; // Default 20000
-
-    const status = (force <= maxForce && stress <= maxStress) ? 'PASS' : 'FAIL';
-
-    return { netDiff: Math.abs(net), bendingLeg: bendLeg, delta, force, stress, maxForce, maxStress, status };
+    return { netDiff: Math.abs(net), bendingLeg: bendLeg, delta, force, stress, maxStress, status };
   };
 
   const xRes = calcAxis('X', netDiff.x, bendingLegs.x, boundaryMovement.x);
   const yRes = calcAxis('Y', netDiff.y, bendingLegs.y, boundaryMovement.y);
   const zRes = calcAxis('Z', netDiff.z, bendingLegs.z, boundaryMovement.z);
 
+  // Phase 2: Global-to-Local Mapping (Bridge)
+  // Assuming X is the Radial axis leaving Anchor 1 for calculation
+  const F_r = xRes.force; // Radial Load
+  const V_l = zRes.force; // Long shear
+  const V_c = yRes.force; // Circ shear
+  const momentArm = vessel.momentArm;
+  const M_l = V_c * momentArm;
+  const M_c = V_l * momentArm;
+
+  // Phase 3: MIST Shell Shakedown Solver
+  const R = vessel.vesselOD / 2;
+  const T = vessel.vesselThk;
+  const r_n = vessel.nozzleRad;
+  const f = getDesignStress(material);
+
+  const K = (Math.pow((r_n * T), 2) * f) / Math.sqrt(R * T);
+
+  const stress_radial = 3.0 * r_n * F_r;
+  const stress_long = 1.5 * M_l;
+  const stress_circ = 1.15 * Math.sqrt(r_n / 10) * M_c;
+
+  const interactionRatio = K > 0 ? (stress_radial + stress_long + stress_circ) / (Math.PI * K) : 999;
+  const mistStatus = interactionRatio <= 1.0 ? 'PASS' : 'FAIL';
+
+  // Phase 4: Koves Flange Leakage Solver
+  const M_E = Math.sqrt(Math.pow(M_l, 2) + Math.pow(M_c, 2));
+  const F_E = F_r;
+  const G = getGasket(pipeSize, vessel.flangeClass);
+  const P_D = vessel.designPress;
+  const P_R = getFlangeRating(vessel.flangeClass, tOperate);
+  const F_M = 1.0; // Assume 1.0 per standard Code Case 2901 simplification unless noted
+
+  const equivalentLoad = (16 * M_E) + (4 * F_E * G);
+  const allowableCapacity = Math.PI * Math.pow(G, 3) * ((P_R - P_D) + (F_M * P_R));
+  const flangeStatus = equivalentLoad <= allowableCapacity ? 'PASS' : 'FAIL';
+
   return {
     axes: { X: xRes, Y: yRes, Z: zRes },
-    meta: { shortDropsIgnored, e, E, I, OD, pipeSize, maxForceEq: constraints.equipmentMaterial }
+    mist: { K, interactionRatio, status: mistStatus },
+    flange: { equivalentLoad, allowableCapacity, status: flangeStatus },
+    meta: { shortDropsIgnored, e, E, I, OD, pipeSize }
   };
 };

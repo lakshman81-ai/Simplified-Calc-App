@@ -49,7 +49,13 @@ const SegmentMesh = ({ start, end, results, heatmapMode }) => {
 
     const res = results.axes[primaryAxis];
     if (res) {
-      const ratio = heatmapMode === 'STRESS' ? (res.stress / res.maxStress) : (res.force / res.maxForce);
+      let ratio = 0;
+      if (heatmapMode === 'STRESS') {
+        ratio = res.stress / res.maxStress;
+      } else if (heatmapMode === 'SHELL' && results.mist) {
+        ratio = results.mist.interactionRatio;
+      }
+
       if (ratio < 0.75) color = '#10b981'; // Green
       else if (ratio < 1.0) color = '#f59e0b'; // Yellow
       else color = '#ef4444'; // Red
@@ -65,7 +71,7 @@ const SegmentMesh = ({ start, end, results, heatmapMode }) => {
 };
 
 export default function Viewport3DView() {
-  const { setActiveView, nodes, segments, anchors, setAnchor, calculationStatus, heatmapMode, setHeatmapMode, inputs, boundaryMovement, constraints, results, setResults } = useExtendedStore();
+  const { setActiveView, nodes, segments, anchors, setAnchor, calculationStatus, heatmapMode, setHeatmapMode, inputs, vessel, boundaryMovement, constraints, results, setResults } = useExtendedStore();
 
   const handleNodeClick = (nodeId) => {
     if (!anchors.anchor1) setAnchor(1, nodeId);
@@ -74,7 +80,7 @@ export default function Viewport3DView() {
 
   const handleRun = () => {
     if (calculationStatus !== 'READY' && calculationStatus !== 'CALCULATED') return;
-    const res = runExtendedSolver({ nodes, segments, anchors, inputs, boundaryMovement, constraints });
+    const res = runExtendedSolver({ nodes, segments, anchors, inputs, vessel, boundaryMovement, constraints });
     setResults(res);
   };
 
@@ -84,7 +90,7 @@ export default function Viewport3DView() {
         <button style={{...styles.btn, background: '#1e293b'}} onClick={() => setActiveView('dashboard')}>← Back to Dashboard</button>
         <div>
           <button style={{...styles.btn, background: heatmapMode === 'STRESS' ? '#3b82f6' : '#1e293b', marginRight: '8px'}} onClick={() => setHeatmapMode('STRESS')}>STRESS HEATMAP</button>
-          <button style={{...styles.btn, background: heatmapMode === 'FORCE' ? '#3b82f6' : '#1e293b'}} onClick={() => setHeatmapMode('FORCE')}>FORCE HEATMAP</button>
+          <button style={{...styles.btn, background: heatmapMode === 'SHELL' ? '#a78bfa' : '#1e293b'}} onClick={() => setHeatmapMode('SHELL')}>SHELL HEATMAP</button>
         </div>
       </div>
 

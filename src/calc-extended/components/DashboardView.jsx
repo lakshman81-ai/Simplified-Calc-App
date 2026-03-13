@@ -18,11 +18,11 @@ const styles = {
 };
 
 export default function DashboardView() {
-  const { setActiveView, calculationStatus, inputs, boundaryMovement, constraints, results, nodes, segments, anchors, setResults } = useExtendedStore();
+  const { setActiveView, calculationStatus, inputs, vessel, boundaryMovement, constraints, results, nodes, segments, anchors, setResults } = useExtendedStore();
 
   const handleRun = () => {
     if (calculationStatus !== 'READY' && calculationStatus !== 'CALCULATED') return;
-    const payload = { nodes, segments, anchors, inputs, boundaryMovement, constraints };
+    const payload = { nodes, segments, anchors, inputs, vessel, boundaryMovement, constraints };
     const res = runExtendedSolver(payload);
     setResults(res);
   };
@@ -47,8 +47,12 @@ export default function DashboardView() {
         </div>
 
         <div style={styles.section}>
-          <div style={styles.header}>System Limits</div>
-          <div style={styles.row}><span>Eq Mat:</span> <select style={styles.input} value={constraints.equipmentMaterial} onChange={e => useExtendedStore.getState().updateConstraint('equipmentMaterial', e.target.value)}><option>Steel</option><option>Cast Iron</option></select></div>
+          <div style={styles.header}>Vessel & Nozzle (MIST)</div>
+          <div style={styles.row}><span>Vessel OD (in):</span> <input type="number" step="0.1" style={styles.input} value={vessel.vesselOD} onChange={e => useExtendedStore.getState().updateVessel('vesselOD', Number(e.target.value))} /></div>
+          <div style={styles.row}><span>Vessel Thk (in):</span> <input type="number" step="0.1" style={styles.input} value={vessel.vesselThk} onChange={e => useExtendedStore.getState().updateVessel('vesselThk', Number(e.target.value))} /></div>
+          <div style={styles.row}><span>Nozzle Rad (in):</span> <input type="number" step="0.1" style={styles.input} value={vessel.nozzleRad} onChange={e => useExtendedStore.getState().updateVessel('nozzleRad', Number(e.target.value))} /></div>
+          <div style={styles.row}><span>Design Prs (PSI):</span> <input type="number" step="1" style={styles.input} value={vessel.designPress} onChange={e => useExtendedStore.getState().updateVessel('designPress', Number(e.target.value))} /></div>
+          <div style={styles.row}><span>Flange Cls (#):</span> <select style={styles.input} value={vessel.flangeClass} onChange={e => useExtendedStore.getState().updateVessel('flangeClass', Number(e.target.value))}><option>150</option><option>300</option><option>600</option></select></div>
         </div>
 
         <div style={styles.section}>
@@ -79,43 +83,35 @@ export default function DashboardView() {
         <div style={{ color: '#94a3b8', marginBottom: '24px' }}>Calculation Status: <span style={{ color: '#38bdf8' }}>[{calculationStatus}]</span></div>
 
         {results && (
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th style={styles.th}>Axis</th>
-                <th style={styles.th}>Net Diff</th>
-                <th style={styles.th}>Bending Leg</th>
-                <th style={styles.th}>Free Exp</th>
-                <th style={styles.th}>Therm Force</th>
-                <th style={styles.th}>Bend Stress</th>
-                <th style={styles.th}>STATUS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {['X', 'Y', 'Z'].map(axis => {
-                const row = results.axes[axis];
-                return (
-                  <tr key={axis}>
-                    <td style={styles.td}>{axis}-Ax</td>
-                    <td style={styles.td}>{row.netDiff.toFixed(1)} ft</td>
-                    <td style={styles.td}>{row.bendingLeg.toFixed(1)} ft</td>
-                    <td style={styles.td}>{row.delta.toFixed(3)}"</td>
-                    <td style={styles.td}>{row.force.toFixed(0)} lbs</td>
-                    <td style={styles.td}>{row.stress.toFixed(0)} PSI</td>
-                    <td style={styles.td}>
-                      <span style={styles.statusBadge(row.status === 'PASS')}>{row.status}</span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ background: '#0f172a', padding: '16px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#38bdf8', marginBottom: '8px' }}>1. PIPING STRESS (Fluor Guided Cantilever)</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', fontSize: '14px' }}>
+                <div>Max Pipe Stress: <span style={{ color: '#e2e8f0' }}>{Math.max(results.axes.X.stress, results.axes.Y.stress, results.axes.Z.stress).toFixed(0)} PSI</span></div>
+                <div>Limit: <span style={{ color: '#94a3b8' }}>20,000 PSI</span></div>
+                <div>STATUS: <span style={styles.statusBadge(Math.max(results.axes.X.stress, results.axes.Y.stress, results.axes.Z.stress) <= 20000)}>
+                  {Math.max(results.axes.X.stress, results.axes.Y.stress, results.axes.Z.stress) <= 20000 ? 'PASS' : 'FAIL'}
+                </span></div>
+              </div>
+            </div>
 
-        {results && (
-          <div style={{ marginTop: '24px', color: '#94a3b8', fontSize: '12px' }}>
-            {"> "} {nodes.length} nodes, {segments.length} elements detected.<br/>
-            {"> "} {results.meta.shortDropsIgnored} short vertical drops (&lt; 3ft) ignored for flexibility.
+            <div style={{ background: '#0f172a', padding: '16px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#a78bfa', marginBottom: '8px' }}>2. VESSEL SHELL LOAD (MIST / Yardstick Method)</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', fontSize: '14px' }}>
+                <div>Moment-Factor K: <span style={{ color: '#e2e8f0' }}>{results.mist.K.toFixed(0)}</span></div>
+                <div>Interaction Ratio: <span style={{ color: '#e2e8f0' }}>{results.mist.interactionRatio.toFixed(3)}</span></div>
+                <div>STATUS: <span style={styles.statusBadge(results.mist.status === 'PASS')}>{results.mist.status}</span></div>
+              </div>
+            </div>
+
+            <div style={{ background: '#0f172a', padding: '16px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#f59e0b', marginBottom: '8px' }}>3. FLANGE LEAKAGE (Modified Kellogg Equivalent Pressure)</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', fontSize: '14px' }}>
+                <div>Equivalent Load: <span style={{ color: '#e2e8f0' }}>{results.flange.equivalentLoad.toExponential(2)}</span></div>
+                <div>Allow Capacity: <span style={{ color: '#94a3b8' }}>{results.flange.allowableCapacity.toExponential(2)}</span></div>
+                <div>STATUS: <span style={styles.statusBadge(results.flange.status === 'PASS')}>{results.flange.status}</span></div>
+              </div>
+            </div>
           </div>
         )}
       </div>

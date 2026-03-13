@@ -5,7 +5,15 @@ export const L_Bend_GM = {
     schedule: "40",
     tOperate: 300
   },
-  constraints: { equipmentMaterial: "Steel", maxStress: 20000 },
+  vessel: {
+    vesselOD: 47.24,
+    vesselThk: 0.787,
+    nozzleRad: 6.377,
+    designPress: 435,
+    flangeClass: 300,
+    momentArm: 24,
+  },
+  constraints: { maxStress: 20000 },
   boundaryMovement: { x: 0, y: 0, z: 0 },
   nodes: [
     { id: "n1", x: 0, y: 0, z: 0 },
@@ -26,7 +34,15 @@ export const MultiPlane_10Leg_GM = {
     schedule: "40",
     tOperate: 300
   },
-  constraints: { equipmentMaterial: "Steel", maxStress: 20000 },
+  vessel: {
+    vesselOD: 47.24,
+    vesselThk: 0.787,
+    nozzleRad: 6.377,
+    designPress: 435,
+    flangeClass: 300,
+    momentArm: 24,
+  },
+  constraints: { maxStress: 20000 },
   boundaryMovement: { x: 0, y: 0, z: 0 },
   nodes: [
     { id: "n1", x: 0, y: 0, z: 0 },
