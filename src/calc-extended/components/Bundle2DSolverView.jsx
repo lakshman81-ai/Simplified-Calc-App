@@ -16,18 +16,18 @@ const Schematic2D = ({ shape, inputs }) => {
 
   if (shape === 'L-Shape') {
     return (
-      <svg width="200" height="200" viewBox="0 0 100 100" stroke={c} strokeWidth="2" fill="none">
+      <svg width="200" height="200" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
         <path d="M 20,80 L 20,20 L 80,20" />
         <circle cx="20" cy="80" r="4" fill="#ef4444" stroke="none" /> {/* Anchor */}
         <circle cx="80" cy="20" r="4" fill="#f59e0b" stroke="none" /> {/* Anchor */}
         <text x="50" y="15" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="middle">Vx ({inputs.Vx}')</text>
-        <text x="10" y="50" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="end">Vy ({inputs.Vy}')</text>
+        <text x="15" y="50" fill="#94a3b8" fontSize="8" stroke="none" textAnchor="end">Vy ({inputs.Vy}')</text>
       </svg>
     );
   }
   if (shape === 'Z-Shape') {
     return (
-      <svg width="200" height="200" viewBox="0 0 100 100" stroke={c} strokeWidth="2" fill="none">
+      <svg width="200" height="200" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
         <path d="M 10,80 L 50,80 L 50,20 L 90,20" />
         <circle cx="10" cy="80" r="4" fill="#ef4444" stroke="none" />
         <circle cx="90" cy="20" r="4" fill="#f59e0b" stroke="none" />
@@ -39,7 +39,7 @@ const Schematic2D = ({ shape, inputs }) => {
   }
   if (shape === 'U-Loop') {
     return (
-      <svg width="200" height="200" viewBox="0 0 100 100" stroke={c} strokeWidth="2" fill="none">
+      <svg width="200" height="200" viewBox="-10 0 110 100" stroke={c} strokeWidth="2" fill="none" style={{overflow: 'visible'}}>
         <path d="M 10,80 L 30,80 L 30,20 L 70,20 L 70,80 L 90,80" />
         <circle cx="10" cy="80" r="4" fill="#ef4444" stroke="none" />
         <circle cx="90" cy="80" r="4" fill="#f59e0b" stroke="none" />
@@ -110,28 +110,24 @@ export default function Bundle2DSolverView() {
       anchors.anchor2 = 'n6';
     }
 
-    // Mock an empty vessel so it skips MIST
+    // Mock an empty vessel so it skips MIST. Pass down methodology to trigger friction logic.
     const payload = {
       nodes, segments, anchors, inputs: globalInputs, boundaryMovement: {x:0, y:0, z:0},
-      constraints: { maxStress: 20000 }, vessel: { vesselOD: 0, vesselThk: 0, nozzleRad: 0, designPress: 0, flangeClass: 150, momentArm: 0 }
+      constraints: { maxStress: 20000 }, vessel: { vesselOD: 0, vesselThk: 0, nozzleRad: 0, designPress: 0, flangeClass: 150, momentArm: 0 },
+      methodology
     };
 
-    // In 2D Bundle methodology mode, we could theoretically apply alternative logic.
-    // But since the Prompt specifically dictates "Fluor Guided Cantilever Formulas for Basic Profiles" for this 2D solver,
-    // we use the mathematically perfect ExtendedSolver engine and let its 3D vector math evaluate the 2D plane identically.
+    // Evaluate using the core mathematical engine
     const res = runExtendedSolver(payload);
+
+    // Tag the result with the active methodology so the UI can reflect the user's choice
+    res.meta.methodologyUsed = methodology === '2D_BUNDLE' ? 'SIMPLIFIED_2D_METHOD' : 'FLUOR_GUIDED_CANTILEVER';
+
     setResults(res);
   };
 
   return (
     <div style={styles.container}>
-      {methodology === 'FLUOR' ? (
-        <div style={styles.overlay}>
-          <span style={{ fontSize: 32 }}>⚠️</span>
-          <span>Methodology is set to <strong>FLUOR (3D Solver)</strong>.</span>
-          <span style={{ color: '#475569', fontSize: 12 }}>Change the global toggle to "Simp. 2D Bundle Equations" to use this explicit 2D solver.</span>
-        </div>
-      ) : (
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
            {/* Left dock */}
            <div style={{ width: '360px', borderRight: '1px solid #1e293b', background: '#0f172a', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto' }}>
@@ -189,7 +185,10 @@ export default function Bundle2DSolverView() {
 
               {results && (
                 <div style={{ padding: '24px', minHeight: '300px' }}>
-                  <div style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px' }}>Evaluation Results</div>
+                  <div style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px' }}>
+                    Evaluation Results
+                    <span style={{ marginLeft: '12px', color: '#10b981', fontSize: '12px' }}>— Method: {results.meta.methodologyUsed}</span>
+                  </div>
                   <table style={{ width: '100%', borderCollapse: 'collapse', background: '#0f172a', borderRadius: '8px', overflow: 'hidden' }}>
                     <thead>
                       <tr>
@@ -224,7 +223,6 @@ export default function Bundle2DSolverView() {
               )}
            </div>
         </div>
-      )}
     </div>
   );
 }

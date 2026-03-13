@@ -22,20 +22,11 @@ export default function DashboardView() {
 
   const handleRun = () => {
     if (calculationStatus !== 'READY' && calculationStatus !== 'CALCULATED') return;
-    const payload = { nodes, segments, anchors, inputs, vessel, boundaryMovement, constraints };
+    const payload = { nodes, segments, anchors, inputs, vessel, boundaryMovement, constraints, methodology };
 
-    if (methodology === '2D_BUNDLE') {
-      // In the context of 3D, "Simplified Method" implies skipping complex MIST / Guided iterations
-      // and perhaps just doing a basic Expansion check. We map it identically here but flag it.
-      const res = runExtendedSolver(payload);
-      // Overwrite flags to simulate the simplified method execution
-      res.meta.methodologyUsed = 'SIMPLIFIED_3D_METHOD';
-      setResults(res);
-    } else {
-      const res = runExtendedSolver(payload);
-      res.meta.methodologyUsed = 'FLUOR_MIST';
-      setResults(res);
-    }
+    const res = runExtendedSolver(payload);
+    res.meta.methodologyUsed = methodology === '2D_BUNDLE' ? 'SIMPLIFIED_3D_METHOD' : 'FLUOR_MIST';
+    setResults(res);
   };
 
   return (
