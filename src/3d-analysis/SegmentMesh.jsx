@@ -40,22 +40,16 @@ export const SegmentMesh = ({ id, startPos, endPos, compType, length_in }) => {
   const params = useAnalysisStore(s => s.params);
 
   let baseColor = COLORS[compType] || COLORS.PIPE;
-<<<<<<< Updated upstream
 
-=======
 
->>>>>>> Stashed changes
   if (colorMode === 'stress') {
       // Allow for both GC3D (legId, Sb_psi) and Extended (id, ratio, stress) formats
       const res = legResults.find(r => r.legId === id || r.id === id);
       const SA = params.Sa_psi;
       if (res) {
           const ratio = res.ratio !== undefined ? res.ratio : (SA > 0 ? (res.Sb_psi || 0) / SA : 0);
-<<<<<<< Updated upstream
 
-=======
 
->>>>>>> Stashed changes
           if (ratio < 0.5) baseColor = '#32cd32'; // LimeGreen (< 50%)
           else if (ratio < 1.0) baseColor = '#ffff00'; // Yellow (50% - 99%)
           else baseColor = '#ff0000'; // Red (>= 100%)

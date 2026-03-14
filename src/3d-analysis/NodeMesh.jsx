@@ -38,7 +38,6 @@ export const NodeMesh = ({ id, pos, type, label }) => {
     <mesh
       position={pos}
       onClick={handleClick}
-<<<<<<< Updated upstream
       onPointerOver={(e) => {
           e.stopPropagation();
           setHovered(true);
@@ -48,7 +47,6 @@ export const NodeMesh = ({ id, pos, type, label }) => {
       onPointerOut={(e) => {
           e.stopPropagation();
           setHovered(false);
-=======
       onPointerOver={(e) => {
           e.stopPropagation();
           setHovered(true);
@@ -58,7 +56,6 @@ export const NodeMesh = ({ id, pos, type, label }) => {
       onPointerOut={(e) => {
           e.stopPropagation();
           setHovered(false);
->>>>>>> Stashed changes
           if (snapNodeId === id) setSnapNodeId(null);
           if (activeTool === 'anchor') document.body.style.cursor = 'default';
       }}
