@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppStore } from '../store/appStore';
+<<<<<<< Updated upstream
 import { Activity, Circle, Minus, CornerDownRight } from 'lucide-react';
 
 const SVGIconWrapper = ({ children }) => (
@@ -10,6 +11,18 @@ const SVGIconWrapper = ({ children }) => (
     background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)',
     display: 'flex',
     alignItems: 'center',
+=======
+import { Activity, Circle, Minus, CornerDownRight } from 'lucide-react';
+
+const SVGIconWrapper = ({ children }) => (
+  <div style={{
+    width: 48,
+    height: 48,
+    borderRadius: '12px',
+    background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)',
+    display: 'flex',
+    alignItems: 'center',
+>>>>>>> Stashed changes
     justifyContent: 'center',
     marginBottom: 8,
     boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.2)'
@@ -70,7 +83,11 @@ export const TransformControls = () => {
   const ControlButton = ({ btnMode, icon: Icon, label }) => {
     const isActive = mode === btnMode;
     return (
+<<<<<<< Updated upstream
       <button
+=======
+      <button
+>>>>>>> Stashed changes
         onClick={() => handleModeChange(btnMode)}
         style={{
           padding: '16px 24px',

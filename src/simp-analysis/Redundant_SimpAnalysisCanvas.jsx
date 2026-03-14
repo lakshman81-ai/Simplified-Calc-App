@@ -10,13 +10,21 @@ export const Redundant_SimpAnalysisCanvas = () => {
   const orbitEnabled = useSimpStore(state => state.orbitEnabled);
 
   return (
+<<<<<<< Updated upstream
     <Canvas
+=======
+    <Canvas
+>>>>>>> Stashed changes
       gl={{ alpha: false, antialias: false, powerPreference: "default" }}
       style={{ width: '100%', height: '100%', background: '#0f172a' }}
     >
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 5]} intensity={1} />
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
       <Suspense fallback={null}>
         <ViewportControls />
         <OrbitControls enableRotate={false} enablePan={orbitEnabled} enableZoom={true} />

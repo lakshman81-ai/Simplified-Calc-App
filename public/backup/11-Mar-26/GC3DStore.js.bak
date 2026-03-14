@@ -1,7 +1,13 @@
 import { create } from 'zustand';
+<<<<<<< Updated upstream
 import { sectionProperties, thermalDisplacement, gcBasic, gcWithFlexibility, intensifiedStress, combineStressAtNode, allowableStress, requiredLegLength, stressCheck } from './GC3DCalcEngine';
 import { getSIFData } from './GC3DSIFEngine';
 import { getMaterialProperties } from '../utils/materialUtils';
+=======
+import { getSIFData } from './GC3DSIFEngine';
+import { getMaterialProperties } from '../utils/materialUtils';
+import { solveGC3D } from './GC3DSolver';
+>>>>>>> Stashed changes
 
 export const useGC3DStore = create((set, get) => ({
   nodes: {},
@@ -33,10 +39,32 @@ export const useGC3DStore = create((set, get) => ({
   setActiveTool: (tool) => set({ activeTool: tool, selectedSegmentIds: new Set(), selectedNodeId: null }),
   snapNodeId: null, // OSnap support for GC3D
   setSnapNodeId: (id) => set({ snapNodeId: id }),
+<<<<<<< Updated upstream
+=======
+  convertNodeToAnchor: (id) => {
+    const { nodes } = get();
+    if (nodes[id]) {
+      set(s => ({
+         nodes: {
+            ...s.nodes,
+            [id]: { ...s.nodes[id], type: 'anchor' }
+         },
+         activeTool: 'select', // Auto-switch back to select mode
+         snapNodeId: null
+      }));
+      get().runAnalysis(); // Instantly trigger Pure Solver to recalculate constraints
+    }
+  },
+>>>>>>> Stashed changes
   cameraViewMode: 'auto', // 'auto', 'top', 'iso', 'front', 'selected'
   setCameraViewMode: (mode) => set({ cameraViewMode: mode }),
   unitSystem: 'imperial',
   consoleCollapsed: false,
+<<<<<<< Updated upstream
+=======
+  dataGridCollapsed: false,
+  toggleDataGrid: () => set(s => ({ dataGridCollapsed: !s.dataGridCollapsed })),
+>>>>>>> Stashed changes
   config: {
     gridSnap_mm: 100,
     displayPrecision: { stress: 0, sif: 3, length: 1, force: 0 },
@@ -237,6 +265,7 @@ export const useGC3DStore = create((set, get) => ({
   runAnalysis: () => {
     get().clearLog();
     const { nodes, segments, params, includeSIF, fittingData } = get();
+<<<<<<< Updated upstream
     get().log(0, "Starting GC 3D analysis...");
 
     if (!nodes || Object.keys(nodes).length < 2 || !segments || segments.length === 0) {
@@ -334,6 +363,29 @@ export const useGC3DStore = create((set, get) => ({
     get().log(7, `RESULT: ${overAll}. Critical: ${critical} (ratio=${maxRatio.toFixed(3)})`);
 
     set({ legResults, nodeResults, criticalNode: critical, overallResult: overAll });
+=======
+
+    // Payload serialization for Pure Solver
+    const payload = JSON.parse(JSON.stringify({
+        nodes,
+        segments,
+        params,
+        fittingData,
+        includeSIF
+    }));
+
+    console.time('solveGC3D');
+    const result = solveGC3D(payload);
+    console.timeEnd('solveGC3D');
+
+    set({
+        legResults: result.legResults,
+        nodeResults: result.nodeResults,
+        criticalNode: result.criticalNode,
+        overallResult: result.overallResult,
+        debugLog: [...get().debugLog, ...result.debugLog]
+    });
+>>>>>>> Stashed changes
   },
 
   importFromViewer: (selectedComps, globalParams) => {

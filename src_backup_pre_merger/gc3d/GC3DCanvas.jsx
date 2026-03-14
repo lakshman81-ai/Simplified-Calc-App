@@ -10,6 +10,7 @@ import { MarqueeZoom } from './MarqueeZoom';
 const CameraController = () => {
     const { camera, scene } = useThree();
     const controlsRef = useRef();
+<<<<<<< Updated upstream
 
     const selectedSegmentIds = useGC3DStore(s => s.selectedSegmentIds);
     const selectedNodeId = useGC3DStore(s => s.selectedNodeId);
@@ -17,6 +18,15 @@ const CameraController = () => {
 
     const cameraViewMode = useGC3DStore(s => s.cameraViewMode);
 
+=======
+
+    const selectedSegmentIds = useGC3DStore(s => s.selectedSegmentIds);
+    const selectedNodeId = useGC3DStore(s => s.selectedNodeId);
+    const nodes = useGC3DStore(s => s.nodes);
+
+    const cameraViewMode = useGC3DStore(s => s.cameraViewMode);
+
+>>>>>>> Stashed changes
     // Store target vectors
     const targetCenter = useRef(new THREE.Vector3(0, 0, 0));
     const targetDistance = useRef(10000);
@@ -62,7 +72,11 @@ const CameraController = () => {
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
         const safeMaxDim = maxDim === 0 ? 1000 : maxDim;
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         // Standard perspective fallback FOV math
         const fov = (camera.type === 'PerspectiveCamera' ? camera.fov : 50) * (Math.PI / 180);
         const boundingSphereRadius = (safeMaxDim / 2) * Math.sqrt(3);
@@ -73,20 +87,35 @@ const CameraController = () => {
         if (cameraViewMode === 'iso' || cameraViewMode === 'auto') {
             const offset = Math.sqrt((targetDistance.current * targetDistance.current) / 3);
             targetPosition.current.set(
+<<<<<<< Updated upstream
                 targetCenter.current.x + offset,
                 targetCenter.current.y + offset,
+=======
+                targetCenter.current.x + offset,
+                targetCenter.current.y + offset,
+>>>>>>> Stashed changes
                 targetCenter.current.z + offset
             );
         } else if (cameraViewMode === 'top') {
             targetPosition.current.set(
+<<<<<<< Updated upstream
                 targetCenter.current.x,
                 targetCenter.current.y + targetDistance.current,
+=======
+                targetCenter.current.x,
+                targetCenter.current.y + targetDistance.current,
+>>>>>>> Stashed changes
                 targetCenter.current.z
             );
         } else if (cameraViewMode === 'front') {
             targetPosition.current.set(
+<<<<<<< Updated upstream
                 targetCenter.current.x,
                 targetCenter.current.y,
+=======
+                targetCenter.current.x,
+                targetCenter.current.y,
+>>>>>>> Stashed changes
                 targetCenter.current.z + targetDistance.current
             );
         } else if (cameraViewMode === 'selected') {
@@ -100,7 +129,11 @@ const CameraController = () => {
             camera.near = Math.max(1, safeMaxDim * 0.001);
             camera.far = Math.max(safeMaxDim * 100, targetDistance.current * 10);
             camera.updateProjectionMatrix();
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
             // Constrain OrbitControls max distance so user cannot zoom past the far plane
             if (controlsRef.current) {
                 controlsRef.current.maxDistance = camera.far * 0.9;
@@ -111,6 +144,7 @@ const CameraController = () => {
 
     useFrame((state, delta) => {
         if (!controlsRef.current) return;
+<<<<<<< Updated upstream
 
         // Use standard lerp for guaranteed compatibility across Three.js versions instead of damp3
         const lerpFactor = 1 - Math.exp(-4 * delta);
@@ -118,12 +152,25 @@ const CameraController = () => {
         // Dampen the orbit target
         controlsRef.current.target.lerp(targetCenter.current, lerpFactor);
 
+=======
+
+        // Use standard lerp for guaranteed compatibility across Three.js versions instead of damp3
+        const lerpFactor = 1 - Math.exp(-4 * delta);
+
+        // Dampen the orbit target
+        controlsRef.current.target.lerp(targetCenter.current, lerpFactor);
+
+>>>>>>> Stashed changes
         // Only dampen camera position if a view mode button was recently pressed or we selected something explicitly via datagrid
         // For smooth orbit control usage, we only apply position damping if the distance between current and target is significant,
         // or if we're explicitly in a forced camera mode.
         if (cameraViewMode !== 'none') {
             camera.position.lerp(targetPosition.current, lerpFactor);
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
             // If we are extremely close to the target, release the forced view mode to allow free orbit
             if (camera.position.distanceTo(targetPosition.current) < 10) {
                  useGC3DStore.getState().setCameraViewMode('none');
@@ -161,7 +208,11 @@ const InteractivePlane = () => {
 
 export const GC3DCanvas = () => {
   const [isOrtho, setIsOrtho] = React.useState(false);
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
   const segments = useGC3DStore(s => s.segments);
   const nodes = useGC3DStore(s => s.nodes);
 
@@ -169,17 +220,30 @@ export const GC3DCanvas = () => {
   const activeTool = useGC3DStore(s => s.activeTool);
   const setActiveTool = useGC3DStore(s => s.setActiveTool);
   const setCameraViewMode = useGC3DStore(s => s.setCameraViewMode);
+<<<<<<< Updated upstream
 
   return (
     <div style={{ flex: 1, position: 'relative', background: '#0f172a' }}>
 
+=======
+
+  return (
+    <div style={{ flex: 1, position: 'relative', background: '#0f172a' }}>
+
+>>>>>>> Stashed changes
       {/* Top Toolbar Overlay */}
       <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: '8px', background: 'rgba(30, 41, 59, 0.8)', padding: '8px', borderRadius: '8px', border: '1px solid #334155' }}>
         <button onClick={() => setCameraViewMode('auto')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>⛶ Auto Center</button>
         <button onClick={() => setCameraViewMode('selected')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>🔍 Zoom Selected</button>
+<<<<<<< Updated upstream
         <button
            onClick={() => setActiveTool(activeTool === 'marquee' ? 'select' : 'marquee')}
            title="Click and drag to zoom"
+=======
+        <button
+           onClick={() => setActiveTool(activeTool === 'marquee' ? 'select' : 'marquee')}
+           title="Click and drag to zoom"
+>>>>>>> Stashed changes
            style={{ background: activeTool === 'marquee' ? '#ef4444' : '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}
         >
           🔲 Marquee
@@ -188,15 +252,25 @@ export const GC3DCanvas = () => {
         <button onClick={() => setCameraViewMode('top')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Top</button>
         <button onClick={() => setCameraViewMode('front')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Front</button>
         <button onClick={() => setCameraViewMode('iso')} style={{ background: '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Iso</button>
+<<<<<<< Updated upstream
         <button
            onClick={() => setIsOrtho(!isOrtho)}
+=======
+        <button
+           onClick={() => setIsOrtho(!isOrtho)}
+>>>>>>> Stashed changes
            style={{ background: isOrtho ? '#10b981' : '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}
         >
           {isOrtho ? 'Ortho' : 'Persp'}
         </button>
         <div style={{ width: '1px', background: '#475569', margin: '0 4px' }} />
+<<<<<<< Updated upstream
         <button
            onClick={() => setActiveTool(activeTool === 'anchor' ? 'select' : 'anchor')}
+=======
+        <button
+           onClick={() => setActiveTool(activeTool === 'anchor' ? 'select' : 'anchor')}
+>>>>>>> Stashed changes
            style={{ background: activeTool === 'anchor' ? '#ef4444' : '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}
         >
           <span style={{ display: 'inline-block', width: '10px', height: '10px', background: 'white', clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}></span>
@@ -212,9 +286,15 @@ export const GC3DCanvas = () => {
         ) : (
             <PerspectiveCamera makeDefault position={[5000, 5000, 5000]} fov={50} />
         )}
+<<<<<<< Updated upstream
 
         <CameraController />
 
+=======
+
+        <CameraController />
+
+>>>>>>> Stashed changes
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
         <Grid position={[0, -500, 0]} args={[50000, 50000]} sectionSize={1000} cellColor="#1e293b" sectionColor="#334155" fadeDistance={30000} />
@@ -223,9 +303,15 @@ export const GC3DCanvas = () => {
         <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
           <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="white" />
         </GizmoHelper>
+<<<<<<< Updated upstream
 
         {activeTool === 'anchor' && <InteractivePlane />}
 
+=======
+
+        {activeTool === 'anchor' && <InteractivePlane />}
+
+>>>>>>> Stashed changes
         <MarqueeZoom />
 
         <Suspense fallback={null}>

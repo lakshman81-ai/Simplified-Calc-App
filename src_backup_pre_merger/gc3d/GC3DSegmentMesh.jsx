@@ -40,7 +40,11 @@ export const GC3DSegmentMesh = ({ id, startPos, endPos, compType, length_in }) =
   const params = useGC3DStore(s => s.params);
 
   let baseColor = COLORS[compType] || COLORS.PIPE;
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
   if (colorMode === 'stress') {
       const res = legResults.find(r => r.legId === id);
       const SA = params.Sa_psi;

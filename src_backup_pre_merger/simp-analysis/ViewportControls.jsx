@@ -21,12 +21,21 @@ export const ViewportControls = () => {
   return (
     <>
       <OrthographicCamera makeDefault position={camPos} zoom={0.1} near={-50000} far={50000} up={up} />
+<<<<<<< Updated upstream
       <Grid
         infiniteGrid
         fadeDistance={50000}
         sectionSize={1000}
         cellColor="#6f6f6f"
         sectionColor="#9d4b4b"
+=======
+      <Grid
+        infiniteGrid
+        fadeDistance={50000}
+        sectionSize={1000}
+        cellColor="#6f6f6f"
+        sectionColor="#9d4b4b"
+>>>>>>> Stashed changes
         position={[0,0,0]}
         rotation={plane === 'XZ' ? [0, 0, 0] : plane === 'YZ' ? [0, 0, Math.PI/2] : [Math.PI/2, 0, 0]}
       />

@@ -6,11 +6,19 @@ export const extractSubGraph = (components) => {
 
     const nodes = {};
     const segments = [];
+<<<<<<< Updated upstream
 
     // Hash based on coordinates to merge connected points
     const hashPt = (pt) => `${pt.x.toFixed(2)},${pt.y.toFixed(2)},${pt.z.toFixed(2)}`;
     let nodeIdCounter = 0;
 
+=======
+
+    // Hash based on coordinates to merge connected points
+    const hashPt = (pt) => `${pt.x.toFixed(2)},${pt.y.toFixed(2)},${pt.z.toFixed(2)}`;
+    let nodeIdCounter = 0;
+
+>>>>>>> Stashed changes
     const getOrAddNode = (pt, defaultType = 'node') => {
         const hash = hashPt(pt);
         if (!nodes[hash]) {
@@ -72,10 +80,17 @@ export const extractSubGraph = (components) => {
 export const analyzePipingSystem = (rawLegs, OD = 273, alpha = 0.012, C = 20) => {
     let logs = [];
     let legs = [...rawLegs]; // clone
+<<<<<<< Updated upstream
 
     // Helper to log
     const log = (msg) => logs.push(msg);
 
+=======
+
+    // Helper to log
+    const log = (msg) => logs.push(msg);
+
+>>>>>>> Stashed changes
     // Step 1: Remove Negligible Legs (< 3 * OD)
     const threshold = 3 * OD;
     log(`Step 1: Removing negligible legs (length < ${threshold.toFixed(2)})`);
@@ -171,7 +186,11 @@ export const analyzePipingSystem = (rawLegs, OD = 273, alpha = 0.012, C = 20) =>
     if (activeAxes.length === 2 && finalLegs.length >= 2) {
         isLBend = true;
         log(`L-Bend confirmed in plane ${activeAxes[0]}${activeAxes[1]}`);
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         // Find the longest leg (Generator) and the other leg (Absorber)
         // This is a simplification; realistically, you evaluate both ways
         // Let's assume finalLegs has exactly two legs for this simple L-bend mock

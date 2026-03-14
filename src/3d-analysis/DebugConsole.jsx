@@ -23,7 +23,11 @@ export const DebugConsole = () => {
 
   return (
     <div style={{ height, transition: 'height 0.3s ease', display: 'flex', flexDirection: 'column', background: 'transparent' }}>
+<<<<<<< Updated upstream
       <div
+=======
+      <div
+>>>>>>> Stashed changes
          style={{ height: '36px', padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #334155', background: 'rgba(30, 41, 59, 0.9)', cursor: 'pointer' }}
          onClick={toggleConsole}
       >

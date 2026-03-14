@@ -3,13 +3,21 @@ import { sectionProperties, thermalDisplacement, gcBasic, gcWithFlexibility, com
 /**
  * Pure function to solve Guided Cantilever 3D Piping Analysis.
  * Mathematically isolates calculation logic from React/Zustand UI layers.
+<<<<<<< Updated upstream
  *
+=======
+ *
+>>>>>>> Stashed changes
  * @param {Object} payload Strict JSON input payload.
  * @param {Object} payload.nodes `{ [id]: { pos: [x,y,z], type: 'free'|'anchor'|'elbow'|'tee' } }`
  * @param {Array} payload.segments `[{ id, startNode, endNode, length_in, od_in, wt_in, axis, compType }]`
  * @param {Object} payload.params `{ deltaT_F, E_psi, alpha_in_in_F, Sc_psi, Sh_psi, f, Sa_psi }`
  * @param {Object} payload.fittingData `{ [segId]: { k, i_i, R_e } }`
+<<<<<<< Updated upstream
  * @param {boolean} payload.includeSIF
+=======
+ * @param {boolean} payload.includeSIF
+>>>>>>> Stashed changes
  * @returns {Object} `{ legResults, nodeResults, criticalNode, overallResult, debugLog }`
  */
 export function solveGC3D(payload) {
@@ -63,14 +71,22 @@ export function solveGC3D(payload) {
         const L_in = parseFloat(seg.length_in);
         const D_o = parseFloat(seg.od_in);
         const t_n = parseFloat(seg.wt_in);
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         if (isNaN(L_in) || isNaN(D_o) || isNaN(t_n) || L_in <= 0) {
             legResults.push({ legId: seg.id, axis: seg.axis, L_in, F_lbf: 0, M_inlbf: 0, Sb_psi: 0, error: 'Invalid Dimensions' });
             return;
         }
 
         const { I, Z } = sectionProperties(D_o, t_n);
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         const data = fittingData[seg.id] || { k: 1.0, i_i: 1.0, R_e: 0 };
         const k = includeSIF ? parseFloat(data.k || 1.0) : 1.0;
         const i_i = includeSIF ? parseFloat(data.i_i || 1.0) : 1.0;
@@ -85,7 +101,11 @@ export function solveGC3D(payload) {
         perpAxes.forEach(p => {
             const d = deltas[p];
             if (d <= 0) return;
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
             let F, M, Sb;
             if (k > 1.0 && R_e > 0) {
                 const res = gcWithFlexibility(E, I, Z, D_o, d, L_in, k, R_e);
@@ -102,19 +122,32 @@ export function solveGC3D(payload) {
 
         const Sb_combined = combineStressAtNode(Sb_components);
         legResults.push({
+<<<<<<< Updated upstream
             legId: seg.id,
             axis: seg.axis,
             L_in: L_in,
             F_lbf: totalF,
             M_inlbf: totalM,
+=======
+            legId: seg.id,
+            axis: seg.axis,
+            L_in: L_in,
+            F_lbf: totalF,
+            M_inlbf: totalM,
+>>>>>>> Stashed changes
             Sb_psi: Sb_combined
         });
         log(5, `Leg ${seg.id}: F=${totalF.toFixed(0)}lbf, M=${totalM.toFixed(0)}in-lbf, Sb_combined=${Sb_combined.toFixed(0)}psi`);
     });
 
     const nodeResults = [];
+<<<<<<< Updated upstream
     let critical = null;
     let maxRatio = 0;
+=======
+    let critical = null;
+    let maxRatio = 0;
+>>>>>>> Stashed changes
     let overAll = 'PASS';
 
     // Calculate nodal stress by combining stresses from attached segments.
@@ -130,6 +163,7 @@ export function solveGC3D(payload) {
         // Sum the component stresses vectorially
         const combined = combineStressAtNode(connectedLegs.map(l => l.Sb_psi || 0));
         const { ratio, result } = stressCheck(combined, SA);
+<<<<<<< Updated upstream
 
         if (ratio > maxRatio) {
             maxRatio = ratio;
@@ -143,6 +177,21 @@ export function solveGC3D(payload) {
             SA_psi: SA,
             ratio,
             result
+=======
+
+        if (ratio > maxRatio) {
+            maxRatio = ratio;
+            critical = nId;
+        }
+        if (result === 'FAIL') overAll = 'FAIL';
+
+        nodeResults.push({
+            nodeId: nId,
+            SE_psi: combined,
+            SA_psi: SA,
+            ratio,
+            result
+>>>>>>> Stashed changes
         });
     });
 

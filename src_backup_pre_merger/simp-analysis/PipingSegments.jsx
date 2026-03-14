@@ -16,6 +16,7 @@ export const PipingSegments = () => {
       const vec = p2.clone().sub(p1);
       const dist = vec.length();
       const pos = p1.clone().add(p2).divideScalar(2);
+<<<<<<< Updated upstream
 
       // Calculate rotation. Cylinder naturally goes along Y axis.
       // We want it to point along 'vec'.
@@ -25,6 +26,17 @@ export const PipingSegments = () => {
       const isAbsorber = i === 1;
       let color = 'gray';
 
+=======
+
+      // Calculate rotation. Cylinder naturally goes along Y axis.
+      // We want it to point along 'vec'.
+      const quaternion = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), vec.clone().normalize());
+
+      const isGenerator = i === 0;
+      const isAbsorber = i === 1;
+      let color = 'gray';
+
+>>>>>>> Stashed changes
       if (stats.ratio > 0) {
         if (isAbsorber) color = stats.ratio <= 1.0 ? 'green' : 'red';
         else if (isGenerator) color = '#aaffaa'; // Light green for generator leg

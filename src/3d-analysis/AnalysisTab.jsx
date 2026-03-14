@@ -22,12 +22,21 @@ export const AnalysisTab = () => {
             Ver {new Date().toLocaleDateString('en-GB').replace(/\//g, '-')} (1)
           </span>
         </div>
+<<<<<<< Updated upstream
 
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f8fafc', fontSize: '12px' }}>
                 <span style={{ color: '#94a3b8' }}>Color Mode:</span>
                 <select
                     value={colorMode}
+=======
+
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f8fafc', fontSize: '12px' }}>
+                <span style={{ color: '#94a3b8' }}>Color Mode:</span>
+                <select
+                    value={colorMode}
+>>>>>>> Stashed changes
                     onChange={e => setColorMode(e.target.value)}
                     style={{ background: '#0f172a', color: '#f8fafc', border: '1px solid #334155', borderRadius: '4px', padding: '4px' }}
                 >
@@ -46,6 +55,7 @@ export const AnalysisTab = () => {
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
             <AnalysisCanvas />
             <ComponentPanel />
+<<<<<<< Updated upstream
 
             {/* Right-side Collapsible Results & Debug Panel */}
             <div style={{
@@ -55,6 +65,17 @@ export const AnalysisTab = () => {
               width: '450px',
               maxHeight: 'calc(100% - 32px)',
               background: 'rgba(15, 23, 42, 0.9)',
+=======
+
+            {/* Right-side Collapsible Results & Debug Panel */}
+            <div style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              width: '450px',
+              maxHeight: 'calc(100% - 32px)',
+              background: 'rgba(15, 23, 42, 0.9)',
+>>>>>>> Stashed changes
               backdropFilter: 'blur(8px)',
               border: '1px solid #334155',
               borderRadius: '8px',
@@ -65,7 +86,11 @@ export const AnalysisTab = () => {
               zIndex: 10
             }}>
                 <div style={{ display: 'flex', flexDirection: 'column', flex: dataGridCollapsed ? '0 0 auto' : '1', transition: 'flex 0.3s' }}>
+<<<<<<< Updated upstream
                     <div
+=======
+                    <div
+>>>>>>> Stashed changes
                        style={{ padding: '8px 16px', background: 'rgba(30, 41, 59, 0.9)', borderBottom: '1px solid #334155', fontSize: '12px', fontWeight: 'bold', color: '#cbd5e1', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
                        onClick={toggleDataGrid}
                     >
@@ -78,7 +103,11 @@ export const AnalysisTab = () => {
                       </div>
                     )}
                 </div>
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1, borderTop: '1px solid #334155', background: 'rgba(15, 23, 42, 0.95)' }}>
                      <DebugConsole />
                 </div>

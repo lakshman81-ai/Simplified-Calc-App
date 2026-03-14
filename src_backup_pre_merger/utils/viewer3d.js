@@ -331,7 +331,11 @@ export class PcfViewer3D {
                 if (pt) {
                     const pos = mapCoord(pt);
 
+<<<<<<< Updated upstream
                     // Critical Fix: Supports often have bore=0 in PCF.
+=======
+                    // Critical Fix: Supports often have bore=0 in PCF.
+>>>>>>> Stashed changes
                     // This causes radius=25, which hides the support *inside* a large pipe (e.g., bore=400).
                     // We must inherit a realistic radius so the support geometry wraps outside the pipe.
                     let supportRadius = radius;

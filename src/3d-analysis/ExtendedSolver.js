@@ -29,11 +29,19 @@ export function runExtendedSolver(exPayload) {
     debugLog.push(`[INFO] Validating geometry...`);
     debugLog.push(`[FILTER] Applying Rule of Rigidity... Ignored 2 short drops.`);
     debugLog.push(`[CALC] Extracted Bending Legs (X: 1, Y: 1, Z: 0)`);
+<<<<<<< Updated upstream
 
     if (exPayload.solverType === '2D_BUNDLE') {
         debugLog.push(`[FRICTION] Applying mu=0.3 to anchor axial loads.`);
     }
 
+=======
+
+    if (exPayload.solverType === '2D_BUNDLE') {
+        debugLog.push(`[FRICTION] Applying mu=0.3 to anchor axial loads.`);
+    }
+
+>>>>>>> Stashed changes
     debugLog.push(`[EVAL] Koves Flange Leakage: Equivalent Load=1450 vs Allowable=2100`);
 
     // Add some mocked segment heatmaps and node results

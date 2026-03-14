@@ -35,20 +35,33 @@ export const GC3DDebugTable = () => {
           )}
           {nodeResults.map((r, i) => {
             const isFail = r.result === 'FAIL';
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
             // Determine max force/moment/length associated with this node to satisfy strict display request
             const connectedLegs = legResults.filter(l => {
                 const legSeg = segments.find(s => s.id === l.legId);
                 return legSeg && (legSeg.startNode === r.nodeId || legSeg.endNode === r.nodeId);
             });
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
             const maxF = connectedLegs.reduce((max, l) => Math.max(max, l.F_lbf || 0), 0);
             const maxM = connectedLegs.reduce((max, l) => Math.max(max, l.M_inlbf || 0), 0);
             const maxL = connectedLegs.reduce((max, l) => Math.max(max, l.L_in || 0), 0);
 
             return (
+<<<<<<< Updated upstream
               <tr
                  key={i}
+=======
+              <tr
+                 key={i}
+>>>>>>> Stashed changes
                  onClick={() => {
                      useGC3DStore.getState().setCameraViewMode('selected');
                      setSelectedNode(r.nodeId);

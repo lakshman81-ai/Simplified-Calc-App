@@ -23,7 +23,11 @@ export const GC3DDebugConsole = () => {
 
   return (
     <div style={{ height, transition: 'height 0.3s ease', display: 'flex', flexDirection: 'column', background: '#0f172a', borderTop: '1px solid #1e293b' }}>
+<<<<<<< Updated upstream
       <div
+=======
+      <div
+>>>>>>> Stashed changes
          style={{ height: '48px', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1e293b', background: '#020617', cursor: 'pointer' }}
          onClick={toggleConsole}
       >

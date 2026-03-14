@@ -630,7 +630,11 @@ export const TransformTab = () => {
 
         {/* RIGHT COLUMN: Table & Preview */}
         <div style={{ flex: 1, background: '#1e293b', borderRadius: '16px', border: '1px solid #334155', display: 'flex', flexDirection: 'column' }}>
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
           <div style={{ padding: '24px 32px', borderBottom: '1px solid #334155', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <h2 style={{ fontSize: '20px', fontWeight: '600', margin: '0 0 4px 0', color: '#f8fafc' }}>

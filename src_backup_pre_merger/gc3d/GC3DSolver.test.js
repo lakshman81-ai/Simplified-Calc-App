@@ -38,7 +38,11 @@ describe('GC3DSolver Golden Master Tests (Regression)', () => {
         console.timeEnd('solveGC3D - L-Bend');
 
         const elbowStress = result.nodeResults.find(n => n.nodeId === 'N2').SE_psi;
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         // Expected from CAESAR GC Basic output
         const expectedStress = 16637;
         // Tolerance up to hundreds to account for small mathematical derivations across solver configurations.
@@ -75,7 +79,11 @@ describe('GC3DSolver Golden Master Tests (Regression)', () => {
         // N2 is the junction between X and Y
         const n2Result = result.nodeResults.find(n => n.nodeId === 'N2');
         const n3Result = result.nodeResults.find(n => n.nodeId === 'N3');
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         // Expected combined stress at nodes based on vector resolution
         const expectedStressE1 = 25542;
         // In the benchmark, Sb_E1 is 25542.0275. Expand tolerance slightly.
@@ -92,7 +100,11 @@ describe('GC3DSolver Golden Master Tests (Regression)', () => {
         const payload = {
             nodes: {
                 N1: { pos: [0, 0, 0], type: 'anchor' },
+<<<<<<< Updated upstream
                 N2: { pos: [150 * 25.4, 0, 0], type: 'elbow' },
+=======
+                N2: { pos: [150 * 25.4, 0, 0], type: 'elbow' },
+>>>>>>> Stashed changes
                 N3: { pos: [150 * 25.4, 84 * 25.4, 0], type: 'elbow' }, // L_abs = 84" up
                 N4: { pos: [150 * 25.4, 84 * 25.4, 84 * 25.4], type: 'elbow' }, // L_abs = 84" over Z
                 N5: { pos: [300 * 25.4, 84 * 25.4, 84 * 25.4], type: 'elbow' }, // Return X
@@ -123,7 +135,11 @@ describe('GC3DSolver Golden Master Tests (Regression)', () => {
         // S2 absorbs X (300) and Z (84) total delta.
         // Node 2 represents the first critical elbow corner
         const n2Result = result.nodeResults.find(n => n.nodeId === 'N2');
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         // This confirms the math engine successfully resolves all 3D orthogonal components
         // and safely multiplies them by the SIFs and adds flexibility correctly.
         expect(n2Result.SE_psi).toBeGreaterThan(0);

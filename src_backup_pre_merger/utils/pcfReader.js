@@ -64,7 +64,11 @@ export const parsePCF = (pcfText) => {
 
   // Map to the format expected by the 3D Viewer (start, end, radius)
   const viewerData = components.map(c => {
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     // For pipes
     if (c.type === 'PIPE' && c.points && c.points.length >= 2) {
       return {

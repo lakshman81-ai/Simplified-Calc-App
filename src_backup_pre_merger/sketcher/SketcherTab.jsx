@@ -55,9 +55,15 @@ const SketcherToolbar = () => {
             <button title="Add Node/Anchor" style={btnStyle(activeTool === 'add_node')} onClick={() => setActiveTool('add_node')}>
                 <Triangle size={18} />
             </button>
+<<<<<<< Updated upstream
 
             <div style={{ height: '1px', background: '#334155', width: '100%', margin: '4px 0' }} />
 
+=======
+
+            <div style={{ height: '1px', background: '#334155', width: '100%', margin: '4px 0' }} />
+
+>>>>>>> Stashed changes
             <button title="Working Plane" style={btnStyle(false)} onClick={() => setWorkingPlane(workingPlane === 'XY' ? 'XZ' : 'XY')}>
                 <span style={{ fontSize: '10px', fontWeight: 'bold' }}>{workingPlane}</span>
             </button>
@@ -80,7 +86,11 @@ const SketcherToolbar = () => {
 // Interactive Plane for catching clicks in 2D View
 const InteractivePlane = () => {
     const { activeTool, workingPlane, setDraftingState, draftingState, createNode, createSegment, resolve3DPoint, snapNodeId, nodes } = useSketchStore();
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     // Rotate the invisible plane to match the working plane
     let rotation = [0, 0, 0];
     if (workingPlane === 'XZ') rotation = [-Math.PI/2, 0, 0];
@@ -100,7 +110,11 @@ const InteractivePlane = () => {
 
     const handleClick = (e) => {
         e.stopPropagation();
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         let targetId = null;
         let pt3D;
 
@@ -118,7 +132,11 @@ const InteractivePlane = () => {
             else {
                 // Future: convert free node to anchor
             }
+<<<<<<< Updated upstream
         }
+=======
+        }
+>>>>>>> Stashed changes
         else if (activeTool === 'draw_pipe') {
             if (!draftingState.isDrawing) {
                 // First click: start drawing
@@ -131,7 +149,11 @@ const InteractivePlane = () => {
 
                 const endId = targetId || createNode(pt3D, 'free');
                 createSegment(draftingState.startNodeId, endId, { type: 'PIPE', bore: 100, material: 'CARBON STEEL' });
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
                 // Continue drawing from the new end node
                 const nextPos = targetId ? new THREE.Vector3(...pt3D) : new THREE.Vector3(...resolve3DPoint(e.point));
                 setDraftingState({ startNodeId: endId, currentPos: nextPos });
@@ -151,9 +173,15 @@ const InteractivePlane = () => {
     }, [draftingState.isDrawing, setDraftingState]);
 
     return (
+<<<<<<< Updated upstream
         <mesh
             rotation={rotation}
             visible={false}
+=======
+        <mesh
+            rotation={rotation}
+            visible={false}
+>>>>>>> Stashed changes
             onPointerMove={handlePointerMove}
             onClick={handleClick}
             onContextMenu={(e) => {
@@ -173,7 +201,11 @@ const InteractivePlane = () => {
 const VerificationViewBounds = () => {
     const { camera, controls } = useThree();
     const nodes = useSketchStore(s => s.nodes);
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     useEffect(() => {
         const nodeValues = Object.values(nodes);
         if (nodeValues.length === 0) return;
@@ -191,11 +223,19 @@ const VerificationViewBounds = () => {
         const fov = camera.fov * (Math.PI / 180);
         const boundingSphereRadius = (safeMaxDim / 2) * Math.sqrt(3);
         let targetDistance = (boundingSphereRadius * 1.2) / Math.sin(fov / 2);
+<<<<<<< Updated upstream
         targetDistance = Math.max(targetDistance, 1000);
 
         const offset = Math.sqrt((targetDistance * targetDistance) / 3);
         camera.position.set(center.x + offset, center.y + offset, center.z + offset);
 
+=======
+        targetDistance = Math.max(targetDistance, 1000);
+
+        const offset = Math.sqrt((targetDistance * targetDistance) / 3);
+        camera.position.set(center.x + offset, center.y + offset, center.z + offset);
+
+>>>>>>> Stashed changes
         camera.near = 1;
         camera.far = targetDistance * 100;
         camera.updateProjectionMatrix();
@@ -220,8 +260,13 @@ const GraphRenderer = ({ is3D }) => {
     return (
         <group>
             {Object.entries(nodes).map(([id, node]) => (
+<<<<<<< Updated upstream
                 <mesh
                     key={id}
+=======
+                <mesh
+                    key={id}
+>>>>>>> Stashed changes
                     position={node.pos}
                     onPointerEnter={(e) => { e.stopPropagation(); setSnapNodeId(id); }}
                     onPointerLeave={(e) => { e.stopPropagation(); if (snapNodeId === id) setSnapNodeId(null); }}
@@ -234,13 +279,21 @@ const GraphRenderer = ({ is3D }) => {
                 const n1 = nodes[seg.startNode];
                 const n2 = nodes[seg.endNode];
                 if (!n1 || !n2) return null;
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
                 const startVec = new THREE.Vector3(...n1.pos);
                 const endVec = new THREE.Vector3(...n2.pos);
                 const diff = endVec.clone().sub(startVec);
                 const length = diff.length();
                 if (length < 1) return null; // prevent zero-length errors
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
                 const mid = startVec.clone().add(diff.clone().multiplyScalar(0.5));
                 const quaternion = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), diff.normalize());
 
@@ -251,7 +304,11 @@ const GraphRenderer = ({ is3D }) => {
                     </mesh>
                 );
             })}
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
             {/* Phantom Drawing Segment */}
             {!is3D && draftingState.isDrawing && draftingState.startNodeId && draftingState.currentPos && (
                 <PhantomSegment startPos={nodes[draftingState.startNodeId].pos} endPos={useSketchStore.getState().resolve3DPoint(draftingState.currentPos)} />
@@ -294,11 +351,19 @@ export const SketcherTab = () => {
                 </div>
 
                 <Canvas style={{ cursor: activeTool !== 'select' ? 'crosshair' : 'default' }}>
+<<<<<<< Updated upstream
                     <OrthographicCamera
                         makeDefault
                         position={workingPlane === 'XY' ? [0, 0, 10000] : (workingPlane === 'XZ' ? [0, 10000, 0] : [10000, 0, 0])}
                         zoom={0.2}
                         near={-100000} far={100000}
+=======
+                    <OrthographicCamera
+                        makeDefault
+                        position={workingPlane === 'XY' ? [0, 0, 10000] : (workingPlane === 'XZ' ? [0, 10000, 0] : [10000, 0, 0])}
+                        zoom={0.2}
+                        near={-100000} far={100000}
+>>>>>>> Stashed changes
                     />
                     <OrbitControls makeDefault enableRotate={false} />
                     <Grid position={[0, 0, 0]} args={[50000, 50000]} sectionSize={1000} cellColor="#1e293b" sectionColor="#334155" fadeDistance={30000} rotation={workingPlane === 'XY' ? [Math.PI/2, 0, 0] : (workingPlane === 'XZ' ? [0, 0, 0] : [0, 0, Math.PI/2])} />
@@ -307,10 +372,17 @@ export const SketcherTab = () => {
                 </Canvas>
 
                 {/* PiP 3D Container (Top Right) */}
+<<<<<<< Updated upstream
                 <div style={{
                     position: 'absolute', top: 16, right: 16, width: '300px', height: '300px',
                     background: '#1e293b', border: '2px solid #3b82f6', borderRadius: '8px',
                     overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)'
+=======
+                <div style={{
+                    position: 'absolute', top: 16, right: 16, width: '300px', height: '300px',
+                    background: '#1e293b', border: '2px solid #3b82f6', borderRadius: '8px',
+                    overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)'
+>>>>>>> Stashed changes
                 }}>
                     <div style={{ position: 'absolute', top: 4, left: 8, zIndex: 10, color: '#38bdf8', fontSize: '10px', fontWeight: 'bold', textShadow: '1px 1px 2px black' }}>3D VERIFICATION VIEW</div>
                     <Canvas>

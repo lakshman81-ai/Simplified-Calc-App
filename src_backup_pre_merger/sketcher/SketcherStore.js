@@ -17,7 +17,11 @@ export const useSketchStore = create((set, get) => ({
   setWorkingPlane: (plane) => set({ workingPlane: plane, draftingState: { isDrawing: false, startNodeId: null, currentPos: null } }),
   setActiveTool: (tool) => set({ activeTool: tool, draftingState: { isDrawing: false, startNodeId: null, currentPos: null } }),
   setDraftingState: (newState) => set(s => ({ draftingState: { ...s.draftingState, ...newState } })),
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
   importFromComponents: (components) => {
       const { nodes, segments } = buildGraphFromComponents(components);
       set({ nodes, segments });
@@ -52,12 +56,20 @@ export const useSketchStore = create((set, get) => ({
       const x = snapCoordinate(point2D.x);
       const y = snapCoordinate(point2D.y);
       const z = snapCoordinate(point2D.z);
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
       if (workingPlane === 'XY') return [x, y, workingElevation];
       if (workingPlane === 'XZ') return [x, workingElevation, -z]; // R3F Z maps to -Z for standard elevation view
       if (workingPlane === 'YZ') return [workingElevation, y, -z];
       return [x, y, z];
   },
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
   clearSketch: () => set({ nodes: {}, segments: [] })
 }));

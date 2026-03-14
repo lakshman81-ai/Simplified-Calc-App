@@ -19,14 +19,22 @@ export const Redundant_SimpAnalysisTab = () => {
       if (window._state && window._state.viewer3dComponents) {
         comps = window._state.viewer3dComponents;
       }
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
       const graph = extractSubGraph(comps);
       setNodes(graph.nodes);
       setSegments(graph.segments);
     };
 
     tryExtract();
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     // Check periodically in case data arrives later (simple integration fallback)
     const interval = setInterval(tryExtract, 2000);
     return () => clearInterval(interval);
@@ -34,14 +42,23 @@ export const Redundant_SimpAnalysisTab = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'sans-serif' }}>
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
       {/* Top Bar */}
       <div style={{ height: '50px', background: '#1e1e1e', color: 'white', display: 'flex', alignItems: 'center', padding: '0 20px', borderBottom: '1px solid #333' }}>
         <h2 style={{ margin: 0, fontSize: '18px', marginRight: '20px' }}>Smart 2D Analyzer (GCM)</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <label style={{ fontSize: '12px', color: '#aaa' }}>Analysis Plane:</label>
+<<<<<<< Updated upstream
           <select
             value={plane}
+=======
+          <select
+            value={plane}
+>>>>>>> Stashed changes
             onChange={(e) => setPlane(e.target.value)}
             style={{ padding: '5px', background: '#2c2c2c', color: 'white', border: '1px solid #555' }}
           >

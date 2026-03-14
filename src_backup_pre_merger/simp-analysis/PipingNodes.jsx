@@ -15,13 +15,21 @@ export const PipingNodes = () => {
 
   const bind = useDrag(({ active, event, movement: [mx, my], args: [id], memo }) => {
     if (event) event.stopPropagation();
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     // Start of drag: remember initial node position
     if (!memo) {
       memo = [...nodes[id].pos];
       if (setOrbitEnabled) setOrbitEnabled(false);
     }
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     // Calculate new position using accumulated movement
     const worldDx = mx / camera.zoom;
     const worldDy = -my / camera.zoom; // Invert Y because screen Y goes down, world Y goes up
@@ -30,26 +38,45 @@ export const PipingNodes = () => {
     if (plane === 'XY') { newPos[0] += worldDx; newPos[1] += worldDy; }
     if (plane === 'XZ') { newPos[0] += worldDx; newPos[2] -= worldDy; }
     if (plane === 'YZ') { newPos[1] += worldDx; newPos[2] += worldDy; }
+<<<<<<< Updated upstream
 
     // Grid snap to 100mm
     newPos = newPos.map(v => Math.round(v / 100) * 100);
     moveNode(id, newPos);
 
+=======
+
+    // Grid snap to 100mm
+    newPos = newPos.map(v => Math.round(v / 100) * 100);
+    moveNode(id, newPos);
+
+>>>>>>> Stashed changes
     if (!active) {
       if (setOrbitEnabled) setOrbitEnabled(true);
       return memo; // Final return
     }
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     return memo;
   });
 
   return (
     <group>
       {Object.entries(nodes).map(([id, node]) => (
+<<<<<<< Updated upstream
         <mesh
           key={id}
           position={node.pos}
           {...bind(id)}
+=======
+        <mesh
+          key={id}
+          position={node.pos}
+          {...bind(id)}
+>>>>>>> Stashed changes
           onClick={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
         >

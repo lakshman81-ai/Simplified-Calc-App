@@ -37,6 +37,7 @@ export const MarqueeZoom = () => {
 
         const handlePointerUp = (e) => {
             if (!startPoint) return;
+<<<<<<< Updated upstream
 
             const endPoint = { x: e.clientX, y: e.clientY };
 
@@ -63,6 +64,34 @@ export const MarqueeZoom = () => {
 
                 let targetPos = new THREE.Vector3();
 
+=======
+
+            const endPoint = { x: e.clientX, y: e.clientY };
+
+            // Check if user just clicked instead of dragging
+            const dist = Math.sqrt(Math.pow(endPoint.x - startPoint.x, 2) + Math.pow(endPoint.y - startPoint.y, 2));
+
+            if (dist > 10) {
+                // We have a box. We need to find what's inside or calculate the new view bounds.
+                const rect = gl.domElement.getBoundingClientRect();
+
+                // Convert screen space box center to NDC
+                const boxCenterX = (startPoint.x + endPoint.x) / 2;
+                const boxCenterY = (startPoint.y + endPoint.y) / 2;
+
+                const ndcX = ((boxCenterX - rect.left) / rect.width) * 2 - 1;
+                const ndcY = -((boxCenterY - rect.top) / rect.height) * 2 + 1;
+
+                // Raycast from the center of the marquee box
+                const raycaster = new THREE.Raycaster();
+                raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
+
+                // Find intersections with all objects in the scene
+                const intersects = raycaster.intersectObjects(scene.children, true);
+
+                let targetPos = new THREE.Vector3();
+
+>>>>>>> Stashed changes
                 if (intersects.length > 0) {
                     targetPos.copy(intersects[0].point);
                 } else {
@@ -76,32 +105,53 @@ export const MarqueeZoom = () => {
                     // Calculate zoom ratio based on the larger dimension of the marquee box
                     const boxWidth = Math.abs(endPoint.x - startPoint.x);
                     const boxHeight = Math.abs(endPoint.y - startPoint.y);
+<<<<<<< Updated upstream
 
                     const maxScreenDim = Math.max(rect.width, rect.height);
                     const maxBoxDim = Math.max(boxWidth, boxHeight);
 
                     const zoomRatio = maxScreenDim / maxBoxDim;
 
+=======
+
+                    const maxScreenDim = Math.max(rect.width, rect.height);
+                    const maxBoxDim = Math.max(boxWidth, boxHeight);
+
+                    const zoomRatio = maxScreenDim / maxBoxDim;
+
+>>>>>>> Stashed changes
                     if (camera.isPerspectiveCamera) {
                         // Move camera closer along its current direction vector
                         const dir = new THREE.Vector3().subVectors(camera.position, controls ? controls.target : targetPos).normalize();
                         const currentDistance = camera.position.distanceTo(controls ? controls.target : targetPos);
                         const newDistance = currentDistance / zoomRatio;
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
                         camera.position.copy(targetPos).add(dir.multiplyScalar(newDistance));
                     } else if (camera.isOrthographicCamera) {
                         camera.zoom *= zoomRatio;
                         camera.updateProjectionMatrix();
                         camera.position.set(targetPos.x, targetPos.y, targetPos.z);
                     }
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
                     if (controls) {
                         controls.target.copy(targetPos);
                         controls.update();
                     }
                 }
             }
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
             setStartPoint(null);
             setCurrentPoint(null);
             setActiveTool('select'); // Reset to select tool after zooming

@@ -91,17 +91,29 @@ export const useAnalysisStore = create((set, get) => ({
     get().recalcSegmentLengths();
     get().runAnalysis();
   },
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
   adjustSegmentDelta: (segId, dx, dy, dz) => {
     const { nodes, segments } = get();
     const seg = segments.find(s => s.id === segId);
     if (!seg) return;
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     // Simple approach: Adjust the endNode position based on startNode + new deltas
     // In a real FEA app, this would shift the entire downstream system.
     const startNode = nodes[seg.startNode];
     const endNodeId = seg.endNode;
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     if (startNode) {
        const newPos = [
           startNode.pos[0] + dx,
@@ -128,7 +140,11 @@ export const useAnalysisStore = create((set, get) => ({
   updateSegmentProperty: (segIds, updates) => {
     const { segments, fittingData } = get();
     const ids = Array.isArray(segIds) ? segIds : [segIds];
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     let newSegments = [...segments];
     let newFittingData = { ...fittingData };
     let firstUpdatedSegIdx = -1;
@@ -136,7 +152,11 @@ export const useAnalysisStore = create((set, get) => ({
     ids.forEach(segId => {
       const segIdx = newSegments.findIndex(s => s.id === segId);
       if (segIdx === -1) return;
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
       if (firstUpdatedSegIdx === -1) firstUpdatedSegIdx = segIdx;
 
       const seg = newSegments[segIdx];
@@ -144,10 +164,17 @@ export const useAnalysisStore = create((set, get) => ({
 
       if (updates.od_in !== undefined || updates.wt_in !== undefined) {
         newFittingData[segId] = getSIFData(
+<<<<<<< Updated upstream
           seg.compType,
           newSegments[segIdx].od_in,
           newSegments[segIdx].wt_in,
           true,
+=======
+          seg.compType,
+          newSegments[segIdx].od_in,
+          newSegments[segIdx].wt_in,
+          true,
+>>>>>>> Stashed changes
           'LR'
         );
       }
@@ -156,14 +183,24 @@ export const useAnalysisStore = create((set, get) => ({
     if (firstUpdatedSegIdx === -1) return;
 
     set({ segments: newSegments, fittingData: newFittingData });
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     // If material changed, attempt to update global params (simplified assumption: system uses 1 material)
     if (updates.material) {
         const tempC = (get().params.designTemp_F - 32) * 5 / 9;
         const props = getMaterialProperties(
+<<<<<<< Updated upstream
             updates.material,
             tempC,
             newSegments[firstUpdatedSegIdx].od_in * 25.4,
+=======
+            updates.material,
+            tempC,
+            newSegments[firstUpdatedSegIdx].od_in * 25.4,
+>>>>>>> Stashed changes
             newSegments[firstUpdatedSegIdx].wt_in * 25.4
         );
         if (props && props.E) {
@@ -188,11 +225,19 @@ export const useAnalysisStore = create((set, get) => ({
     const { nodes, segments, fittingData } = get();
     const segIdx = segments.findIndex(s => s.id === segId);
     if (segIdx === -1) return;
+<<<<<<< Updated upstream
 
     const origSeg = segments[segIdx];
     const startNode = nodes[origSeg.startNode];
     const endNode = nodes[origSeg.endNode];
 
+=======
+
+    const origSeg = segments[segIdx];
+    const startNode = nodes[origSeg.startNode];
+    const endNode = nodes[origSeg.endNode];
+
+>>>>>>> Stashed changes
     if (!startNode || !endNode) return;
 
     // Create new node at point
@@ -234,7 +279,11 @@ export const useAnalysisStore = create((set, get) => ({
 
     const newSegments = [...segments];
     newSegments.splice(segIdx, 1, seg1, seg2);
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     // Copy SIF data
     const newFittingData = { ...fittingData };
     if (newFittingData[origSeg.id]) {
@@ -253,7 +302,11 @@ export const useAnalysisStore = create((set, get) => ({
   runAnalysis: () => {
     get().clearLog();
     const { nodes, segments, params, includeSIF, fittingData, activeSolver } = get();
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     // Payload serialization for Pure Solver
     const payload = JSON.parse(JSON.stringify({
         nodes,
@@ -269,10 +322,17 @@ export const useAnalysisStore = create((set, get) => ({
       const result = solveGC3D(payload);
       console.timeEnd('solveGC3D');
 
+<<<<<<< Updated upstream
       set({
           legResults: result.legResults,
           nodeResults: result.nodeResults,
           criticalNode: result.criticalNode,
+=======
+      set({
+          legResults: result.legResults,
+          nodeResults: result.nodeResults,
+          criticalNode: result.criticalNode,
+>>>>>>> Stashed changes
           overallResult: result.overallResult,
           debugLog: [...get().debugLog, ...result.debugLog]
       });
@@ -282,10 +342,17 @@ export const useAnalysisStore = create((set, get) => ({
       const { results, debugLog } = runExtendedSolver(exPayload);
       console.timeEnd('runExtendedSolver');
 
+<<<<<<< Updated upstream
       set({
           legResults: results.legResults,
           nodeResults: results.nodeResults,
           criticalNode: results.criticalNode,
+=======
+      set({
+          legResults: results.legResults,
+          nodeResults: results.nodeResults,
+          criticalNode: results.criticalNode,
+>>>>>>> Stashed changes
           overallResult: results.overallResult,
           debugLog: [...get().debugLog, ...debugLog]
       });
