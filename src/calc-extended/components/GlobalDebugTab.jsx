@@ -80,17 +80,25 @@ export default function GlobalDebugTab() {
 
              <div style={styles.codeBlock}>
                 <div style={{ color: '#cbd5e1', fontWeight: 'bold', marginBottom: '4px' }}>--- Loop Sizing Rules ---</div>
-                <div>Width (W) is fixed to rack spacing step: {rackResults.dimensions.W_ft.toFixed(2)} ft</div>
-                <div>Calculated Height (H) = (L - W) / 2</div>
-                <div>Calculated L (Absorbing Leg Needed) for Line {rackResults.governingLine.id}:</div>
-                <div>L = sqrt( (3 * E * OD * ΔX) / (144 * AllowableStress) )</div>
-                {rackResults.meta.methodology === '2D_BUNDLE' && (
-                  <div style={{ color: '#f59e0b' }}>* Applying 1.3x Bundle Stiffness Multiplier (2D BUNDLE Mode)</div>
-                )}
-                <div style={{ marginTop: '8px' }}>Final Generated Geometry:</div>
-                <div>Width (W): <span style={{ color: '#38bdf8' }}>{rackResults.dimensions.W_ft.toFixed(2)} ft</span></div>
-                <div>Height (H): <span style={{ color: '#38bdf8' }}>{rackResults.dimensions.H_ft.toFixed(2)} ft</span></div>
-                <div>Total Absorber (L): <span style={{ color: '#10b981' }}>{rackResults.dimensions.L_req_ft.toFixed(2)} ft</span></div>
+                {(() => {
+                  const govLine = rackResults.lines.find(l => l.id === rackResults.governingLine.id) || rackResults.lines[0];
+                  if (!govLine) return null;
+                  return (
+                    <>
+                      <div>Width (W) is fixed to rack spacing step: {govLine.dimensions.W_ft.toFixed(2)} ft</div>
+                      <div>Calculated Height (H) = (L - W) / 2</div>
+                      <div>Calculated L (Absorbing Leg Needed) for Line {govLine.id}:</div>
+                      <div>L = sqrt( (3 * E * OD * ΔX) / (144 * AllowableStress) )</div>
+                      {rackResults.meta.methodology === '2D_BUNDLE' && (
+                        <div style={{ color: '#f59e0b' }}>* Applying 1.3x Bundle Stiffness Multiplier (2D BUNDLE Mode)</div>
+                      )}
+                      <div style={{ marginTop: '8px' }}>Final Generated Geometry:</div>
+                      <div>Width (W): <span style={{ color: '#38bdf8' }}>{govLine.dimensions.W_ft.toFixed(2)} ft</span></div>
+                      <div>Height (H): <span style={{ color: '#38bdf8' }}>{govLine.dimensions.H_ft.toFixed(2)} ft</span></div>
+                      <div>Total Absorber (L): <span style={{ color: '#10b981' }}>{govLine.dimensions.L_req_ft.toFixed(2)} ft</span></div>
+                    </>
+                  );
+                })()}
              </div>
           </>
         )}

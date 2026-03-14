@@ -8,23 +8,23 @@ import { usePipeRackStore } from '../store/usePipeRackStore';
 import { useAppStore } from '../../store/appStore';
 import { getUnitLabel, formatUnit } from '../../calc-extended/utils/units';
 
-export default function RackResultsGrid() {
+export default function RackResultsGrid({ expanded, onToggle }) {
   const { results } = usePipeRackStore();
   const unitSystem = useAppStore(state => state.unitSystem);
-  const [expanded, setExpanded] = useState(true);
 
   return (
-    <div style={{ height: expanded ? 'auto' : '35px', overflow: 'hidden' }}>
-      <div style={styles.header} onClick={() => setExpanded(!expanded)}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={styles.header} onClick={onToggle}>
         <span style={{ marginRight: '8px' }}>{expanded ? '▼' : '▶'}</span>
         Pipe Rack Analysis Data
         {results && <span style={{ marginLeft: '12px', color: '#10b981', fontSize: '12px' }}>— Method: {results.methodologyUsed}</span>}
       </div>
 
-      {!results && expanded && <div style={{color: '#64748b'}}>Awaiting loop calculation...</div>}
+      <div style={{ flex: 1, overflowY: 'auto', display: expanded ? 'block' : 'none' }}>
+        {!results && <div style={{color: '#64748b'}}>Awaiting loop calculation...</div>}
 
-      {results && expanded && (
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+        {results && (
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
           <thead>
             <tr style={{ background: '#1e293b', color: '#94a3b8', textAlign: 'left' }}>
               <th style={{ padding: '8px' }}>Line ID</th>
@@ -58,9 +58,10 @@ export default function RackResultsGrid() {
                 <td style={{ padding: '8px', color: '#f59e0b' }}>{formatUnit(unitSystem, 'length', line.dimensions.G2_ft, 2)}</td>
               </tr>
             ))}
-          </tbody>
-        </table>
-      )}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }

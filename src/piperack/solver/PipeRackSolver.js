@@ -148,5 +148,23 @@ export const solvePipeRack = (lines, globalSettings, methodology = 'FLUOR', glob
     };
   });
 
-  return { lines: rackResults };
+  // Determine Governing Line (the one that requires the largest loop)
+  let maxL = 0;
+  let governingLine = null;
+  rackResults.forEach(r => {
+    if (r.dimensions.L_req_ft > maxL) {
+      maxL = r.dimensions.L_req_ft;
+      governingLine = r;
+    }
+  });
+
+  return {
+    lines: rackResults,
+    meta: {
+      methodology,
+      governingDeltaX: governingLine ? governingLine.deltaIn : 0,
+      maxL
+    },
+    governingLine: governingLine ? { id: governingLine.id } : { id: 'None' }
+  };
 };
