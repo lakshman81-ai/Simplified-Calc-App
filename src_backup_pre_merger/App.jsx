@@ -4,11 +4,11 @@ import { TopNav } from './components/TopNav';
 import { Viewer3DTab } from './components/Viewer3DTab';
 import { DataTableTab } from './components/DataTableTab';
 import { TransformTab } from './components/TransformTab';
-import { Redundant_SimpAnalysisTab } from './simp-analysis/Redundant_SimpAnalysisTab';
+import { SimpAnalysisTab } from './components/SimpAnalysisTab';
 import { Spl2BundleTab } from './spl2-bundle';
 import { ConfigTab } from './config/ConfigTab';
 import SketcherTab from './sketcher/SketcherTab';
-import { AnalysisTab } from './3d-analysis';
+import { GC3DTab } from './gc3d';
 import './App.css';
 
 function App() {
@@ -26,10 +26,10 @@ function App() {
       {activeTab === 'datatable' && <DataTableTab />}
       {activeTab === 'transform' && <TransformTab />}
       {activeTab === 'sketcher' && <SketcherTab />}
-      {activeTab === 'simpAnalysis' && <Redundant_SimpAnalysisTab />}
+      {activeTab === 'simpAnalysis' && <SimpAnalysisTab />}
       {activeTab === 'spl2bundle' && <Spl2BundleTab />}
       {activeTab === 'config' && <ConfigTab />}
-      {activeTab === '3d-analysis' && <AnalysisTab />}
+      {activeTab === 'gc3d' && <GC3DTab />}
     </div>
   );
 }

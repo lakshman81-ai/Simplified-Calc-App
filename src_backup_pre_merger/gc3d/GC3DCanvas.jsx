@@ -169,17 +169,17 @@ export const GC3DCanvas = () => {
   const activeTool = useGC3DStore(s => s.activeTool);
   const setActiveTool = useGC3DStore(s => s.setActiveTool);
   const setCameraViewMode = useGC3DStore(s => s.setCameraViewMode);
-  
+
   return (
     <div style={{ flex: 1, position: 'relative', background: '#0f172a' }}>
-      
+
       {/* Top Toolbar Overlay */}
       <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: '8px', background: 'rgba(30, 41, 59, 0.8)', padding: '8px', borderRadius: '8px', border: '1px solid #334155' }}>
         <button onClick={() => setCameraViewMode('auto')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>⛶ Auto Center</button>
         <button onClick={() => setCameraViewMode('selected')} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>🔍 Zoom Selected</button>
-        <button 
-           onClick={() => setActiveTool(activeTool === 'marquee' ? 'select' : 'marquee')} 
-           title="Click and drag to zoom" 
+        <button
+           onClick={() => setActiveTool(activeTool === 'marquee' ? 'select' : 'marquee')}
+           title="Click and drag to zoom"
            style={{ background: activeTool === 'marquee' ? '#ef4444' : '#3b82f6', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}
         >
           🔲 Marquee
@@ -195,8 +195,8 @@ export const GC3DCanvas = () => {
           {isOrtho ? 'Ortho' : 'Persp'}
         </button>
         <div style={{ width: '1px', background: '#475569', margin: '0 4px' }} />
-        <button 
-           onClick={() => setActiveTool(activeTool === 'anchor' ? 'select' : 'anchor')} 
+        <button
+           onClick={() => setActiveTool(activeTool === 'anchor' ? 'select' : 'anchor')}
            style={{ background: activeTool === 'anchor' ? '#ef4444' : '#475569', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}
         >
           <span style={{ display: 'inline-block', width: '10px', height: '10px', background: 'white', clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}></span>
@@ -223,9 +223,9 @@ export const GC3DCanvas = () => {
         <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
           <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="white" />
         </GizmoHelper>
-        
+
         {activeTool === 'anchor' && <InteractivePlane />}
-        
+
         <MarqueeZoom />
 
         <Suspense fallback={null}>

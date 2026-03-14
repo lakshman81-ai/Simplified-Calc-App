@@ -49,8 +49,8 @@ export const TopNav = () => {
         <TabItem id="transform" name="3D to 2D Transformation" icon={Layers} />
         <TabItem id="sketcher" name="2D Sketcher" icon={PenTool} />
         <TabItem id="datatable" name="Data Table" icon={Table} />
-        <TabItem id="simpAnalysis" name="Redundant_Simp. Analysis" icon={Activity} />
-        <TabItem id="3d-analysis" name="3D Simpl. Analysis" icon={Activity} />
+        <TabItem id="simpAnalysis" name="Simp. Analysis" icon={Activity} />
+        <TabItem id="gc3d" name="GC 3D Analyzer" icon={Activity} />
         <TabItem id="spl2bundle" name="Simpl. Analysis 2D bundle" icon={Calculator} />
         <TabItem id="config" name="Config" icon={Settings} />
       </div>

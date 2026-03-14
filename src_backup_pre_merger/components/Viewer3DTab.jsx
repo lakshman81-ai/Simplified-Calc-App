@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Activity } from 'lucide-react';
-import { useAnalysisStore } from '../3d-analysis';
+import { useGC3DStore } from '../gc3d';
 import { useAppStore } from '../store/appStore';
 import { PcfViewer3D } from '../utils/viewer3d';
 import { parsePcf } from '../utils/pcfParser';
@@ -210,8 +210,8 @@ export const Viewer3DTab = () => {
               onClick={() => {
                 const selected = components.filter(c => selectedIds.has(c.id));
                 const params = useAppStore.getState().processParams || {};
-                useAnalysisStore.getState().importFromViewer(selected, params);
-                useAppStore.getState().setActiveTab('3d-analysis');
+                useGC3DStore.getState().importFromViewer(selected, params);
+                useAppStore.getState().setActiveTab('gc3d');
               }}
               className="px-3 py-1 bg-blue-500 text-white text-[11px] rounded font-semibold shadow-sm hover:bg-blue-600 flex items-center gap-1"
               disabled={selectedIds.size === 0}

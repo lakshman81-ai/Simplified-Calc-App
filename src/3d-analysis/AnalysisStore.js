@@ -3,7 +3,7 @@ import { getSIFData } from './GC3DSIFEngine';
 import { getMaterialProperties } from '../utils/materialUtils';
 import { solveGC3D } from './GC3DSolver';
 
-export const useGC3DStore = create((set, get) => ({
+export const useAnalysisStore = create((set, get) => ({
   nodes: {},
   segments: [],
   includeSIF: true,
@@ -91,17 +91,17 @@ export const useGC3DStore = create((set, get) => ({
     get().recalcSegmentLengths();
     get().runAnalysis();
   },
-  
+
   adjustSegmentDelta: (segId, dx, dy, dz) => {
     const { nodes, segments } = get();
     const seg = segments.find(s => s.id === segId);
     if (!seg) return;
-    
+
     // Simple approach: Adjust the endNode position based on startNode + new deltas
     // In a real FEA app, this would shift the entire downstream system.
     const startNode = nodes[seg.startNode];
     const endNodeId = seg.endNode;
-    
+
     if (startNode) {
        const newPos = [
           startNode.pos[0] + dx,
@@ -128,7 +128,7 @@ export const useGC3DStore = create((set, get) => ({
   updateSegmentProperty: (segIds, updates) => {
     const { segments, fittingData } = get();
     const ids = Array.isArray(segIds) ? segIds : [segIds];
-    
+
     let newSegments = [...segments];
     let newFittingData = { ...fittingData };
     let firstUpdatedSegIdx = -1;
@@ -136,7 +136,7 @@ export const useGC3DStore = create((set, get) => ({
     ids.forEach(segId => {
       const segIdx = newSegments.findIndex(s => s.id === segId);
       if (segIdx === -1) return;
-      
+
       if (firstUpdatedSegIdx === -1) firstUpdatedSegIdx = segIdx;
 
       const seg = newSegments[segIdx];
@@ -144,10 +144,10 @@ export const useGC3DStore = create((set, get) => ({
 
       if (updates.od_in !== undefined || updates.wt_in !== undefined) {
         newFittingData[segId] = getSIFData(
-          seg.compType, 
-          newSegments[segIdx].od_in, 
-          newSegments[segIdx].wt_in, 
-          true, 
+          seg.compType,
+          newSegments[segIdx].od_in,
+          newSegments[segIdx].wt_in,
+          true,
           'LR'
         );
       }
@@ -156,14 +156,14 @@ export const useGC3DStore = create((set, get) => ({
     if (firstUpdatedSegIdx === -1) return;
 
     set({ segments: newSegments, fittingData: newFittingData });
-    
+
     // If material changed, attempt to update global params (simplified assumption: system uses 1 material)
     if (updates.material) {
         const tempC = (get().params.designTemp_F - 32) * 5 / 9;
         const props = getMaterialProperties(
-            updates.material, 
-            tempC, 
-            newSegments[firstUpdatedSegIdx].od_in * 25.4, 
+            updates.material,
+            tempC,
+            newSegments[firstUpdatedSegIdx].od_in * 25.4,
             newSegments[firstUpdatedSegIdx].wt_in * 25.4
         );
         if (props && props.E) {
@@ -188,11 +188,11 @@ export const useGC3DStore = create((set, get) => ({
     const { nodes, segments, fittingData } = get();
     const segIdx = segments.findIndex(s => s.id === segId);
     if (segIdx === -1) return;
-    
+
     const origSeg = segments[segIdx];
     const startNode = nodes[origSeg.startNode];
     const endNode = nodes[origSeg.endNode];
-    
+
     if (!startNode || !endNode) return;
 
     // Create new node at point
@@ -234,7 +234,7 @@ export const useGC3DStore = create((set, get) => ({
 
     const newSegments = [...segments];
     newSegments.splice(segIdx, 1, seg1, seg2);
-    
+
     // Copy SIF data
     const newFittingData = { ...fittingData };
     if (newFittingData[origSeg.id]) {
@@ -252,7 +252,7 @@ export const useGC3DStore = create((set, get) => ({
 
   runAnalysis: () => {
     get().clearLog();
-    const { nodes, segments, params, includeSIF, fittingData } = get();
+    const { nodes, segments, params, includeSIF, fittingData, activeSolver } = get();
 
     // Payload serialization for Pure Solver
     const payload = JSON.parse(JSON.stringify({
@@ -260,20 +260,36 @@ export const useGC3DStore = create((set, get) => ({
         segments,
         params,
         fittingData,
-        includeSIF
+        includeSIF,
+        activeSolver
     }));
 
-    console.time('solveGC3D');
-    const result = solveGC3D(payload);
-    console.timeEnd('solveGC3D');
+    if (activeSolver === 'GC3D') {
+      console.time('solveGC3D');
+      const result = solveGC3D(payload);
+      console.timeEnd('solveGC3D');
 
-    set({
-        legResults: result.legResults,
-        nodeResults: result.nodeResults,
-        criticalNode: result.criticalNode,
-        overallResult: result.overallResult,
-        debugLog: [...get().debugLog, ...result.debugLog]
-    });
+      set({
+          legResults: result.legResults,
+          nodeResults: result.nodeResults,
+          criticalNode: result.criticalNode,
+          overallResult: result.overallResult,
+          debugLog: [...get().debugLog, ...result.debugLog]
+      });
+    } else {
+      console.time('runExtendedSolver');
+      const exPayload = buildExtendedPayload(payload, activeSolver);
+      const { results, debugLog } = runExtendedSolver(exPayload);
+      console.timeEnd('runExtendedSolver');
+
+      set({
+          legResults: results.legResults,
+          nodeResults: results.nodeResults,
+          criticalNode: results.criticalNode,
+          overallResult: results.overallResult,
+          debugLog: [...get().debugLog, ...debugLog]
+      });
+    }
   },
 
   importFromViewer: (selectedComps, globalParams) => {
