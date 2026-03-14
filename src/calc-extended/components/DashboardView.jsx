@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useExtendedStore } from '../store/useExtendedStore';
 import { runExtendedSolver } from '../solver/ExtendedSolver';
 
