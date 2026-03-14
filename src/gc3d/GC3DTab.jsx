@@ -24,6 +24,12 @@ export const GC3DTab = () => {
         </div>
 
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <button style={{ background: '#1e293b', color: '#f59e0b', padding: '4px 8px', fontSize: '12px', border: '1px solid #f59e0b', borderRadius: '4px', cursor: 'pointer' }} onClick={async () => {
+              const m = await import('../calc-extended/mocks/mock-data.js');
+              useGC3DStore.getState().loadMockData(m.MultiPlane_10Leg_GM);
+            }}>
+              🧪 Load Mock Data
+            </button>
             <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f8fafc', fontSize: '12px' }}>
                 <span style={{ color: '#94a3b8' }}>Color Mode:</span>
                 <select

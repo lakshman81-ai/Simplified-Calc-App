@@ -56,6 +56,24 @@ export const usePipeRackStore = create((set) => ({
     lines: state.lines.map(l => l.id === id ? { ...l, [key]: value } : l)
   })),
 
+  updateLineOverride: (id, dimKey, value) => set((state) => {
+    if (!state.results) return state;
+    return {
+      results: {
+        ...state.results,
+        lines: state.results.lines.map(l => {
+          if (l.id === id) {
+            return {
+              ...l,
+              dimensions: { ...l.dimensions, [dimKey]: value }
+            };
+          }
+          return l;
+        })
+      }
+    };
+  }),
+
   updateLineVessel: (id, key, value) => set((state) => ({
     lines: state.lines.map(l => {
       if (l.id === id) {

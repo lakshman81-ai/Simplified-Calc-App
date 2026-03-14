@@ -51,7 +51,7 @@ const SegmentMesh = ({ start, end, results, heatmapMode }) => {
   const up = new THREE.Vector3(0, 1, 0);
   const quaternion = new THREE.Quaternion().setFromUnitVectors(up, axis);
 
-  let color = '#334155';
+  let color = '#cbd5e1'; // Light grey high-contrast default
   if (results && results.axes) {
     let primaryAxis = 'X';
     if (Math.abs(axis.y) > 0.5) primaryAxis = 'Y';
@@ -82,6 +82,7 @@ const SegmentMesh = ({ start, end, results, heatmapMode }) => {
 
 export default function DashboardView() {
   const { unitSystem, methodology, calculationStatus, heatmapMode, setHeatmapMode, setAnchor, inputs, vessel, boundaryMovement, constraints, results, nodes, segments, anchors, setResults } = useExtendedStore();
+  const [resultsExpanded, setResultsExpanded] = useState(true);
 
   const handleNodeClick = (nodeId) => {
     if (!anchors.anchor1) setAnchor(1, nodeId);
@@ -226,16 +227,21 @@ export default function DashboardView() {
           <DebugConsole />
         </div>
 
-        <div style={styles.resultsContainer}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-             <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#f8fafc' }}>Stress Engine Results</div>
+        <div style={{...styles.resultsContainer, height: resultsExpanded ? 'auto' : '45px', overflow: 'hidden'}}>
+          <div
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', cursor: 'pointer' }}
+            onClick={() => setResultsExpanded(!resultsExpanded)}
+          >
+             <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '8px' }}>
+               {resultsExpanded ? '▼' : '▶'} Stress Engine Results
+             </div>
              <div style={{ color: '#94a3b8', fontSize: '12px' }}>
                 Status: <span style={{ color: '#38bdf8', fontWeight: 'bold' }}>[{calculationStatus}]</span>
                 {results && <span style={{ marginLeft: '12px', color: '#10b981' }}>— Method: {results.meta.methodologyUsed}</span>}
              </div>
           </div>
 
-          {results && (
+          {results && resultsExpanded && (
             <div style={{ display: 'flex', gap: '16px' }}>
 
               {/* Left DataGrid (Piping Stress / Axes) */}

@@ -9,11 +9,14 @@ import { usePipeRackStore } from '../store/usePipeRackStore';
 import { solvePipeRack } from '../solver/PipeRackSolver';
 
 import { useExtendedStore } from '../../calc-extended/store/useExtendedStore';
+import { useAppStore } from '../../store/appStore';
+import { getUnitLabel, formatUnit, MetricToImperial } from '../../calc-extended/utils/units';
 
 export default function RackInputsDock() {
   const { globalSettings, lines, updateGlobalSetting, updateLine, addLine, removeLine, setResults } = usePipeRackStore();
   const methodology = useExtendedStore(state => state.methodology);
   const globalInputs = useExtendedStore(state => state.inputs);
+  const unitSystem = useAppStore(state => state.unitSystem);
 
   const handleRun = () => {
     const res = solvePipeRack(lines, globalSettings, methodology, globalInputs);
@@ -26,19 +29,22 @@ export default function RackInputsDock() {
       <div style={styles.header}>Global Rack Parameters</div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-        <span>Anchor Dist (ft):</span>
+        <span>Anchor Dist ({getUnitLabel(unitSystem, 'length')}):</span>
         <input type="number" style={{ width: '80px', background: '#1e293b', border: '1px solid #334155', color: '#fff', padding: '2px' }}
-               value={globalSettings.anchorDistanceFt} onChange={e => updateGlobalSetting('anchorDistanceFt', Number(e.target.value))} />
+               value={unitSystem === 'Imperial' ? globalSettings.anchorDistanceFt : formatUnit(unitSystem, 'length', globalSettings.anchorDistanceFt, 2)}
+               onChange={e => updateGlobalSetting('anchorDistanceFt', unitSystem === 'Imperial' ? Number(e.target.value) : MetricToImperial.m_to_ft(Number(e.target.value)))} />
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-        <span>Spacing Step (ft):</span>
+        <span>Spacing Step ({getUnitLabel(unitSystem, 'length')}):</span>
         <input type="number" style={{ width: '80px', background: '#1e293b', border: '1px solid #334155', color: '#fff', padding: '2px' }}
-               value={globalSettings.defaultSpacingFt} onChange={e => updateGlobalSetting('defaultSpacingFt', Number(e.target.value))} />
+               value={unitSystem === 'Imperial' ? globalSettings.defaultSpacingFt : formatUnit(unitSystem, 'length', globalSettings.defaultSpacingFt, 2)}
+               onChange={e => updateGlobalSetting('defaultSpacingFt', unitSystem === 'Imperial' ? Number(e.target.value) : MetricToImperial.m_to_ft(Number(e.target.value)))} />
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-        <span>Allow Stress (PSI):</span>
+        <span>Allow Stress ({getUnitLabel(unitSystem, 'pressure')}):</span>
         <input type="number" style={{ width: '80px', background: '#1e293b', border: '1px solid #334155', color: '#fff', padding: '2px' }}
-               value={globalSettings.allowableStressPsi} onChange={e => updateGlobalSetting('allowableStressPsi', Number(e.target.value))} />
+               value={unitSystem === 'Imperial' ? globalSettings.allowableStressPsi : formatUnit(unitSystem, 'pressure', globalSettings.allowableStressPsi, 2)}
+               onChange={e => updateGlobalSetting('allowableStressPsi', unitSystem === 'Imperial' ? Number(e.target.value) : MetricToImperial.MPa_to_psi(Number(e.target.value)))} />
       </div>
 
       <div style={{ ...styles.header, marginTop: '16px', display: 'flex', justifyContent: 'space-between' }}>
@@ -69,9 +75,10 @@ export default function RackInputsDock() {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>Temp (°F):</span>
+            <span>Temp ({getUnitLabel(unitSystem, 'temp')}):</span>
             <input type="number" style={{ width: '60px', background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '2px' }}
-                   value={line.tOperate} onChange={e => updateLine(line.id, 'tOperate', Number(e.target.value))} />
+                   value={unitSystem === 'Imperial' ? line.tOperate : formatUnit(unitSystem, 'temp', line.tOperate, 1)}
+                   onChange={e => updateLine(line.id, 'tOperate', unitSystem === 'Imperial' ? Number(e.target.value) : MetricToImperial.C_to_F(Number(e.target.value)))} />
           </div>
 
         </div>

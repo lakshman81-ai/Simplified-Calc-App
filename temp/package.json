@@ -1,0 +1,9 @@
+{
+  "name": "run_benchmarks",
+  "version": "1.0.0",
+  "main": "run_benchmarks.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-json-modules run_benchmarks.js"
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useExtendedStore } from '../store/useExtendedStore';
 import { useAppStore } from '../../store/appStore';
 import DashboardView from './DashboardView';
@@ -66,6 +66,12 @@ export default function CalcExtendedTab() {
     importFromGlobal(globalNodes, globalSegments);
   }, [importFromGlobal, globalNodes, globalSegments]);
 
+  // Force re-render of canvases after tab switch to avoid resize bugs
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+      setMounted(true);
+  }, [activeSubTab]);
+
   return (
     <div style={styles.container}>
       <div style={styles.subNav}>
@@ -84,10 +90,19 @@ export default function CalcExtendedTab() {
       </div>
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        {activeSubTab === '2d' && <Bundle2DSolverView />}
-        {activeSubTab === '3d' && <DashboardView />}
-        {activeSubTab === 'piperack' && <PipeRackTab />}
-        {activeSubTab === 'config' && <ConfigDatabaseTab />}
+        {/* Render Canvas components with display: none when inactive instead of unmounting to prevent WebGL Context Loss */}
+        <div className="subtab-content" style={{ display: activeSubTab === '2d' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%' }}>
+          <Bundle2DSolverView />
+        </div>
+        <div className="subtab-content" style={{ display: activeSubTab === '3d' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%' }}>
+          <DashboardView />
+        </div>
+        <div className="subtab-content" style={{ display: activeSubTab === 'piperack' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%' }}>
+          <PipeRackTab />
+        </div>
+        <div className="subtab-content" style={{ display: activeSubTab === 'config' ? 'flex' : 'none', flex: 1, flexDirection: 'column', height: '100%' }}>
+          <ConfigDatabaseTab />
+        </div>
       </div>
     </div>
   );

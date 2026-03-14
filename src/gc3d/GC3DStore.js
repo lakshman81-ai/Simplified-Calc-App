@@ -411,6 +411,56 @@ export const useGC3DStore = create((set, get) => ({
 
      set({ nodes, segments, fittingData });
      get().runAnalysis();
+  },
+
+  loadMockData: (mockData) => {
+      // Clear out old state
+      set({ nodes: {}, segments: [], fittingData: {}, legResults: [], nodeResults: {}, criticalNode: null, overallResult: 'PENDING' });
+
+      const { nodes: incomingNodes, segments: incomingSegments } = mockData;
+
+      const newNodes = {};
+      incomingNodes.forEach(n => {
+          newNodes[n.id] = {
+              pos: [n.x, n.y, n.z],
+              type: n.isAnchor ? 'anchor' : 'free',
+              label: n.id
+          };
+      });
+
+      const newSegments = incomingSegments.map(s => {
+          // Calculate length
+          const n1 = newNodes[s.startNodeId];
+          const n2 = newNodes[s.endNodeId];
+          const dx = n2.pos[0] - n1.pos[0];
+          const dy = n2.pos[1] - n1.pos[1];
+          const dz = n2.pos[2] - n1.pos[2];
+          const length_in = Math.sqrt(dx*dx + dy*dy + dz*dz) / 25.4;
+
+          let axis = 'X';
+          if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > Math.abs(dz)) axis = 'Y';
+          if (Math.abs(dz) > Math.abs(dx) && Math.abs(dz) > Math.abs(dy)) axis = 'Z';
+
+          return {
+              id: s.id,
+              startNode: s.startNodeId,
+              endNode: s.endNodeId,
+              compType: 'PIPE',
+              axis,
+              length_in,
+              od_in: s.od || 8.625,
+              wt_in: s.wt || 0.322,
+              material: s.material || 'Carbon Steel'
+          };
+      });
+
+      const fittingData = {};
+      newSegments.forEach(s => {
+          fittingData[s.id] = getSIFData(s.compType, s.od_in, s.wt_in, true, 'LR');
+      });
+
+      set({ nodes: newNodes, segments: newSegments, fittingData });
+      get().runAnalysis();
   }
 }));
 

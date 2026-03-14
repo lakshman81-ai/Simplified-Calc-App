@@ -57,15 +57,19 @@ const parseGeometry = (nodes, segments, anchor1Id, anchor2Id) => {
     const dy = Math.abs(s2.y - s1.y);
     const dz = Math.abs(s2.z - s1.z);
 
-    // Rule: Filter out Z-axis drops <= 3 ft
-    if (dz > 0 && dx === 0 && dy === 0 && dz <= 3) {
+    // Rule: Filter out Z-axis drops <= 3 ft (36 inches)
+    if (dz > 0 && dx === 0 && dy === 0 && dz <= 36) {
       shortDropsIgnored++;
       return; // Ignore this segment for flexibility
     }
 
-    bX += dy + dz; // Y and Z are perp to X
-    bY += dx + dz; // X and Z are perp to Y
-    bZ += dx + dy; // X and Y are perp to Z
+    // Accumulate bending legs.
+    // bX (Flexibility against X expansion) = length of segments in Y and Z.
+    // bY (Flexibility against Y expansion) = length of segments in X and Z.
+    // bZ (Flexibility against Z expansion) = length of segments in X and Y.
+    bX += dy + dz;
+    bY += dx + dz;
+    bZ += dx + dy;
   });
 
   return {
@@ -151,12 +155,12 @@ export const runExtendedSolver = (payload) => {
   const F_r = xRes.force; // Radial Load
   const V_l = zRes.force; // Long shear
   const V_c = yRes.force; // Circ shear
-  const momentArm = vessel.momentArm;
+  const momentArm = vessel?.momentArm || 0;
   const M_l = V_c * momentArm;
   const M_c = V_l * momentArm;
 
   // Phase 3: MIST Shell Shakedown Solver
-  const R = vessel.vesselOD / 2;
+  const R = (vessel?.vesselOD || 0) / 2;
   const T = vessel.vesselThk;
   const r_n = vessel.nozzleRad;
   const f = getDesignStress(material);
