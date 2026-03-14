@@ -2,6 +2,7 @@ import React from 'react';
 import RackInputsDock from './RackInputsDock';
 import RackVisualizer from './RackVisualizer';
 import RackResultsGrid from './RackResultsGrid';
+import SectionCreatorTab from './SectionCreatorTab';
 
 const styles = {
   container: { display: 'flex', flexDirection: 'column', height: '100%', width: '100%', backgroundColor: '#020617', color: '#e2e8f0', overflow: 'hidden' },
@@ -25,6 +26,7 @@ export default function PipeRackTab() {
       <div style={styles.bottomHalf}>
         <RackResultsGrid />
       </div>
+      <SectionCreatorTab />
     </div>
   );
 }

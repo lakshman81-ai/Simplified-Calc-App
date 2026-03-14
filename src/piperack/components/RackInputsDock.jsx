@@ -13,7 +13,7 @@ import { useAppStore } from '../../store/appStore';
 import { getUnitLabel, formatUnit, MetricToImperial } from '../../calc-extended/utils/units';
 
 export default function RackInputsDock() {
-  const { globalSettings, lines, updateGlobalSetting, updateLine, addLine, removeLine, setResults } = usePipeRackStore();
+  const { globalSettings, lines, updateGlobalSetting, updateLine, addLine, removeLine, setResults, toggleSectionCreator } = usePipeRackStore();
   const methodology = useExtendedStore(state => state.methodology);
   const globalInputs = useExtendedStore(state => state.inputs);
   const unitSystem = useAppStore(state => state.unitSystem);
@@ -84,9 +84,14 @@ export default function RackInputsDock() {
         </div>
       ))}
 
-      <button onClick={handleRun} style={{ background: '#10b981', color: '#fff', border: 'none', borderRadius: '4px', padding: '12px', fontWeight: 'bold', cursor: 'pointer', marginTop: 'auto' }}>
-        RUN LOOP NESTING ►
-      </button>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: 'auto' }}>
+        <button onClick={() => toggleSectionCreator(true)} style={{ background: '#8b5cf6', color: '#fff', border: 'none', borderRadius: '4px', padding: '12px', fontWeight: 'bold', cursor: 'pointer' }}>
+          📐 DESIGN PIPE RACK SECTION
+        </button>
+        <button onClick={handleRun} style={{ background: '#10b981', color: '#fff', border: 'none', borderRadius: '4px', padding: '12px', fontWeight: 'bold', cursor: 'pointer' }}>
+          RUN LOOP NESTING ►
+        </button>
+      </div>
 
     </div>
   );
