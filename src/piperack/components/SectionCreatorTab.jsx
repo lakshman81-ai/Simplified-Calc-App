@@ -18,13 +18,17 @@ const styles = {
 };
 
 export default function SectionCreatorTab() {
-    const { isSectionCreatorOpen, toggleSectionCreator, lines, globalSettings, structuralSettings, sectionLayout, setSectionLayout } = usePipeRackStore();
+    const { isSectionCreatorOpen, toggleSectionCreator, lines, globalSettings, structuralSettings, sectionLayout, setSectionLayout, movePipeTier, addTier, pushLog, logStream } = usePipeRackStore();
     const unitSystem = useAppStore(s => s.unitSystem);
+    const [terminalOpen, setTerminalOpen] = useState(true);
 
     useEffect(() => {
         if (isSectionCreatorOpen) {
             // Auto-run the solver layout
             const newLayout = generateSectionLayout(lines, globalSettings, structuralSettings);
+            if (newLayout.logs) {
+                newLayout.logs.forEach(log => pushLog(log));
+            }
             setSectionLayout(newLayout);
         }
     }, [isSectionCreatorOpen, lines, globalSettings, structuralSettings, setSectionLayout]);
@@ -55,9 +59,26 @@ export default function SectionCreatorTab() {
                         <input type="number" style={{ width: '60px', background: '#1e293b', color: '#fff', border: '1px solid #334155', padding: '2px' }} value={structuralSettings.tierGap_mm} onChange={(e) => usePipeRackStore.getState().updateStructuralSetting('tierGap_mm', Number(e.target.value))} />
                     </div>
 
-                    <div style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 'bold', marginTop: '24px', marginBottom: '8px' }}>AUTO-BERTHING ALGORITHM</div>
-                    <div style={{ fontSize: '11px', color: '#cbd5e1' }}>
-                        The engine sorts hot/heavy lines to the outside edges and leaves the center open for future expansion.
+                    <div style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 'bold', marginTop: '24px', marginBottom: '8px' }}>TIER CONFIGURATION</div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '12px' }}>
+                        <span>Tiers:</span>
+                        <input type="number" min="1" max="5" style={{ width: '60px', background: '#1e293b', color: '#fff', border: '1px solid #334155', padding: '2px' }} value={structuralSettings.numTiers || 3} onChange={(e) => usePipeRackStore.getState().updateStructuralSetting('numTiers', Number(e.target.value))} />
+                    </div>
+                    <button onClick={addTier} style={{ width: '100%', background: '#38bdf8', color: '#000', border: 'none', borderRadius: '4px', cursor: 'pointer', padding: '6px', fontSize: '12px', fontWeight: 'bold', marginBottom: '16px' }}>+ Add Tier</button>
+
+                    <div style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}>PIPE TIER CARDS</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {lines.map((line) => (
+                            <div key={line.id} style={{ background: '#1e293b', padding: '8px', borderRadius: '4px', fontSize: '11px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid #334155' }}>
+                                <button onClick={() => movePipeTier(line.id, 1)} style={{ background: '#334155', color: '#fff', border: 'none', borderRadius: '50%', width: '24px', height: '24px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>↑</button>
+                                <div style={{ flex: 1, padding: '0 8px', textAlign: 'center' }}>
+                                    <div style={{ fontWeight: 'bold', color: '#38bdf8', marginBottom: '2px' }}>{line.id} · {line.sizeNps}" {line.service.split('-')[0]}</div>
+                                    <div style={{ color: '#cbd5e1', fontSize: '10px', marginBottom: '2px' }}>{line.material} | {line.tOperate}°F</div>
+                                    <div style={{ color: '#94a3b8', fontSize: '10px' }}>Tier: {line.tier} | Loop: {line.loop_order?.toFixed(1) || 0}</div>
+                                </div>
+                                <button onClick={() => movePipeTier(line.id, -1)} style={{ background: '#334155', color: '#fff', border: 'none', borderRadius: '50%', width: '24px', height: '24px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>↓</button>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
@@ -74,6 +95,22 @@ export default function SectionCreatorTab() {
                     </div>
                 </div>
             </div>
+
+            <div style={{ height: terminalOpen ? '200px' : '34px', transition: '0.2s ease', background: '#020617', borderTop: '1px solid #1e293b', overflow: 'hidden', flexShrink: 0 }}>
+                <div style={{ background: '#0f172a', padding: '8px 16px', fontSize: '12px', fontWeight: 'bold', color: '#94a3b8', cursor: 'pointer', borderBottom: '1px solid #1e293b', userSelect: 'none' }} onClick={() => setTerminalOpen(!terminalOpen)}>
+                    {terminalOpen ? '▼' : '▲'} CALCULATION TERMINAL
+                </div>
+                {terminalOpen && (
+                    <div style={{ overflowY: 'auto', height: '166px', fontFamily: 'monospace', fontSize: '11px', padding: '8px' }}>
+                        {logStream.slice().reverse().map((log, i) => (
+                            <div key={i} style={{ color: log.includes('FAIL') ? '#ef4444' : (log.includes('WARN') ? '#facc15' : '#10b981'), padding: '1px 8px' }}>
+                                {log}
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
         </div>
     );
 }
