@@ -14,7 +14,8 @@ const initialState = {
     gussetGap_mm: 100,
     futureSpacePct: 20,
     tierGap_mm: 3000,
-    minClearanceGrade_mm: 4600
+    minClearanceGrade_mm: 4600,
+    numTiers: 3
   },
 
   // UI Control
@@ -34,13 +35,18 @@ const initialState = {
       stagger: true,
       hasVessel: false,
       vesselData: { R_mm: 800, T_mm: 20, r_n_mm: 100, f_MPa: 138 },
+      tier: 1,
+      slotIndex: 0,
+      loop_order: 0,
+      spacing_override: null,
       userOrderIndex: null // null implies auto-berthing
     }
   ],
 
   // Calculation Results
   results: null,
-  sectionLayout: null // Holds X,Y coords for the Advanced Section Creator
+  sectionLayout: null, // Holds X,Y coords for the Advanced Section Creator
+  logStream: []
 };
 
 export const usePipeRackStore = create((set) => ({
@@ -70,6 +76,10 @@ export const usePipeRackStore = create((set) => ({
       stagger: true,
       hasVessel: false,
       vesselData: { R_mm: 800, T_mm: 20, r_n_mm: 100, f_MPa: 138 },
+      tier: 1,
+      slotIndex: 0,
+      loop_order: 0,
+      spacing_override: null,
       userOrderIndex: null
     };
     return { lines: [...state.lines, newLine] };
@@ -117,6 +127,37 @@ export const usePipeRackStore = create((set) => ({
       // This function will be triggered by drag-drop.
       return { ...state };
   }),
+
+  pushLog: (msg) => set(state => ({
+    logStream: [...state.logStream.slice(-99), `[${new Date().toISOString().slice(11,19)}] ${msg}`]
+  })),
+
+  addTier: () => set(state => ({
+    structuralSettings: {
+      ...state.structuralSettings,
+      numTiers: Math.min(parseInt(state.structuralSettings.numTiers, 10) + 1, 5)
+    }
+  })),
+
+  movePipeTier: (id, direction) => set(state => {
+    const numTiers = parseInt(state.structuralSettings.numTiers, 10);
+    return {
+      lines: state.lines.map(l => {
+        if (l.id !== id) return l;
+        const currentTier = parseInt(l.tier, 10);
+        const newTier = Math.max(1, Math.min(numTiers, currentTier + parseInt(direction, 10)));
+        return { ...l, tier: newTier, userOrderIndex: null };
+      })
+    };
+  }),
+
+  setPipeManualPosition: (id, rawX_mm) => set(state => ({
+    lines: state.lines.map(l => {
+      if (l.id !== id) return l;
+      const snappedX = Math.round(parseFloat(rawX_mm) / 50) * 50;
+      return { ...l, spacing_override: snappedX };
+    })
+  })),
 
   setResults: (results) => set({ results }),
   setSectionLayout: (layout) => set({ sectionLayout: layout }),
