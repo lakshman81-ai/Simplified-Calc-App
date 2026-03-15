@@ -38,10 +38,33 @@ const AnchorSymbol = ({ position }) => (
 );
 
 const GuideSymbol = ({ position }) => (
-  <mesh position={position} rotation={[Math.PI / 2, 0, 0]}>
-    <cylinderGeometry args={[1, 1, 4, 16]} />
-    <meshStandardMaterial color="#f59e0b" wireframe />
-  </mesh>
+  <group position={position}>
+    {/* Left Arrow -> */}
+    <mesh position={[-2, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
+      <coneGeometry args={[1, 2, 4]} />
+      <meshStandardMaterial color="#f59e0b" />
+    </mesh>
+    <mesh position={[-4, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+      <cylinderGeometry args={[0.2, 0.2, 4, 8]} />
+      <meshStandardMaterial color="#f59e0b" />
+    </mesh>
+
+    {/* Right Arrow <- */}
+    <mesh position={[2, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+      <coneGeometry args={[1, 2, 4]} />
+      <meshStandardMaterial color="#f59e0b" />
+    </mesh>
+    <mesh position={[4, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+      <cylinderGeometry args={[0.2, 0.2, 4, 8]} />
+      <meshStandardMaterial color="#f59e0b" />
+    </mesh>
+
+    {/* Center Pipe bounding box (invisible/wireframe for visual context) */}
+    <mesh rotation={[Math.PI / 2, 0, 0]}>
+      <cylinderGeometry args={[1, 1, 4, 16]} />
+      <meshStandardMaterial color="#334155" wireframe transparent opacity={0.3} />
+    </mesh>
+  </group>
 );
 
 const LoopMesh = ({ line, heatmapMode }) => {
@@ -95,7 +118,7 @@ const LoopMesh = ({ line, heatmapMode }) => {
       <GuideSymbol position={new THREE.Vector3(W_ft/2 + G1_ft, yOffset, 0)} />
 
       {/* Editable HTML Labels Overlay */}
-      <Html position={[0, yOffset, H_ft + 4]} center zIndexRange={[100, 0]}>
+      <Html key={`html1-${line.id}`} position={[0, yOffset, H_ft + 4]} center zIndexRange={[100, 0]}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
           <div style={{ color: matColor, fontSize: '10px', background: 'rgba(0,0,0,0.8)', padding: '2px 4px', borderRadius: '4px', whiteSpace: 'nowrap', fontWeight: 'bold' }}>
             {line.id} ({line.sizeNps}")
@@ -109,7 +132,7 @@ const LoopMesh = ({ line, heatmapMode }) => {
         </div>
       </Html>
 
-      <Html position={[W_ft/2 + 6, yOffset, H_ft/2]} center zIndexRange={[100, 0]}>
+      <Html key={`html2-${line.id}`} position={[W_ft/2 + 6, yOffset, H_ft/2]} center zIndexRange={[100, 0]}>
          <EditableHtmlLabel
              value={formatUnit(unitSystem, 'length', H_ft, 1)}
              unit={getUnitLabel(unitSystem, 'length')}

@@ -77,6 +77,15 @@ export default function SectionMiniMap({ layout, width_mm, tiers }) {
                 // Pipe X is relative to center. Convert center to 0-based for SVG
                 const svgX = padding + (drawW / 2) + (pipe.x_mm * scale);
 
+                // Offset Y to make lines distinct by tier instead of overlapping blocks
+                // Draw height available: (svgH - 35) - 25 = svgH - 60
+                // Total tiers = Math.max(tiers || 4, pipe.tier)
+                const numTiers = tiers || 4;
+                const tierSpacing = (svgH - 60) / (numTiers + 1);
+
+                // Map tier 1 to top, tier 2 lower, etc.
+                const tierYOffset = 25 + (pipe.tier * tierSpacing);
+
                 // Color by Tier
                 const strokeColor = pipe.tier === 3 ? '#ef4444' : (pipe.tier === 2 ? '#3b82f6' : '#10b981');
                 const lineW = Math.max(1, pipe.OD_in * 25.4 * scale);
@@ -87,7 +96,10 @@ export default function SectionMiniMap({ layout, width_mm, tiers }) {
                 return (
                     <g key={pipe.id}>
                         <title>{tooltipText}</title>
-                        <line x1={svgX} y1={25} x2={svgX} y2={svgH - 35} stroke={strokeColor} strokeWidth={lineW} opacity={0.7} />
+                        {/* Short colored block indicating the tier position */}
+                        <line x1={svgX} y1={tierYOffset - 8} x2={svgX} y2={tierYOffset + 8} stroke={strokeColor} strokeWidth={Math.max(3, lineW)} opacity={0.9} />
+                        {/* Background dashed line mapping it all the way across the plan view */}
+                        <line x1={svgX} y1={25} x2={svgX} y2={svgH - 35} stroke={strokeColor} strokeWidth={0.5} strokeDasharray="1,2" opacity={0.3} />
                         <text x={svgX} y={svgH - 10} fill="#94a3b8" fontSize="8" textAnchor="middle">{pipe.id}</text>
                     </g>
                 );

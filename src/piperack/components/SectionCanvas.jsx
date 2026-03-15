@@ -1,5 +1,5 @@
-import React, { useRef, useState, useMemo, useEffect } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import React, { useState, useMemo } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Html, Line } from '@react-three/drei';
 import * as THREE from 'three';
 import { usePipeRackStore } from '../store/usePipeRackStore';
@@ -75,7 +75,7 @@ const InteractionManager = ({ layout, activeId, setActiveId, setGhostData }) => 
                     setGhostData(null);
                 }
             }}
-            onPointerOut={(e) => {
+            onPointerOut={() => {
                 if (activeId) {
                     setActiveId(null);
                     setGhostData(null);
@@ -91,7 +91,6 @@ const InteractionManager = ({ layout, activeId, setActiveId, setGhostData }) => 
 const PipeCrossSection = ({ line, layout, onStartDrag }) => {
     const OD = line.OD_in * 25.4;
     const ins = line.insulationThk * 25.4;
-    const flg = line.flgRad_in * 25.4;
 
     // Position
     const [hovered, setHover] = useState(false);
@@ -104,7 +103,7 @@ const PipeCrossSection = ({ line, layout, onStartDrag }) => {
         <group
             position={[x, y + ((OD/2) + ins) * scale + 1, 0]} // Position it sitting ON the beam (beam is at y, so add radius + insulation to y)
             onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'grab'; }}
-            onPointerOut={(e) => { setHover(false); document.body.style.cursor = 'default'; }}
+            onPointerOut={() => { setHover(false); document.body.style.cursor = 'default'; }}
             onPointerDown={(e) => {
                 e.stopPropagation();
                 document.body.style.cursor = 'grabbing';
@@ -234,12 +233,12 @@ export default function SectionCanvas({ layout, width_mm, tiers }) {
                     const beamW = w_mm * scale;
 
                     return (
-                        <group key={tierNum}>
+                        <group key={`tier-group-${tierNum}`}>
                             <mesh position={[0, y, 0]}>
                                 <boxGeometry args={[beamW + 10, 2, 10]} />
                                 <meshStandardMaterial color="#64748b" />
                             </mesh>
-                            <Html position={[-(beamW/2) - 4, y, 0]} center>
+                            <Html key={`tier-label-${tierNum}`} position={[-(beamW/2) - 4, y, 0]} center>
                                 <div style={{ color: '#94a3b8', fontSize: '11px', fontWeight: 'bold', background: '#0f172a', padding: '4px', border: '1px solid #334155', minWidth: '40px', textAlign: 'center' }}>
                                     T{tierNum}<br/><span style={{fontSize: '9px'}}>+{(y_mm / 1000).toFixed(3)}m</span>
                                 </div>
@@ -271,10 +270,10 @@ export default function SectionCanvas({ layout, width_mm, tiers }) {
             {layout.map((line) => {
                 if (line.isFutureSlot) {
                     return (
-                        <mesh key={line.id} position={[line.x_mm * scale, line.y_mm * scale, 0]}>
+                        <mesh key={`future-${line.id}`} position={[line.x_mm * scale, line.y_mm * scale, 0]}>
                             <planeGeometry args={[line.gapWidth_mm * scale, 20 * scale]} />
                             <meshStandardMaterial color="#1e3a5f" wireframe opacity={0.5} transparent />
-                            <Html center position={[0, 0, 0]}>
+                            <Html key={`html-future-${line.id}`} center position={[0, 0, 0]}>
                                 <div style={{ color: '#38bdf8', fontSize: '9px', fontWeight: 'bold', textShadow: '0px 0px 4px #000' }}>FUTURE SPACE<br/>({line.gapWidth_mm}mm)</div>
                             </Html>
                         </mesh>

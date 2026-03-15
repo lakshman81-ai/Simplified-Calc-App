@@ -75,6 +75,17 @@ export default function RackInputsDock() {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>Service:</span>
+            <select style={{ width: '120px', background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '2px' }}
+                    value={line.service} onChange={e => updateLine(line.id, 'service', e.target.value)}>
+              <option value="Process-Liquid">Process-Liquid</option>
+              <option value="Process-Gas">Process-Gas</option>
+              <option value="Utilities">Utilities</option>
+              <option value="Flare">Flare</option>
+            </select>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <span>Temp ({getUnitLabel(unitSystem, 'temp')}):</span>
             <input type="number" style={{ width: '60px', background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '2px' }}
                    value={unitSystem === 'Imperial' ? line.tOperate : formatUnit(unitSystem, 'temp', line.tOperate, 1)}
