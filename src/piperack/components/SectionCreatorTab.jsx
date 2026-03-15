@@ -7,35 +7,33 @@ import SectionCanvas from './SectionCanvas';
 import SectionMiniMap from './SectionMiniMap';
 
 const styles = {
-    overlay: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: '#020617', zIndex: 50, display: 'flex', flexDirection: 'column' },
+    overlay: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: '#020617', zIndex: 1000, display: 'flex', flexDirection: 'column' },
     header: { padding: '16px 24px', background: '#0f172a', borderBottom: '1px solid #1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
     title: { fontSize: '18px', fontWeight: 'bold', color: '#38bdf8' },
     closeBtn: { background: '#ef4444', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' },
     main: { flex: 1, display: 'flex', overflow: 'hidden' },
     leftPanel: { width: '300px', background: '#0f172a', borderRight: '1px solid #1e293b', padding: '16px', overflowY: 'auto' },
-    viewport: { flex: 1, position: 'relative', background: '#000' },
-    miniMap: { position: 'absolute', bottom: '16px', right: '16px', width: '250px', height: '180px', background: 'rgba(15, 23, 42, 0.9)', border: '1px solid #334155', borderRadius: '8px', padding: '8px' }
+    viewport: { flex: 1, position: 'relative', background: '#000', display: 'flex', flexDirection: 'row' },
+    miniMapContainer: { width: '250px', background: '#0f172a', borderLeft: '1px solid #1e293b', display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px', overflowY: 'auto' }
 };
 
 export default function SectionCreatorTab() {
-    const { isSectionCreatorOpen, toggleSectionCreator, lines, globalSettings, structuralSettings, sectionLayout, setSectionLayout, movePipeTier, addTier, pushLog, logStream } = usePipeRackStore();
+    const { isSectionCreatorOpen, toggleSectionCreator, lines, globalSettings, structuralSettings, setSectionLayout, movePipeTier, addTier, logStream } = usePipeRackStore();
     const unitSystem = useAppStore(s => s.unitSystem);
     const [terminalOpen, setTerminalOpen] = useState(true);
 
-    useEffect(() => {
-        if (isSectionCreatorOpen) {
-            // Auto-run the solver layout
-            const newLayout = generateSectionLayout(lines, globalSettings, structuralSettings);
+    // Derive sectionLayout dynamically instead of using useEffect to prevent infinite render loops
+    const sectionLayout = React.useMemo(() => {
+        if (!isSectionCreatorOpen) return null;
+        const layout = generateSectionLayout(lines, globalSettings, structuralSettings);
 
-            // Avoid adding same solver logs infinitely
-            setSectionLayout(newLayout);
+        // Push to store asynchronously to avoid React render phase warnings
+        setTimeout(() => {
+            setSectionLayout(layout);
+        }, 0);
 
-            // To prevent infinite loop since pushLog updates state which triggers the store
-            // We can push to the store *only* if we don't already have these recent logs.
-            // For simplicity in React, let's just log "Solver calculated" occasionally
-            // But we will allow drag events (which call pushLog explicitly) to fill the terminal.
-        }
-    }, [isSectionCreatorOpen, lines, globalSettings, structuralSettings]); // Removing setSectionLayout as it causes infinite loops if not stable
+        return layout;
+    }, [isSectionCreatorOpen, lines, globalSettings, structuralSettings, setSectionLayout]);
 
     if (!isSectionCreatorOpen) return null;
 
@@ -87,15 +85,25 @@ export default function SectionCreatorTab() {
                 </div>
 
                 <div style={styles.viewport}>
-                    <SectionCanvas layout={sectionLayout?.layout} width_mm={sectionLayout?.width_mm} tiers={sectionLayout?.tiers || {}} />
-
-                    <div style={{ position: 'absolute', top: '16px', left: '16px', color: '#f8fafc', fontSize: '14px', background: 'rgba(0,0,0,0.5)', padding: '8px', borderRadius: '4px' }}>
-                        Rack Width: {sectionLayout ? formatUnit(unitSystem, 'length', sectionLayout.width_mm / 25.4 / 12) : '-'}
+                    <div style={{ flex: 1, position: 'relative' }}>
+                        <SectionCanvas layout={sectionLayout?.layout} width_mm={sectionLayout?.width_mm} tiers={sectionLayout?.tiers || {}} />
+                        <div style={{ position: 'absolute', top: '16px', left: '16px', color: '#f8fafc', fontSize: '14px', background: 'rgba(0,0,0,0.5)', padding: '8px', borderRadius: '4px' }}>
+                            Rack Width: {sectionLayout ? formatUnit(unitSystem, 'length', sectionLayout.width_mm / 25.4 / 12) : '-'}
+                        </div>
                     </div>
 
-                    <div style={styles.miniMap}>
-                        <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 'bold', marginBottom: '4px' }}>PLAN VIEW THUMBNAIL</div>
-                        <SectionMiniMap layout={sectionLayout?.layout} width_mm={sectionLayout?.width_mm} tiers={sectionLayout?.tiers} />
+                    <div style={styles.miniMapContainer}>
+                        <div style={{ fontSize: '12px', color: '#38bdf8', fontWeight: 'bold', padding: '8px 0', borderBottom: '1px solid #1e293b' }}>PLAN VIEW THUMBNAILS</div>
+                        {Array.from({ length: structuralSettings.numTiers || 3 }).map((_, i) => {
+                            const tierNum = i + 1;
+                            const tierLayout = sectionLayout?.layout?.filter(l => l.tier === tierNum);
+                            return (
+                                <div key={tierNum} style={{ background: '#020617', padding: '8px', borderRadius: '8px', border: '1px solid #334155' }}>
+                                    <div style={{ fontSize: '10px', color: '#cbd5e1', marginBottom: '4px' }}>Tier {tierNum} Plan</div>
+                                    <SectionMiniMap tier={tierNum} layout={tierLayout} width_mm={sectionLayout?.width_mm} />
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

@@ -37,30 +37,30 @@ const AnchorSymbol = ({ position }) => (
   </mesh>
 );
 
-const GuideSymbol = ({ position }) => (
-  <group position={position}>
-    {/* Left Arrow -> */}
-    <mesh position={[-2, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
+const GuideSymbol = ({ position, rotation = [0, 0, 0] }) => (
+  <group position={position} rotation={rotation}>
+    {/* Top Arrow pointing down */}
+    <mesh position={[0, 0, -2]} rotation={[Math.PI / 2, 0, 0]}>
       <coneGeometry args={[1, 2, 4]} />
       <meshStandardMaterial color="#f59e0b" />
     </mesh>
-    <mesh position={[-4, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+    <mesh position={[0, 0, -4]} rotation={[Math.PI / 2, 0, 0]}>
       <cylinderGeometry args={[0.2, 0.2, 4, 8]} />
       <meshStandardMaterial color="#f59e0b" />
     </mesh>
 
-    {/* Right Arrow <- */}
-    <mesh position={[2, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+    {/* Bottom Arrow pointing up */}
+    <mesh position={[0, 0, 2]} rotation={[-Math.PI / 2, 0, 0]}>
       <coneGeometry args={[1, 2, 4]} />
       <meshStandardMaterial color="#f59e0b" />
     </mesh>
-    <mesh position={[4, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+    <mesh position={[0, 0, 4]} rotation={[-Math.PI / 2, 0, 0]}>
       <cylinderGeometry args={[0.2, 0.2, 4, 8]} />
       <meshStandardMaterial color="#f59e0b" />
     </mesh>
 
     {/* Center Pipe bounding box (invisible/wireframe for visual context) */}
-    <mesh rotation={[Math.PI / 2, 0, 0]}>
+    <mesh rotation={[0, 0, Math.PI / 2]}>
       <cylinderGeometry args={[1, 1, 4, 16]} />
       <meshStandardMaterial color="#334155" wireframe transparent opacity={0.3} />
     </mesh>

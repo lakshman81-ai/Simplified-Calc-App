@@ -316,19 +316,22 @@ export default function SectionCanvas({ layout, width_mm, tiers }) {
                         const isViolation = ghostData.distance_mm < ghostData.s_required;
                         const color = isViolation ? '#ef4444' : '#0ea5e9';
 
+                        // Offset the dimension line vertically so it floats above the pipes instead of crossing through them
+                        const dimY_offset_mm = 600;
+
                         return (
                             <group>
                                 <Line
-                                    points={[[ghostData.x_mm * scale, ghostData.y_mm * scale, 0], [ghostData.neighbor.x_mm * scale, ghostData.neighbor.y_mm * scale, 0]]}
+                                    points={[[ghostData.x_mm * scale, (ghostData.y_mm + dimY_offset_mm) * scale, 0], [ghostData.neighbor.x_mm * scale, (ghostData.neighbor.y_mm + dimY_offset_mm) * scale, 0]]}
                                     color={color}
                                     lineWidth={2}
                                 />
                                 {/* Tick Marks */}
-                                <Line points={[[ghostData.x_mm * scale, (ghostData.y_mm - 50) * scale, 0], [ghostData.x_mm * scale, (ghostData.y_mm + 50) * scale, 0]]} color={color} />
-                                <Line points={[[ghostData.neighbor.x_mm * scale, (ghostData.neighbor.y_mm - 50) * scale, 0], [ghostData.neighbor.x_mm * scale, (ghostData.neighbor.y_mm + 50) * scale, 0]]} color={color} />
+                                <Line points={[[ghostData.x_mm * scale, (ghostData.y_mm + dimY_offset_mm - 100) * scale, 0], [ghostData.x_mm * scale, (ghostData.y_mm + dimY_offset_mm + 100) * scale, 0]]} color={color} />
+                                <Line points={[[ghostData.neighbor.x_mm * scale, (ghostData.neighbor.y_mm + dimY_offset_mm - 100) * scale, 0], [ghostData.neighbor.x_mm * scale, (ghostData.neighbor.y_mm + dimY_offset_mm + 100) * scale, 0]]} color={color} />
 
                                 {/* Gap Text Label */}
-                                <Html position={[((ghostData.x_mm + ghostData.neighbor.x_mm) / 2) * scale, (ghostData.y_mm + 100) * scale, 0]} center>
+                                <Html position={[((ghostData.x_mm + ghostData.neighbor.x_mm) / 2) * scale, (ghostData.y_mm + dimY_offset_mm + 100) * scale, 0]} center>
                                     <div style={{ background: '#0f172a', border: `1px solid ${color}`, color: color, fontSize: '10px', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold' }}>
                                         {ghostData.distance_mm.toFixed(0)}mm
                                     </div>

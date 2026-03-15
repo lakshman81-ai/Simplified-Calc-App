@@ -178,27 +178,54 @@ export const generateSectionLayout = (lines, globalSettings, structSettings) => 
             });
         });
 
-        // Track max width
-        if (tierGroup.length > 0) {
-            // Find max X considering spacing overrides might push lines further out
-            const maxTierX = Math.max(...layout.filter(l => l.tier === parseInt(t, 10) && !l.isFutureSlot).map(l => l.x_mm + (l.insulationThk * 25.4) + (structSettings.beamWidth_mm / 2) + structSettings.gussetGap_mm));
-            maxOccupiedWidth_mm = Math.max(maxOccupiedWidth_mm, maxTierX);
+        // Shift everything so the origin (X=0) is the center of the beam initially to calculate true extent
+        const tierLayout = layout.filter(l => l.tier === parseInt(t, 10));
+        if (tierLayout.length > 0) {
+            // Find the maximum span occupied by this tier's layout (from leftmost to rightmost edge)
+            const minX = Math.min(...tierLayout.map(l => l.x_mm - (l.OD_in * 25.4 / 2) - (l.insulationThk * 25.4 || 0)));
+            const maxX = Math.max(...tierLayout.map(l => l.x_mm + (l.OD_in * 25.4 / 2) + (l.insulationThk * 25.4 || 0)));
+
+            // The occupied width of this tier
+            const tierWidth = maxX - minX;
+            maxOccupiedWidth_mm = Math.max(maxOccupiedWidth_mm, tierWidth);
         }
     });
 
-    const finalWidth_mm = maxOccupiedWidth_mm; // Removed multiplier
+    // Ensure width is at least the base structural minimum (e.g., 5000mm)
+    // plus a small buffer so pipes don't hang exactly on the edge
+    let finalWidth_mm = Math.max(5000, maxOccupiedWidth_mm + (structSettings.gussetGap_mm || 100) * 2);
 
-    // Shift everything so the origin (X=0) is the center of the beam
-    const offset = finalWidth_mm / 2;
+    // After manual drags, a pipe might have an extreme X value.
+    // We must ensure the structural beam is wide enough to support it.
     layout.forEach(l => {
-        if (l.spacing_override === null || l.spacing_override === undefined || l.isFutureSlot) {
-            l.x_mm = l.x_mm - offset;
+        if (l.spacing_override !== null && l.spacing_override !== undefined) {
+            const absX = Math.abs(l.spacing_override);
+            const requiredHalfWidth = absX + (l.OD_in * 25.4 / 2) + (l.insulationThk * 25.4 || 0) + (structSettings.gussetGap_mm || 100);
+            if (requiredHalfWidth * 2 > finalWidth_mm) {
+                finalWidth_mm = requiredHalfWidth * 2;
+            }
+        }
+    });
+
+    // Final pass to shift auto-berthed pipes based on the final width,
+    // so they are centered properly on the beam.
+    Object.keys(tiers).forEach(t => {
+        const tierLayout = layout.filter(l => l.tier === parseInt(t, 10) && (l.spacing_override === null || l.spacing_override === undefined));
+        if (tierLayout.length > 0) {
+            const minX = Math.min(...tierLayout.map(l => l.x_mm));
+            const maxX = Math.max(...tierLayout.map(l => l.x_mm));
+            const currentCenter = (minX + maxX) / 2;
+
+            // Shift group to center (0)
+            tierLayout.forEach(l => {
+                l.x_mm = l.x_mm - currentCenter;
+            });
         }
     });
 
     const logs = [
         `[SOLVER] ${lines.length} pipes processed across ${numTiers} tiers`,
-        `[SOLVER] Rack Width: ${finalWidth_mm.toFixed(0)}mm`,
+        `[SOLVER] Rack Width dynamically sized to ${finalWidth_mm.toFixed(0)}mm`,
         `[SOLVER] Future Space: ${(structSettings.futureSpacePct)}% inserted at beam center`,
         ...processed.map(p => `[PIPE] ${p.id}: LoopOrder=${p.loopOrder.toFixed(1)}, Tier=${p.tier}`)
     ];
