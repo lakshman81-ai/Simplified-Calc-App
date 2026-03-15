@@ -15,7 +15,7 @@ const initialState = {
     futureSpacePct: 20,
     tierGap_mm: 3000,
     minClearanceGrade_mm: 4600,
-    numTiers: 3
+    numTiers: 4
   },
 
   // UI Control

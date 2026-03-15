@@ -102,7 +102,7 @@ const PipeCrossSection = ({ line, layout, onStartDrag }) => {
 
     return (
         <group
-            position={[x, y, 0]}
+            position={[x, y + ((OD/2) + ins) * scale + 1, 0]} // Position it sitting ON the beam (beam is at y, so add radius + insulation to y)
             onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'grab'; }}
             onPointerOut={(e) => { setHover(false); document.body.style.cursor = 'default'; }}
             onPointerDown={(e) => {
@@ -113,15 +113,15 @@ const PipeCrossSection = ({ line, layout, onStartDrag }) => {
         >
             {/* Core Pipe */}
             <mesh>
-                <cylinderGeometry args={[(OD / 2) * scale, (OD / 2) * scale, 10, 32]} rotation={[Math.PI / 2, 0, 0]} />
-                <meshStandardMaterial color={hovered ? '#facc15' : baseColor} roughness={0.4} metalness={0.6} />
+                <circleGeometry args={[(OD / 2) * scale, 32]} />
+                <meshStandardMaterial color={hovered ? '#facc15' : baseColor} roughness={0.4} metalness={0.6} side={THREE.DoubleSide} />
             </mesh>
 
             {/* Insulation Ring */}
             {ins > 0 && (
-                <mesh>
-                    <cylinderGeometry args={[((OD / 2) + ins) * scale, ((OD / 2) + ins) * scale, 9.8, 32]} rotation={[Math.PI / 2, 0, 0]} />
-                    <meshStandardMaterial color="#cbd5e1" opacity={0.3} transparent />
+                <mesh position={[0, 0, -0.1]}>
+                    <ringGeometry args={[(OD / 2) * scale, ((OD / 2) + ins) * scale, 32]} />
+                    <meshStandardMaterial color="#cbd5e1" opacity={0.3} transparent side={THREE.DoubleSide} />
                 </mesh>
             )}
 
@@ -138,16 +138,15 @@ const PipeCrossSection = ({ line, layout, onStartDrag }) => {
 };
 
 export default function SectionCanvas({ layout, width_mm, tiers }) {
-    if (!layout || layout.length === 0) return null;
-
-    const w = width_mm * scale;
-    const halfW = w / 2;
-
     const { setPipeManualPosition, pushLog } = usePipeRackStore();
 
     // Interaction State
     const [activeId, setActiveId] = useState(null);
     const [ghostData, setGhostData] = useState(null);
+
+
+    if (!layout || layout.length === 0) return null;
+
 
     // We calculate camera limits to tightly frame the bent structure
     const topY = layout[layout.length - 1]?.y_mm * scale || 150;
@@ -160,14 +159,6 @@ export default function SectionCanvas({ layout, width_mm, tiers }) {
         }
     };
 
-    // Trigger commit when activeId changes to null but we had ghost data
-    useEffect(() => {
-        if (activeId === null && ghostData) {
-            // Previous activeId was valid, meaning we just dropped
-            // But we don't have activeId here to commit...
-            // Better to handle in the mesh PointerUp? Or a ref?
-        }
-    }, [activeId, ghostData]);
 
     const activePipeData = activeId ? layout.find(l => l.id === activeId) : null;
 
@@ -209,44 +200,71 @@ export default function SectionCanvas({ layout, width_mm, tiers }) {
             <InteractionManager layout={layout} activeId={activeId} setActiveId={finalizeDrag} setGhostData={setGhostData} />
 
             {/* Render Ground */}
-            <gridHelper args={[w * 2, 20]} position={[0, 0, 0]} material-color="#1e293b" />
+            {(() => {
+                const { structuralSettings } = usePipeRackStore.getState();
+                // If width_mm is present from the layout (the total width including pipes), use it.
+                // Otherwise fallback to 5000.
+                const w_mm = width_mm || 5000;
+                const beamW = w_mm * scale;
+                return (
+                    <gridHelper args={[beamW * 2, 20]} position={[0, 0, 0]} material-color="#1e293b" />
+                );
+            })()}
 
             <group position={[0, 0, 0]}>
                 {/* Ground Footer Beam */}
-                <mesh position={[0, -0.5, 0]}>
-                    <boxGeometry args={[w + 10, 1, 10]} />
-                    <meshStandardMaterial color="#334155" />
-                </mesh>
+                {(() => {
+                    const w_mm = width_mm || 5000;
+                    const beamW = w_mm * scale;
+                    return (
+                        <mesh position={[0, -0.5, 0]}>
+                            <boxGeometry args={[beamW + 10, 1, 10]} />
+                            <meshStandardMaterial color="#334155" />
+                        </mesh>
+                    );
+                })()}
 
                 {/* Render Transverse Beams per Tier */}
                 {Object.keys(tiers).map((tierNum) => {
-                    const tGroup = tiers[tierNum];
-                    if (tGroup.length === 0) return null;
-                    const y_mm = tGroup[0].y_mm;
+                    // Always calculate y based on formula from store: minClearanceGrade_mm + ((tierNum - 1) * tierGap_mm)
+                    const { structuralSettings } = usePipeRackStore.getState();
+                    const y_mm = structuralSettings.minClearanceGrade_mm + ((Number(tierNum) - 1) * structuralSettings.tierGap_mm);
                     const y = y_mm * scale;
+                    const w_mm = width_mm || 5000;
+                    const beamW = w_mm * scale;
 
                     return (
                         <group key={tierNum}>
-                            <mesh position={[0, y - 1, 0]}>
-                                <boxGeometry args={[w, 2, 10]} />
+                            <mesh position={[0, y, 0]}>
+                                <boxGeometry args={[beamW + 10, 2, 10]} />
                                 <meshStandardMaterial color="#64748b" />
                             </mesh>
-                            <Html position={[-halfW - 4, y, 0]} center>
-                                <div style={{ color: '#94a3b8', fontSize: '11px', fontWeight: 'bold', background: '#0f172a', padding: '4px', border: '1px solid #334155' }}>T{tierNum}</div>
+                            <Html position={[-(beamW/2) - 4, y, 0]} center>
+                                <div style={{ color: '#94a3b8', fontSize: '11px', fontWeight: 'bold', background: '#0f172a', padding: '4px', border: '1px solid #334155', minWidth: '40px', textAlign: 'center' }}>
+                                    T{tierNum}<br/><span style={{fontSize: '9px'}}>+{(y_mm / 1000).toFixed(3)}m</span>
+                                </div>
                             </Html>
                         </group>
                     );
                 })}
 
                 {/* Render Vertical Columns */}
-                <mesh position={[-halfW, topY / 2, 0]}>
-                    <boxGeometry args={[2, topY + 10, 10]} />
-                    <meshStandardMaterial color="#64748b" />
-                </mesh>
-                <mesh position={[halfW, topY / 2, 0]}>
-                    <boxGeometry args={[2, topY + 10, 10]} />
-                    <meshStandardMaterial color="#64748b" />
-                </mesh>
+                {(() => {
+                    const w_mm = width_mm || 5000;
+                    const beamW = w_mm * scale;
+                    return (
+                        <>
+                            <mesh position={[-(beamW/2), topY / 2, 0]}>
+                                <boxGeometry args={[2, topY + 10, 10]} />
+                                <meshStandardMaterial color="#64748b" />
+                            </mesh>
+                            <mesh position={[(beamW/2), topY / 2, 0]}>
+                                <boxGeometry args={[2, topY + 10, 10]} />
+                                <meshStandardMaterial color="#64748b" />
+                            </mesh>
+                        </>
+                    );
+                })()}
             </group>
 
             {/* Render Pipes and Future Slots */}
@@ -265,11 +283,13 @@ export default function SectionCanvas({ layout, width_mm, tiers }) {
 
                 // Dim the active pipe
                 if (line.id === activeId) {
+                    const ins = line.insulationThk * 25.4;
+                    const r = (line.OD_in * 25.4 / 2);
                     return (
-                        <group key={line.id} position={[line.x_mm * scale, line.y_mm * scale, 0]}>
+                        <group key={line.id} position={[line.x_mm * scale, line.y_mm * scale + (r + ins) * scale + 1, 0]}>
                              <mesh>
-                                <cylinderGeometry args={[(line.OD_in * 25.4 / 2) * scale, (line.OD_in * 25.4 / 2) * scale, 10, 32]} rotation={[Math.PI / 2, 0, 0]} />
-                                <meshStandardMaterial color="#334155" opacity={0.5} transparent />
+                                <circleGeometry args={[r * scale, 32]} />
+                                <meshStandardMaterial color="#334155" opacity={0.5} transparent side={THREE.DoubleSide} />
                             </mesh>
                         </group>
                     );
@@ -281,10 +301,16 @@ export default function SectionCanvas({ layout, width_mm, tiers }) {
             {/* Render Ghost Overlay for Dragging */}
             {activeId && ghostData && activePipeData && (
                 <group>
-                    <mesh position={[ghostData.x_mm * scale, ghostData.y_mm * scale, 0]}>
-                        <cylinderGeometry args={[(activePipeData.OD_in * 25.4 / 2) * scale, (activePipeData.OD_in * 25.4 / 2) * scale, 10, 32]} rotation={[Math.PI / 2, 0, 0]} />
-                        <meshStandardMaterial color="#facc15" wireframe opacity={0.8} transparent />
-                    </mesh>
+                    {(() => {
+                        const ins = activePipeData.insulationThk * 25.4;
+                        const r = (activePipeData.OD_in * 25.4 / 2);
+                        return (
+                            <mesh position={[ghostData.x_mm * scale, ghostData.y_mm * scale + (r + ins) * scale + 1, 0]}>
+                                <circleGeometry args={[r * scale, 32]} />
+                                <meshStandardMaterial color="#facc15" wireframe opacity={0.8} transparent side={THREE.DoubleSide} />
+                            </mesh>
+                        );
+                    })()}
 
                     {/* Dimension Line to Nearest Neighbor */}
                     {ghostData.neighbor && (() => {

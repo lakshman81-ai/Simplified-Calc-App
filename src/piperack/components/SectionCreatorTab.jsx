@@ -26,12 +26,16 @@ export default function SectionCreatorTab() {
         if (isSectionCreatorOpen) {
             // Auto-run the solver layout
             const newLayout = generateSectionLayout(lines, globalSettings, structuralSettings);
-            if (newLayout.logs) {
-                newLayout.logs.forEach(log => pushLog(log));
-            }
+
+            // Avoid adding same solver logs infinitely
             setSectionLayout(newLayout);
+
+            // To prevent infinite loop since pushLog updates state which triggers the store
+            // We can push to the store *only* if we don't already have these recent logs.
+            // For simplicity in React, let's just log "Solver calculated" occasionally
+            // But we will allow drag events (which call pushLog explicitly) to fill the terminal.
         }
-    }, [isSectionCreatorOpen, lines, globalSettings, structuralSettings, setSectionLayout]);
+    }, [isSectionCreatorOpen, lines, globalSettings, structuralSettings]); // Removing setSectionLayout as it causes infinite loops if not stable
 
     if (!isSectionCreatorOpen) return null;
 
