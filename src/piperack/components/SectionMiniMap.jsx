@@ -17,7 +17,8 @@ export default function SectionMiniMap({ layout, width_mm, tiers }) {
     const drawW = svgW - (padding * 2);
 
     // Scale X-coordinates from Real world (mm) to SVG pixels
-    const maxRealW = width_mm;
+    const { structuralSettings } = usePipeRackStore.getState();
+    const maxRealW = width_mm || structuralSettings.beamWidth_mm || 5000;
     const scale = drawW / maxRealW;
 
     // Sort layout purely for dimension calculation without using hooks
