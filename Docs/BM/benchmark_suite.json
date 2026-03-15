@@ -1,0 +1,141 @@
+{
+  "test_suite": "Fluor_Method_Guided_Cantilever_Benchmarks",
+  "global_tolerances": {
+    "force_tolerance_percent": 1.5,
+    "stress_tolerance_percent": 1.5
+  },
+  "cases": [
+    {
+      "case_id": "L-01",
+      "description": "Standard L-Shape, Carbon Steel, 8-inch Sch 40 @ 300F",
+      "inputs": {
+        "material": "Carbon Steel", "temp_F": 300, "pipe_size": 8.0, "schedule": "40",
+        "equipment_type": "Steel", "vectors": [{"dir": "X", "len": 25}, {"dir": "Y", "len": 16.5}]
+      },
+      "expected_outputs": {
+        "db_lookups": {"e": 0.0182, "E": 28300000, "I": 72.5, "OD": 8.625},
+        "limits": {"max_force_lbs": 1600, "max_stress_psi": 20000},
+        "results_X": {"delta_in": 0.455, "bend_leg_ft": 16.5, "force_lbs": 4331, "stress_psi": 5126, "status": "FAIL"},
+        "results_Y": {"delta_in": 0.300, "bend_leg_ft": 25.0, "force_lbs": 820, "stress_psi": 1951, "status": "PASS"}
+      }
+    },
+    {
+      "case_id": "L-02",
+      "description": "Long L-Shape, Carbon Steel, 6-inch Sch 40 @ 500F",
+      "inputs": {
+        "material": "Carbon Steel", "temp_F": 500, "pipe_size": 6.0, "schedule": "40",
+        "equipment_type": "Steel", "vectors": [{"dir": "X", "len": 100}, {"dir": "Y", "len": 20}]
+      },
+      "expected_outputs": {
+        "db_lookups": {"e": 0.0362, "E": 27300000, "I": 28.1, "OD": 6.625},
+        "limits": {"max_force_lbs": 1200, "max_stress_psi": 20000},
+        "results_X": {"delta_in": 3.620, "bend_leg_ft": 20.0, "force_lbs": 7232, "stress_psi": 34101, "status": "FAIL"},
+        "results_Y": {"delta_in": 0.724, "bend_leg_ft": 100.0, "force_lbs": 11, "stress_psi": 271, "status": "PASS"}
+      }
+    },
+    {
+      "case_id": "Z-01",
+      "description": "Standard Z-Shape, Carbon Steel, 8-inch Sch 40 @ 300F",
+      "inputs": {
+        "material": "Carbon Steel", "temp_F": 300, "pipe_size": 8.0, "schedule": "40",
+        "equipment_type": "Steel", "vectors": [{"dir": "X", "len": 15}, {"dir": "Y", "len": 20}, {"dir": "X", "len": 10}]
+      },
+      "expected_outputs": {
+        "db_lookups": {"e": 0.0182, "E": 28300000, "I": 72.5, "OD": 8.625},
+        "limits": {"max_force_lbs": 1600, "max_stress_psi": 20000},
+        "results_X": {"delta_in": 0.455, "bend_leg_ft": 20.0, "force_lbs": 2432, "stress_psi": 5785, "status": "FAIL"},
+        "results_Y": {"delta_in": 0.364, "bend_leg_ft": 25.0, "force_lbs": 996, "stress_psi": 2962, "status": "PASS"}
+      }
+    },
+    {
+      "case_id": "Z-02",
+      "description": "Large Z-Shape, Stainless Steel, 10-inch Sch 40 @ 350F",
+      "inputs": {
+        "material": "Austenitic Stainless Steel 18 Cr 8 Ni", "temp_F": 350, "pipe_size": 10.0, "schedule": "40",
+        "equipment_type": "Steel", "vectors": [{"dir": "X", "len": 25}, {"dir": "Y", "len": 25}, {"dir": "X", "len": 45}]
+      },
+      "expected_outputs": {
+        "db_lookups": {"e": 0.0320, "E": 27000000, "I": 160.8, "OD": 10.75},
+        "limits": {"max_force_lbs": 2000, "max_stress_psi": 20000},
+        "results_X": {"delta_in": 2.240, "bend_leg_ft": 25.0, "force_lbs": 12970, "stress_psi": 21672, "status": "FAIL"},
+        "results_Y": {"delta_in": 0.800, "bend_leg_ft": 70.0, "force_lbs": 243, "stress_psi": 1001, "status": "PASS"}
+      }
+    },
+    {
+      "case_id": "U-01",
+      "description": "U-Shape Expansion Loop, Carbon Steel, 6-inch Sch 40 @ 400F",
+      "inputs": {
+        "material": "Carbon Steel", "temp_F": 400, "pipe_size": 6.0, "schedule": "40",
+        "equipment_type": "Steel", "vectors": [{"dir": "X", "len": 37}, {"dir": "Y", "len": 10}, {"dir": "X", "len": 5}, {"dir": "Y", "len": 10}, {"dir": "X", "len": 37}]
+      },
+      "expected_outputs": {
+        "db_lookups": {"e": 0.0270, "E": 27700000, "I": 28.1, "OD": 6.625},
+        "limits": {"max_force_lbs": 1200, "max_stress_psi": 20000},
+        "results_X": {"delta_in": 2.133, "bend_leg_ft": 20.0, "force_lbs": 4322, "stress_psi": 20380, "status": "FAIL"},
+        "results_Y": {"delta_in": 0.540, "bend_leg_ft": 79.0, "force_lbs": 15, "stress_psi": 137, "status": "PASS"}
+      }
+    },
+    {
+      "case_id": "U-02",
+      "description": "U-Shape Expansion Loop, Carbon Steel, 8-inch Sch 40 @ 500F",
+      "inputs": {
+        "material": "Carbon Steel", "temp_F": 500, "pipe_size": 8.0, "schedule": "40",
+        "equipment_type": "Steel", "vectors": [{"dir": "X", "len": 20}, {"dir": "Y", "len": 15}, {"dir": "X", "len": 10}, {"dir": "Y", "len": 15}, {"dir": "X", "len": 20}]
+      },
+      "expected_outputs": {
+        "db_lookups": {"e": 0.0362, "E": 27300000, "I": 72.5, "OD": 8.625},
+        "limits": {"max_force_lbs": 1600, "max_stress_psi": 20000},
+        "results_X": {"delta_in": 1.810, "bend_leg_ft": 30.0, "force_lbs": 2764, "stress_psi": 9862, "status": "FAIL"},
+        "results_Y": {"delta_in": 1.086, "bend_leg_ft": 50.0, "force_lbs": 485, "stress_psi": 2872, "status": "PASS"}
+      }
+    },
+    {
+      "case_id": "C3D-01",
+      "description": "6-Element 3D Multi-plane with Equipment Anchor Movement",
+      "inputs": {
+        "material": "Austenitic Stainless Steel 18 Cr 8 Ni", "temp_F": 350, "pipe_size": 8.0, "schedule": "40",
+        "equipment_type": "Steel",
+        "anchor_1_movement": {"X": 0.5, "Y": 0.0, "Z": 0.0},
+        "vectors": [{"dir": "X", "len": 50}, {"dir": "Z", "len": 10}, {"dir": "Y", "len": 20}, {"dir": "X", "len": 20}, {"dir": "Z", "len": -30}, {"dir": "X", "len": 10}]
+      },
+      "expected_outputs": {
+        "db_lookups": {"e": 0.0320, "E": 27000000, "I": 72.5, "OD": 8.625},
+        "limits": {"max_force_lbs": 1600, "max_stress_psi": 20000},
+        "results_X": {"delta_in": 3.060, "bend_leg_ft": 60.0, "force_lbs": 577, "stress_psi": 4123, "status": "PASS"},
+        "results_Y": {"delta_in": 0.640, "bend_leg_ft": 120.0, "force_lbs": 15, "stress_psi": 215, "status": "PASS"},
+        "results_Z": {"delta_in": 0.640, "bend_leg_ft": 100.0, "force_lbs": 26, "stress_psi": 310, "status": "PASS"}
+      }
+    },
+    {
+      "case_id": "C3D-02",
+      "description": "10-Element 3D Auto-Filtering of Rigid Short Drops (<3ft)",
+      "inputs": {
+        "material": "Carbon Steel", "temp_F": 300, "pipe_size": 6.0, "schedule": "40",
+        "equipment_type": "Steel",
+        "vectors": [{"dir": "X", "len": 15}, {"dir": "Y", "len": 10}, {"dir": "Z", "len": 2}, {"dir": "X", "len": 20}, {"dir": "Y", "len": -5}, {"dir": "Z", "len": 12}, {"dir": "X", "len": 10}, {"dir": "Z", "len": -15}, {"dir": "Y", "len": 25}, {"dir": "X", "len": 5}]
+      },
+      "expected_outputs": {
+        "db_lookups": {"e": 0.0182, "E": 28300000, "I": 28.1, "OD": 6.625},
+        "limits": {"max_force_lbs": 1200, "max_stress_psi": 20000},
+        "results_X": {"delta_in": 0.910, "bend_leg_ft": 67.0, "force_lbs": 50, "stress_psi": 791, "status": "PASS"},
+        "results_Y": {"delta_in": 0.546, "bend_leg_ft": 77.0, "force_lbs": 20, "stress_psi": 359, "status": "PASS"},
+        "results_Z": {"delta_in": 0.054, "bend_leg_ft": 90.0, "force_lbs": 1, "stress_psi": 26, "status": "PASS"}
+      }
+    },
+    {
+      "case_id": "C3D-03",
+      "description": "3D Pump Suction Case (Fluor Verification Master Test)",
+      "inputs": {
+        "material": "Carbon Steel", "temp_F": 300, "pipe_size": 6.0, "schedule": "40",
+        "equipment_type": "Cast Iron",
+        "vectors": [{"dir": "Z", "len": -9}, {"dir": "X", "len": 12}, {"dir": "Z", "len": -12.5}]
+      },
+      "expected_outputs": {
+        "db_lookups": {"e": 0.0182, "E": 28300000, "I": 28.1, "OD": 6.625},
+        "limits": {"max_force_lbs": 300, "max_stress_psi": 20000},
+        "results_X": {"delta_in": 0.218, "bend_leg_ft": 21.5, "force_lbs": 363, "stress_psi": 1843, "status": "FAIL"},
+        "results_Z": {"delta_in": 0.391, "bend_leg_ft": 12.0, "force_lbs": 3748, "stress_psi": 10606, "status": "FAIL"}
+      }
+    }
+  ]
+}
